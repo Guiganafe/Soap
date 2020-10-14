@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "949366949335",
+    "firebase_url": "https://servicoaki-12112.firebaseio.com",
+    "project_id": "servicoaki-12112",
+    "storage_bucket": "servicoaki-12112.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:949366949335:android:a560b44266fc9b90913792",
+        "android_client_info": {
+          "package_name": "br.com.justworks.prestador.ServicoAki"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "949366949335-7n67he9qnvc5gmfcr2v83ospvufvk14b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.justworks.prestador.ServicoAki",
+            "certificate_hash": "db078de1b2a3549e2531ac34de073416fc783bce"
+          }
+        },
+        {
+          "client_id": "949366949335-vet6v1podrvoi1599nmusaitluc4vkv7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAwSFcqZ9qNjVJoYyttD0Ldf74fVEgpVs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "949366949335-vet6v1podrvoi1599nmusaitluc4vkv7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "949366949335-la8i2reltqbhradjnnrnm6vcdpj9iejc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "br.com.justworks.cliente.ServicoAki"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

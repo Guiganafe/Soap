@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/AtendimentoMenu"
+        android:title="Atendimento"
+        android:icon="@drawable/ic_atendimento"/>
+
+    <item android:id="@+id/AgendaMenu"
+        android:title="Agenda"
+        android:icon="@drawable/ic_agenda"/>
+
+    <item android:id="@+id/FinanceiroMenu"
+        android:title="Financeiro"
+        android:icon="@drawable/ic_financeiro"/>
+
+    <item android:id="@+id/MeuPerfilMenu"
+        android:title="Meu perfil"
+        android:icon="@drawable/ic_meu_perfil"/>
+
+</menu>
