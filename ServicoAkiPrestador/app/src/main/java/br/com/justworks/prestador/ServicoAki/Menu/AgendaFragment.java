@@ -2,24 +2,19 @@ package br.com.justworks.prestador.ServicoAki.Menu;
 
 import android.graphics.Color;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.github.jhonnyx2012.horizontalpicker.DatePickerListener;
-import com.github.jhonnyx2012.horizontalpicker.HorizontalPicker;
-
 import org.joda.time.DateTime;
-
+import br.com.justworks.prestador.ServicoAki.HorizontalPicker.DatePickerListener;
+import br.com.justworks.prestador.ServicoAki.HorizontalPicker.HorizontalPicker;
 import br.com.justworks.prestador.ServicoAki.R;
 
-public class AgendaFragment extends Fragment implements DatePickerListener{
+public class AgendaFragment extends Fragment implements DatePickerListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,34 +27,28 @@ public class AgendaFragment extends Fragment implements DatePickerListener{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // find the picker
         HorizontalPicker picker = (HorizontalPicker) view.findViewById(R.id.datePicker);
-
-        // initialize it and attach a listener
-        picker
-                .setListener(this)
-                .setDays(120)
-                .setOffset(20)
-                .setDateSelectedColor(getResources().getColor(R.color.colorWhite))
-                .setDateSelectedTextColor(Color.BLACK)
+        picker.setListener(this)
+                .setDays(15)
+                .setOffset(7)
+                .setDateSelectedColor(Color.DKGRAY)
+                .setDateSelectedTextColor(Color.DKGRAY)
                 .setMonthAndYearTextColor(Color.DKGRAY)
                 .setTodayButtonTextColor(getResources().getColor(R.color.colorPrimary))
                 .setTodayDateTextColor(getResources().getColor(R.color.colorPrimary))
-                .setTodayDateBackgroundColor(Color.WHITE)
+                .setTodayDateBackgroundColor(Color.GRAY)
                 .setUnselectedDayTextColor(Color.DKGRAY)
-                .setDayOfWeekTextColor(Color.DKGRAY)
-                .setUnselectedDayTextColor(getResources().getColor(R.color.colorBlack))
-                .showTodayButton(false)
+                .setDayOfWeekTextColor(Color.DKGRAY )
+                .setUnselectedDayTextColor(getResources().getColor(R.color.colorWhite))
+                .showTodayButton(true)
                 .init();
-
-        // or on the View directly after init was completed
         picker.setBackgroundColor(Color.WHITE);
-        picker.setDate(new DateTime().plusDays(0));
+        picker.setDate(new DateTime());
+
     }
 
     @Override
-    public void onDateSelected(@NonNull final DateTime dateSelected) {
-        // log it for demo
-        Log.i("HorizontalPicker", "Selected date is " + dateSelected.toString());
+    public void onDateSelected(DateTime dateSelected) {
+        Log.i("HorizontalPicker","Fecha seleccionada="+dateSelected.toString());
     }
 }

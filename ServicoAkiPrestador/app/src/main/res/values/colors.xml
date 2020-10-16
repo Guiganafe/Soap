@@ -13,4 +13,11 @@
     <color name="lightGray">#f2f5f9</color>
     <color name="lightBeige">#f8f8f8</color>
     <color name="darkBlue">#262f40</color>
+    <color name="grayMenu">#f9f9f9</color>
+
+    <color name="today_border">#e4e4e4</color>
+    <color name="today_background">#85f7f7f7</color>
+    <color name="secundaryTextColor">#757575</color>
+    <color name="primaryTextColor">#4d4d4d</color>
+    <color name="colorHover">#30818181</color>
 </resources>
