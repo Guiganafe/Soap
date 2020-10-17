@@ -18,4 +18,16 @@
         <item name="android:background">@color/colorGrayDark</item>
     </style>
 
+    <style name="DividerOrange_1">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">5dp</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="DividerOrange_2">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">5dp</item>
+        <item name="android:background">@color/colorGrayDark</item>
+    </style>
+
 </resources>

@@ -14,7 +14,11 @@
         android:id="@+id/AgendaMenu"
         android:name="br.com.justworks.prestador.ServicoAki.Menu.AgendaFragment"
         android:label="fragment_agenda"
-        tools:layout="@layout/fragment_agenda" />
+        tools:layout="@layout/fragment_agenda" >
+        <action
+            android:id="@+id/action_AgendaMenu_to_criarEventoEtapa_1"
+            app:destination="@id/criarEventoEtapa_1" />
+    </fragment>
     <fragment
         android:id="@+id/FinanceiroMenu"
         android:name="br.com.justworks.prestador.ServicoAki.Menu.FinanceiroFragment"
@@ -25,4 +29,18 @@
         android:name="br.com.justworks.prestador.ServicoAki.Menu.MeuPerfilFragment"
         android:label="fragment_meu_perfil"
         tools:layout="@layout/fragment_meu_perfil" />
+    <fragment
+        android:id="@+id/criarEventoEtapa_1"
+        android:name="br.com.justworks.prestador.ServicoAki.CriarEventoEtapa_1"
+        android:label="criar_evento_etapa_1"
+        tools:layout="@layout/criar_evento_etapa_1" >
+        <action
+            android:id="@+id/action_criarEventoEtapa_1_to_criarEventoEtapa_2"
+            app:destination="@id/criarEventoEtapa_2" />
+    </fragment>
+    <fragment
+        android:id="@+id/criarEventoEtapa_2"
+        android:name="br.com.justworks.prestador.ServicoAki.CriarEventoEtapa_2"
+        android:label="criar_evento_etapa_2"
+        tools:layout="@layout/criar_evento_etapa_2" />
 </navigation>

@@ -1,35 +1,32 @@
-package br.com.justworks.prestador.ServicoAki.Menu;
+package br.com.justworks.prestador.ServicoAki;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.Spinner;
+import android.widget.Button;
 
 import org.joda.time.DateTime;
+
 import br.com.justworks.prestador.ServicoAki.HorizontalPicker.DatePickerListener;
 import br.com.justworks.prestador.ServicoAki.HorizontalPicker.HorizontalPicker;
-import br.com.justworks.prestador.ServicoAki.R;
 
-public class AgendaFragment extends Fragment implements DatePickerListener {
+public class CriarEventoEtapa_2 extends Fragment implements DatePickerListener {
 
-    private ImageView criar_evento;
+    private Button btn_voltar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_agenda, container, false);
+        return inflater.inflate(R.layout.criar_evento_etapa_2, container, false);
     }
 
     @Override
@@ -38,7 +35,7 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
 
         inicializarComponentes(view);
 
-        HorizontalPicker picker = (HorizontalPicker) view.findViewById(R.id.datePicker);
+        HorizontalPicker picker = (HorizontalPicker) view.findViewById(R.id.datePicker2);
         picker.setListener(this)
                 .setDays(15)
                 .setOffset(7)
@@ -56,21 +53,20 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
         picker.setBackgroundColor(Color.WHITE);
         picker.setDate(new DateTime());
 
-        criar_evento.setOnClickListener(new View.OnClickListener() {
+        btn_voltar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_AgendaMenu_to_criarEventoEtapa_1);
+                getActivity().onBackPressed();
             }
         });
+    }
 
+    private void inicializarComponentes(View view) {
+        btn_voltar = (Button) view.findViewById(R.id.btn_voltar_etapa_1);
     }
 
     @Override
     public void onDateSelected(DateTime dateSelected) {
         Log.i("HorizontalPicker","Fecha seleccionada="+dateSelected.toString());
-    }
-
-    private void inicializarComponentes(View view) {
-        criar_evento = (ImageView) view.findViewById(R.id.img_criar_evento);
     }
 }
