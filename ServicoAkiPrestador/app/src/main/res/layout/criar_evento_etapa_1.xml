@@ -131,6 +131,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/tv_valor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5sp"
@@ -143,6 +144,7 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/tv_valor_op"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5sp"
@@ -178,6 +180,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/tv_local"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5sp"
@@ -190,6 +193,7 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/tv_local_op"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5sp"
@@ -206,12 +210,13 @@
             <EditText
                 android:id="@+id/local_evento"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="10sp"
                 android:layout_marginEnd="10sp"
                 android:layout_marginBottom="5sp"
                 android:background="@drawable/edit_text_gray"
-                android:maxLines="1"
+                android:lines="3"
+                android:hint="Adicionar endereço"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp" />
 
@@ -223,6 +228,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/tv_servicos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5sp"
@@ -235,6 +241,7 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/tv_servicos_op"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5sp"
@@ -287,6 +294,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:backgroundTint="@color/grayButtonBackground"
+        app:flow_verticalAlign="bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -6,6 +6,6 @@
 
     <string-array name="planets_array">
         <item>Atendimento interno</item>
-        <item>Atendimento externo</item>
+        <item>Horário bloqueado</item>
     </string-array>
 </resources>
