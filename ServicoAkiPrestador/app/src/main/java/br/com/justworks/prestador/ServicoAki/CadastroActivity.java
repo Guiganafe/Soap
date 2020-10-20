@@ -26,16 +26,13 @@ import java.util.Map;
 
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 
-public class CadastroActivity extends AppCompatActivity {
+public class                CadastroActivity extends AppCompatActivity {
 
     private TextInputLayout edt_email_cadastro, edt_senha_cadastro;
     private Button btn_cadastrar;
     private ProgressBar progressBar;
     private static final String TAG = "CadastroActivity";
 
-    private static final String KEY_EMAIL = "email";
-    private static final String KEY_AUTENTICATED = "isAuthenticated";
-    private static final String KEY_PROFESSIONAL = "isProfessional";
     private String userID;
     /**
      * Instancia do firebase
@@ -108,9 +105,9 @@ public class CadastroActivity extends AppCompatActivity {
                     userID = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
                     DocumentReference documentReference = db.collection("users").document(userID);
                     Map<String, Object> user = new HashMap<>();
-                    user.put(KEY_EMAIL, email);
-                    user.put(KEY_AUTENTICATED, false);
-                    user.put(KEY_PROFESSIONAL, true);
+                    user.put(Constants.KEY_EMAIL.getDisplayName(), email);
+                    user.put(Constants.KEY_AUTENTICATED.getDisplayName(), false);
+                    user.put(Constants.KEY_PROFESSIONAL.getDisplayName(), true);
                     documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
