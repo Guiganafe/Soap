@@ -156,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
                                         DocumentReference documentReference = db.collection("users").document(userID);
                                         Map<String, Object> user = new HashMap<>();
                                         user.put(Constants.KEY_EMAIL.getDisplayName(), userGoogle.getEmail());
-                                        //user.put(Constants.KEY_PHOTO_URI.getDisplayName() , userGoogle.getPhotoUrl());
+                                        user.put(Constants.KEY_PHOTO_URI.getDisplayName() , userGoogle.getPhotoUrl().toString());
                                         user.put(Constants.KEY_AUTENTICATED.getDisplayName(), false);
                                         user.put(Constants.KEY_PROFESSIONAL.getDisplayName(), true);
                                         documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {

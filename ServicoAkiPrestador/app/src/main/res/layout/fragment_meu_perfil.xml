@@ -112,6 +112,7 @@
                 app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
             <TextView
+                android:id="@+id/tv_user_name"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:text="Silveira Almeida"
@@ -169,6 +170,7 @@
                     android:paddingStart="20sp"/>
 
                 <TextView
+                    android:id="@+id/tv_user_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="(**) *****-6678"
@@ -186,6 +188,7 @@
                     android:paddingStart="20sp"/>
 
                 <TextView
+                    android:id="@+id/tv_user_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="gui****fe@***look.com"
@@ -242,6 +245,7 @@
                     android:paddingStart="20sp"/>
 
                 <TextView
+                    android:id="@+id/tv_user_authenticated"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Identidade validada"
