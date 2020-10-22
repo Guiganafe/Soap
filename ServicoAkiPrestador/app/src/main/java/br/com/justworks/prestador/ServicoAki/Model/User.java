@@ -7,7 +7,7 @@ public class User {
     public User() {
     }
 
-    public User(String email, String imageUrl, String name, String phoneNumber, boolean isAuthenticated, boolean isProfessional) {
+    public User(String email, String imageUrl, String name, String phoneNumber, Boolean isAuthenticated, Boolean isProfessional) {
         this.email = email;
         this.imageUrl = imageUrl;
         this.name = name;
@@ -48,19 +48,19 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public boolean isAuthenticated() {
+    public Boolean isAuthenticated() {
         return isAuthenticated;
     }
 
-    public void setAuthenticated(boolean authenticated) {
+    public void setAuthenticated(Boolean authenticated) {
         isAuthenticated = authenticated;
     }
 
-    public boolean isProfessional() {
+    public Boolean isProfessional() {
         return isProfessional;
     }
 
-    public void setProfessional(boolean professional) {
+    public void setProfessional(Boolean professional) {
         isProfessional = professional;
     }
 }

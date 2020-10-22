@@ -1,14 +1,9 @@
 package br.com.justworks.prestador.ServicoAki.Model;
 
-import java.sql.Timestamp;
-
 public class Schedules {
-
     private Boolean active;
-    private Timestamp createdAt, updatedAt;
-    private String lunchBeginHour, lunchEndHour, name, serviceBeginHour, serviceEndHour;
+    private int lunchBeginHour, lunchEndHour, serviceBeginTime, serviceEndHour;
+    private String name;
     private CustomLocks customLocks;
     private ServiceDays serviceDays;
-    private User user;
-
 }

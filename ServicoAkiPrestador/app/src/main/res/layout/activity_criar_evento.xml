@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    tools:context=".CriarEventoEtapa_1">
+    tools:context=".Activity.CriarEvento">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"
@@ -48,7 +47,7 @@
         android:id="@+id/scrollView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline1">
@@ -102,6 +101,106 @@
                 android:maxLines="1"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginTop="5sp"
+                android:layout_marginEnd="10sp"
+                android:paddingTop="10sp"
+                android:paddingBottom="5sp"
+                android:text="Início do evento"
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/inicio_evento_hora"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginEnd="10sp"
+                    android:layout_marginBottom="5sp"
+                    android:background="@drawable/edit_text_gray"
+                    android:maxLines="1"
+                    android:hint="Hora"
+                    android:focusable="false"
+                    android:layout_weight="2"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp" />
+
+                <EditText
+                    android:id="@+id/inicio_evento_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginEnd="10sp"
+                    android:layout_marginBottom="5sp"
+                    android:background="@drawable/edit_text_gray"
+                    android:maxLines="1"
+                    android:hint="Data"
+                    android:focusable="false"
+                    android:layout_weight="1"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginTop="5sp"
+                android:layout_marginEnd="10sp"
+                android:paddingTop="10sp"
+                android:paddingBottom="5sp"
+                android:text="Fim do evento"
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/fim_evento_hora"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginEnd="10sp"
+                    android:layout_marginBottom="5sp"
+                    android:background="@drawable/edit_text_gray"
+                    android:maxLines="1"
+                    android:hint="Hora"
+                    android:focusable="false"
+                    android:layout_weight="2"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp" />
+
+                <EditText
+                    android:id="@+id/fim_evento_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginEnd="10sp"
+                    android:layout_marginBottom="5sp"
+                    android:background="@drawable/edit_text_gray"
+                    android:maxLines="1"
+                    android:hint="Data"
+                    android:focusable="false"
+                    android:layout_weight="1"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp" />
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -215,8 +314,8 @@
                 android:layout_marginEnd="10sp"
                 android:layout_marginBottom="5sp"
                 android:background="@drawable/edit_text_gray"
-                android:lines="3"
                 android:hint="Adicionar endereço"
+                android:lines="3"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp" />
 
@@ -266,6 +365,11 @@
                 android:maxLines="1"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/reciclerView_servicos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
@@ -329,7 +433,7 @@
                 android:layout_weight="1"
                 android:textAllCaps="false"
                 android:background="@drawable/button_orange"
-                android:text="Avançar"
+                android:text="Concluir"
                 android:textColor="@color/colorWhite" />
 
         </LinearLayout>

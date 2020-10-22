@@ -103,8 +103,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
                 android:src="@drawable/ic_perfil"
                 app:layout_constraintBottom_toTopOf="@+id/guideline6"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"

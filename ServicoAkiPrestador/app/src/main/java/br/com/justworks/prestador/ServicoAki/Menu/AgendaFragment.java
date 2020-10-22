@@ -6,24 +6,38 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.Spinner;
+
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import org.joda.time.DateTime;
+
+import br.com.justworks.prestador.ServicoAki.Activity.CriarEvento;
+import br.com.justworks.prestador.ServicoAki.Adapter.SchedulesItemAdapter;
+import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.HorizontalPicker.DatePickerListener;
 import br.com.justworks.prestador.ServicoAki.HorizontalPicker.HorizontalPicker;
+import br.com.justworks.prestador.ServicoAki.Model.ScheduleItems;
 import br.com.justworks.prestador.ServicoAki.R;
 
 public class AgendaFragment extends Fragment implements DatePickerListener {
 
     private ImageView criar_evento;
+    private SchedulesItemAdapter adapter;
+    private RecyclerView recyclerView;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference servicesReference = db.collection("scheduleItems");
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,6 +52,45 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
 
         inicializarComponentes(view);
 
+        pickerControl(view);
+
+        setUpReciclerView();
+
+        criar_evento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent criarEvento = new Intent(getContext(), CriarEvento.class);
+                startActivity(criarEvento);
+            }
+        });
+    }
+
+    private void setUpReciclerView() {
+        Query query = servicesReference.whereEqualTo("scheduleId", FirebaseService.getFirebaseAuth().getCurrentUser().getUid().toString());
+
+        FirestoreRecyclerOptions<ScheduleItems> options = new FirestoreRecyclerOptions.Builder<ScheduleItems>()
+                .setQuery(query, ScheduleItems.class)
+                .build();
+
+        adapter = new SchedulesItemAdapter(options, getContext());
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }
+
+    private void pickerControl(@NonNull View view) {
         HorizontalPicker picker = (HorizontalPicker) view.findViewById(R.id.datePicker);
         picker.setListener(this)
                 .setDays(15)
@@ -55,14 +108,6 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
                 .init();
         picker.setBackgroundColor(Color.WHITE);
         picker.setDate(new DateTime());
-
-        criar_evento.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_AgendaMenu_to_criarEventoEtapa_1);
-            }
-        });
-
     }
 
     @Override
@@ -72,5 +117,6 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
 
     private void inicializarComponentes(View view) {
         criar_evento = (ImageView) view.findViewById(R.id.img_criar_evento);
+        recyclerView = view.findViewById(R.id.reciclerView_servicoItem);
     }
 }

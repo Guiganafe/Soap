@@ -1,6 +1,7 @@
 package br.com.justworks.prestador.ServicoAki.Menu;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -68,10 +68,14 @@ public class MeuPerfilFragment extends Fragment {
         super.onStart();
         firebaseAuth = FirebaseService.getFirebaseAuth();
         firebaseUser = firebaseAuth.getCurrentUser();
+        if(firebaseUser == null){
+            Intent loginIntent = new Intent(getContext(), LoginActivity.class);
+            startActivity(loginIntent);
+        }
     }
 
     private void carregarInfoUsuarios() {
-        db.collection("users").document(firebaseUser.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        db.collection("users").document(FirebaseService.getFirebaseAuth().getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if(documentSnapshot.exists()){
@@ -79,8 +83,7 @@ public class MeuPerfilFragment extends Fragment {
                     String imageUrl = documentSnapshot.getString(userEnum.USER_IMAGEURL.getDisplayName());
                     String email = documentSnapshot.getString(userEnum.USER_EMAIL.getDisplayName());
                     String phoneNumber = documentSnapshot.getString(userEnum.USER_PHONE.getDisplayName());
-                    Boolean isAuthenticated = Boolean.valueOf(documentSnapshot.getString(userEnum.USER_IS_AUTHENTICATED.getDisplayName()));
-                    Boolean isProfessional = Boolean.valueOf(documentSnapshot.getString(userEnum.USER_IS_PROFESSIONAL.getDisplayName()));
+                    Boolean isAuthenticated = documentSnapshot.getBoolean(userEnum.USER_IS_AUTHENTICATED.getDisplayName());
 
                     tv_name.setText(name);
                     tv_email.setText(email);
@@ -90,13 +93,8 @@ public class MeuPerfilFragment extends Fragment {
                         tv_authenticated.setText("Usuário autenticado");
                     }else{
                         tv_authenticated.setText("Usuário não autenticado");
+                        tv_authenticated.setTextColor(Color.RED);
                     }
-//                    user.setName(name);
-//                    user.setImageUrl(imageUrl);
-//                    user.setEmail(email);
-//                    user.setPhoneNumber(phoneNumber);
-//                    user.setAuthenticated(isAuthenticated);
-//                    user.setProfessional(isProfessional);
                 }
             }
         });
