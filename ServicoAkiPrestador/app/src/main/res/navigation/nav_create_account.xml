@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_create_account"
+    app:startDestination="@id/step_0">
+
+    <fragment
+        android:id="@+id/step_0"
+        android:name="br.com.justworks.prestador.ServicoAki.CreateAccount.Step_0"
+        android:label="fragment_step_0"
+        tools:layout="@layout/fragment_step_0" >
+        <action
+            android:id="@+id/action_step_0_to_step_1"
+            app:destination="@id/step_1" />
+    </fragment>
+    <fragment
+        android:id="@+id/step_1"
+        android:name="br.com.justworks.prestador.ServicoAki.CreateAccount.Step_1"
+        android:label="fragment_step_1"
+        tools:layout="@layout/fragment_step_1" >
+        <action
+            android:id="@+id/action_step_1_to_step_2"
+            app:destination="@id/step_2" />
+    </fragment>
+    <fragment
+        android:id="@+id/step_2"
+        android:name="br.com.justworks.prestador.ServicoAki.CreateAccount.Step_2"
+        android:label="fragment_step_2"
+        tools:layout="@layout/fragment_step_2" >
+        <action
+            android:id="@+id/action_step_2_to_step_3"
+            app:destination="@id/step_3" />
+    </fragment>
+    <fragment
+        android:id="@+id/step_3"
+        android:name="br.com.justworks.prestador.ServicoAki.CreateAccount.Step_3"
+        android:label="fragment_step_3"
+        tools:layout="@layout/fragment_step_3" >
+        <action
+            android:id="@+id/action_step_3_to_step_4"
+            app:destination="@id/step_4" />
+    </fragment>
+    <fragment
+        android:id="@+id/step_4"
+        android:name="br.com.justworks.prestador.ServicoAki.CreateAccount.Step_4"
+        android:label="fragment_step_4"
+        tools:layout="@layout/fragment_step_4" >
+        <action
+            android:id="@+id/action_step_4_to_step_5_1"
+            app:destination="@id/step_5_1" />
+    </fragment>
+    <fragment
+        android:id="@+id/step_5_1"
+        android:name="br.com.justworks.prestador.ServicoAki.CreateAccount.Step_5_1"
+        android:label="fragment_step_5_1"
+        tools:layout="@layout/fragment_step_5_1" >
+        <action
+            android:id="@+id/action_step_5_1_to_step_5_2"
+            app:destination="@id/step_5_2" />
+    </fragment>
+    <fragment
+        android:id="@+id/step_5_2"
+        android:name="br.com.justworks.prestador.ServicoAki.CreateAccount.Step_5_2"
+        android:label="fragment_step_5_2"
+        tools:layout="@layout/fragment_step_5_2" >
+        <action
+            android:id="@+id/action_step_5_2_to_step_6"
+            app:destination="@id/step_6" />
+    </fragment>
+    <fragment
+        android:id="@+id/step_6"
+        android:name="br.com.justworks.prestador.ServicoAki.CreateAccount.Step_6"
+        android:label="fragment_step_6"
+        tools:layout="@layout/fragment_step_6" />
+</navigation>

@@ -3,6 +3,14 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="today">Hoje</string>
+    <string name="cadastro_aprovacao">Para a segurança de todos, o cadastro de profissionais na plataforma é sujeito a aprovação.</string>
+    <string name="cadastro_cpf">Tenha seu CPF e documento de identificação em mãos antes de continuar.</string>
+    <string name="cadastro_profissional">Cadastro profissional</string>
+    <string name="foto_confirmar_id">Precisamos de uma foto sua, segurando RG ou CNH, para confirmar sua identidade.</string>
+    <string name="explicacao_foto_id">É necessário que a foto seja uma selfie, tirada por você mesmo, que as informações estejam legiveis e que o documento não cubra seu rosto. Vamos lá?</string>
+    <string name="frente_doc_foto">Agora precisamos de uma foto da frente do documento para conferir os dados</string>
+    <string name="foto_frente_cpf">Por último, precisamos de uma foto da frente do seu CPF para conferir os dados</string>
+    <string name="solicitacao_completa">Após essa etapa, sua solicitação estará completa e deverá ser aprovada em até 24 horas</string>
 
     <string-array name="planets_array">
         <item>Atendimento interno</item>

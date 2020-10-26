@@ -40,7 +40,7 @@ public class HorizontalPickerRecyclerView extends RecyclerView implements OnItem
         post(new Runnable() {
             @Override
             public void run() {
-                itemWidth=getMeasuredWidth()/5;
+                itemWidth=getMeasuredWidth()/7;
                 adapter=new HorizontalPickerAdapter((int) itemWidth,HorizontalPickerRecyclerView.this, getContext(),daysToPlus,initialOffset,mBackgroundColor,mDateSelectedColor,mDateSelectedTextColor,mTodayDateTextColor,
                         mTodayDateBackgroundColor,
                         mDayOfWeekTextColor,

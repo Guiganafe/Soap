@@ -14,6 +14,9 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import br.com.justworks.prestador.ServicoAki.Model.ScheduleItems;
 import br.com.justworks.prestador.ServicoAki.R;
 
@@ -29,7 +32,9 @@ public class SchedulesItemAdapter extends FirestoreRecyclerAdapter<ScheduleItems
     @Override
     protected void onBindViewHolder(@NonNull SchedulesItemHolder holder, int position, @NonNull ScheduleItems model) {
         //Glide.with(context).load(model.getImageUrl()).into(holder.imgShops);
-        holder.textView_servico_hora.setText("Das" + model.getHourBegin() + "as" + model.getHourEnd());
+        String[] horaInicio = model.getHourBegin().split(" ");
+        String[] horaFim = model.getHourEnd().split(" ");
+        holder.textView_servico_hora.setText("Das: " + horaInicio[3] + " as " + horaFim[3]);
         holder.textView_servico_titulo.setText(model.getTitle());
     }
 
