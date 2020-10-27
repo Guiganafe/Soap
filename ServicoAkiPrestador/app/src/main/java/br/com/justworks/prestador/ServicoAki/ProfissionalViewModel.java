@@ -12,4 +12,5 @@ public class ProfissionalViewModel extends ViewModel {
     private MutableLiveData<String> email = new MutableLiveData<>();
     private MutableLiveData<String> telefone = new MutableLiveData<>();
     private MutableLiveData<String> senha = new MutableLiveData<>();
+
 }

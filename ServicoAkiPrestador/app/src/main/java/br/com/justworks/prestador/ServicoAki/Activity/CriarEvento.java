@@ -11,6 +11,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,6 +29,8 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AddressComponent;
+import com.google.android.libraries.places.api.model.AddressComponents;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
@@ -36,6 +39,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.w3c.dom.Text;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -98,6 +103,7 @@ public class CriarEvento extends AppCompatActivity {
         btn_avancar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 salvarEvento();
             }
         });
@@ -105,18 +111,50 @@ public class CriarEvento extends AppCompatActivity {
 
     private void salvarEvento() {
 
+        String tituloEvento, inicioEventoHora, fimEventoHora, inicioEventoData, fimEventoData, valorEvento, localEvento;
+        tituloEvento = titulo_evento.getText().toString();
+        inicioEventoData = inicio_evento_data.getText().toString();
+        inicioEventoHora = inicio_evento_hora.getText().toString();
+        fimEventoData = fim_evento_data.getText().toString();
+        fimEventoHora = fim_evento_hora.getText().toString();
+        valorEvento = valor_evento.getText().toString();
+        localEvento = local_evento.getText().toString();
+        Boolean active = true;
+
+        if(TextUtils.isEmpty(tituloEvento)) {
+            titulo_evento.setError("Insira um título para o evento");
+            return;
+        } else if(TextUtils.isEmpty(inicioEventoData)) {
+            inicio_evento_data.setError("Insira uma data válida");
+            return;
+        }else if(TextUtils.isEmpty(inicioEventoHora)) {
+            inicio_evento_hora.setError("Insira uma hora válida");
+            return;
+        }else if(TextUtils.isEmpty(fimEventoData)){
+            fim_evento_data.setError("Insira uma data válida");
+            return;
+        }else if(TextUtils.isEmpty(fimEventoHora)){
+            fim_evento_hora.setError("Insira uma hora válida");
+            return;
+        }else if(TextUtils.isEmpty(valorEvento)){
+            valor_evento.setError("Insira um valor válido");
+            return;
+        }
+        if(TextUtils.isEmpty(localEvento)){
+            local_evento.setError("Insira uma localização válida");
+            return;
+        }
+
         Map<String, Object> scheduleItems = new HashMap<>();
 
-        scheduleItems.put("active", true);
+        scheduleItems.put("title", tituloEvento);
+        scheduleItems.put("hourBegin", inicioEventoData + " " + inicioEventoHora);
+        scheduleItems.put("hourEnd", fimEventoData + " " + fimEventoHora);
+        scheduleItems.put("price", valorEvento);
         scheduleItems.put("address", address);
-        scheduleItems.put("hourBegin", "Data: " + inicio_evento_data.getText().toString() + " Hora: " + inicio_evento_hora.getText().toString());
-        scheduleItems.put("hourEnd", "Data: " + fim_evento_data.getText().toString() + " Hora: " + fim_evento_hora.getText().toString());
-        scheduleItems.put("price", valor_evento.getText().toString());
         scheduleItems.put("professional", professional);
         scheduleItems.put("scheduleId", FirebaseService.getFirebaseAuth().getCurrentUser().getUid());
-        scheduleItems.put("title", titulo_evento.getText().toString());
-
-
+        scheduleItems.put("active", active);
 
     // Add a new document with a generated ID
         db.collection("scheduleItems")
@@ -244,7 +282,7 @@ public class CriarEvento extends AppCompatActivity {
         local_evento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
+                List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ADDRESS_COMPONENTS);
                 Intent placesIntent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).build(CriarEvento.this);
                 startActivityForResult(placesIntent, 100);
             }
@@ -258,8 +296,17 @@ public class CriarEvento extends AppCompatActivity {
         if (requestCode == 100 && resultCode == Activity.RESULT_OK){
             Place place = Autocomplete.getPlaceFromIntent(data);
             local_evento.setText(place.getAddress());
-            address.setActive(true);
-            address.setCity(place.getAddress());
+//            List<String> atributtions = place.getAttributions();
+//            address.setActive(true);
+//            address.setCity();
+//            address.setCountry();
+//            address.setLatitude();
+//            address.setLongitude();
+//            address.setNeighborhood();
+//            address.setNumber();
+//            address.setState();
+//            address.setStreet();
+//            address.setZipCode();
         }else if(resultCode == AutocompleteActivity.RESULT_ERROR){
             Status status = Autocomplete.getStatusFromIntent(data);
             Toast.makeText(CriarEvento.this, status.getStatusMessage(), Toast.LENGTH_SHORT).show();

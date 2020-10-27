@@ -34,7 +34,7 @@ public class SchedulesItemAdapter extends FirestoreRecyclerAdapter<ScheduleItems
         //Glide.with(context).load(model.getImageUrl()).into(holder.imgShops);
         String[] horaInicio = model.getHourBegin().split(" ");
         String[] horaFim = model.getHourEnd().split(" ");
-        holder.textView_servico_hora.setText("Das: " + horaInicio[3] + " as " + horaFim[3]);
+//        holder.textView_servico_hora.setText("Das: " + horaInicio[3] + " as " + horaFim[3]);
         holder.textView_servico_titulo.setText(model.getTitle());
     }
 
