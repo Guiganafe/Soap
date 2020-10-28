@@ -62,7 +62,9 @@
                     android:layout_marginStart="10sp"
                     android:layout_marginEnd="10sp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/cadastro_profissional" />
+                    android:src="@drawable/ic_person"
+                    android:background="@drawable/edit_text_gray"
+                    android:padding="20dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -71,17 +73,19 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/nome_exibir"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="João Gilberto"
+                        android:text="Seu nome"
                         android:textStyle="bold"
                         android:textColor="@color/colorBlack"
                         android:textSize="16sp" />
 
                     <TextView
+                        android:id="@+id/email_exibir"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="joaogilberto@aki.com.br"
+                        android:text="Seu email"
                         android:textColor="@color/colorBlack"
                         android:textSize="16sp" />
 
@@ -137,12 +141,12 @@
                 android:layout_marginEnd="10sp"
                 android:paddingTop="10sp"
                 android:paddingBottom="5sp"
-                android:text="Nacionalidade"
+                android:text="Rua"
                 android:textColor="@color/colorBlack"
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/edt_nacionalidade_cadastro"
+                android:id="@+id/edt_rua_cadastro"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginStart="10sp"
@@ -152,74 +156,209 @@
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10sp"
-                android:layout_marginTop="5sp"
-                android:layout_marginEnd="10sp"
-                android:paddingTop="10sp"
-                android:paddingBottom="5sp"
-                android:text="Naturalidade"
-                android:textColor="@color/colorBlack"
-                android:textSize="16sp" />
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/edt_naturalidade_cadastro"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginStart="10sp"
-                android:layout_marginEnd="10sp"
-                android:background="@drawable/edit_text_gray"
-                android:maxLines="1"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
 
-            <TextView
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10sp"
+                        android:layout_marginTop="5sp"
+                        android:layout_marginEnd="10sp"
+                        android:paddingTop="10sp"
+                        android:paddingBottom="5sp"
+                        android:text="Número"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/edt_numero_cadastro"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="10sp"
+                        android:layout_marginEnd="10sp"
+                        android:background="@drawable/edit_text_gray"
+                        android:maxLines="1"
+                        android:inputType="number"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5sp"
+                        android:layout_marginEnd="10sp"
+                        android:paddingTop="10sp"
+                        android:paddingBottom="5sp"
+                        android:text="Complemento"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/edt_complemento_cadastro"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="10sp"
+                        android:background="@drawable/edit_text_gray"
+                        android:maxLines="1"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10sp"
-                android:layout_marginTop="5sp"
-                android:layout_marginEnd="10sp"
-                android:paddingTop="10sp"
-                android:paddingBottom="5sp"
-                android:text="Endereço"
-                android:textColor="@color/colorBlack"
-                android:textSize="16sp" />
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/edt_endereco_cadastro"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginStart="10sp"
-                android:layout_marginEnd="10sp"
-                android:background="@drawable/edit_text_gray"
-                android:maxLines="1"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
 
-            <TextView
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10sp"
+                        android:layout_marginTop="5sp"
+                        android:layout_marginEnd="10sp"
+                        android:paddingTop="10sp"
+                        android:paddingBottom="5sp"
+                        android:text="Bairro"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/edt_bairro_cadastro"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="10sp"
+                        android:layout_marginEnd="10sp"
+                        android:background="@drawable/edit_text_gray"
+                        android:maxLines="1"
+                        android:inputType="number"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5sp"
+                        android:layout_marginEnd="10sp"
+                        android:paddingTop="10sp"
+                        android:paddingBottom="5sp"
+                        android:text="CEP"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/edt_cep_cadastro"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="10sp"
+                        android:background="@drawable/edit_text_gray"
+                        android:maxLines="1"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10sp"
-                android:layout_marginTop="5sp"
-                android:layout_marginEnd="10sp"
-                android:paddingTop="10sp"
-                android:paddingBottom="5sp"
-                android:text="CEP"
-                android:textColor="@color/colorBlack"
-                android:textSize="16sp" />
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/edt_cep_cadastro"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginStart="10sp"
-                android:layout_marginEnd="10sp"
-                android:background="@drawable/edit_text_gray"
-                android:maxLines="1"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10sp"
+                        android:layout_marginTop="5sp"
+                        android:layout_marginEnd="10sp"
+                        android:paddingTop="10sp"
+                        android:paddingBottom="5sp"
+                        android:text="Cidade"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/edt_cidade_cadastro"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="10sp"
+                        android:layout_marginEnd="10sp"
+                        android:background="@drawable/edit_text_gray"
+                        android:maxLines="1"
+                        android:inputType="number"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5sp"
+                        android:layout_marginEnd="10sp"
+                        android:paddingTop="10sp"
+                        android:paddingBottom="5sp"
+                        android:text="Estado"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/edt_estado_cadastro"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="10sp"
+                        android:background="@drawable/edit_text_gray"
+                        android:maxLines="1"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 

@@ -16,4 +16,16 @@
         <item>Atendimento interno</item>
         <item>Horário bloqueado</item>
     </string-array>
+
+    <string-array name="sexo_array">
+        <item>Masculino</item>
+        <item>Feminino</item>
+    </string-array>
+
+    <string-array name="estado_civil_array">
+        <item>Casado(a)</item>
+        <item>Solteiro(a)</item>
+        <item>Separado(a)</item>
+        <item>Viúvo(a)</item>
+    </string-array>
 </resources>
