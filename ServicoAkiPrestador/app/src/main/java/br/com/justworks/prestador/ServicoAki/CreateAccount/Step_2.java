@@ -1,5 +1,7 @@
 package br.com.justworks.prestador.ServicoAki.CreateAccount;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
@@ -9,7 +11,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +24,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+
+import java.util.Arrays;
+import java.util.List;
+
+import br.com.justworks.prestador.ServicoAki.Activity.CriarEvento;
 import br.com.justworks.prestador.ServicoAki.ProfissionalViewModel;
 import br.com.justworks.prestador.ServicoAki.R;
 import br.com.justworks.prestador.ServicoAki.Util.MaskEditUtil;
@@ -57,6 +73,44 @@ public class Step_2 extends Fragment {
         textWatcherController();
         loadController();
         spinnerController();
+        placesController();
+    }
+
+    private void placesController() {
+        Places.initialize(requireActivity(), "AIzaSyDju8DWlyeC9dF7Yn3_GlNNOrzuQbGRKjI");
+
+        rua.setFocusable(false);
+        rua.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ADDRESS_COMPONENTS);
+                Intent placesIntent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).build(requireContext());
+                startActivityForResult(placesIntent, 100);
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK){
+            Place place = Autocomplete.getPlaceFromIntent(data);
+//            List<String> atributtions = place.getAttributions();
+//            address.setActive(true);
+//            address.setCity();
+//            address.setCountry();
+//            address.setLatitude();
+//            address.setLongitude();
+//            address.setNeighborhood();
+//            address.setNumber();
+//            address.setState();
+//            address.setStreet();
+//            address.setZipCode();
+        }else if(resultCode == AutocompleteActivity.RESULT_ERROR){
+            Status status = Autocomplete.getStatusFromIntent(data);
+            Toast.makeText(requireActivity(), status.getStatusMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void onClick() {
@@ -80,12 +134,130 @@ public class Step_2 extends Fragment {
     }
 
     private void textWatcherController() {
+        rua.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                profissionalViewModel.setRua(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        numero.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                profissionalViewModel.setNumero(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        complemento.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                profissionalViewModel.setComplemento(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        bairro.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                profissionalViewModel.setBairro(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        cep.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                profissionalViewModel.setCep(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        cidade.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                profissionalViewModel.setCidade(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        estado.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                profissionalViewModel.setEstado(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     private void loadController(){
         if(profissionalViewModel.getFoto_perfil().getValue() != null){
             imagem_perfil.setImageBitmap(profissionalViewModel.getFoto_perfil().getValue());
+            imagem_perfil.setPadding(0,0,0,0);
         } else{
             imagem_perfil.setPadding(85,85,85,85);
             imagem_perfil.setImageResource(R.drawable.ic_person);
@@ -129,7 +301,7 @@ public class Step_2 extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String estado_civil = estado_civil_spinner.getSelectedItem().toString();
-                profissionalViewModel.setSexo(estado_civil);
+                profissionalViewModel.setEstadoCivil(estado_civil);
             }
 
             @Override
