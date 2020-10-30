@@ -25,12 +25,10 @@ public class ProfissionalViewModel extends ViewModel {
     private MutableLiveData<String> estado = new MutableLiveData<>();
     private MutableLiveData<String> cpf = new MutableLiveData<>();
     private MutableLiveData<String> nome_mae = new MutableLiveData<>();
-    private MutableLiveData<String> doc_id = new MutableLiveData<>();
     private MutableLiveData<String> doc_tipo = new MutableLiveData<>();
-    private MutableLiveData<String> orgao_emissor = new MutableLiveData<>();
-    private MutableLiveData<String> data_emissao = new MutableLiveData<>();
     private MutableLiveData<Bitmap> foto_selfie_doc = new MutableLiveData<>();
-    private MutableLiveData<Bitmap> foto_doc = new MutableLiveData<>();
+    private MutableLiveData<Bitmap> foto_doc_frente = new MutableLiveData<>();
+    private MutableLiveData<Bitmap> foto_doc_verso = new MutableLiveData<>();
     private MutableLiveData<Bitmap> foto_comprovante_res = new MutableLiveData<>();
 
     public LiveData<Bitmap> getFoto_perfil() {
@@ -169,36 +167,12 @@ public class ProfissionalViewModel extends ViewModel {
         this.nome_mae.setValue(nome_mae);
     }
 
-    public LiveData<String> getDoc_id() {
-        return doc_id;
-    }
-
-    public void setDoc_id(String doc_id) {
-        this.doc_id.setValue(doc_id);
-    }
-
     public LiveData<String> getDoc_tipo() {
         return doc_tipo;
     }
 
     public void setDoc_tipo(String doc_tipo) {
         this.doc_tipo.setValue(doc_tipo);
-    }
-
-    public LiveData<String> getOrgao_emissor() {
-        return orgao_emissor;
-    }
-
-    public void setOrgao_emissor(String orgao_emissor) {
-        this.orgao_emissor.setValue(orgao_emissor);
-    }
-
-    public LiveData<String> getData_emissao() {
-        return data_emissao;
-    }
-
-    public void setData_emissao(String data_emissao) {
-        this.data_emissao.setValue(data_emissao);
     }
 
     public LiveData<Bitmap> getFoto_selfie_doc() {
@@ -209,12 +183,20 @@ public class ProfissionalViewModel extends ViewModel {
         this.foto_selfie_doc.setValue(foto_selfie_doc);
     }
 
-    public LiveData<Bitmap> getFoto_doc() {
-        return foto_doc;
+    public LiveData<Bitmap> getFoto_doc_frente() {
+        return foto_doc_frente;
     }
 
-    public void setFoto_doc(Bitmap foto_doc) {
-        this.foto_doc.setValue(foto_doc);
+    public void setFoto_doc_frente(Bitmap foto_doc_frente) {
+        this.foto_doc_frente.setValue(foto_doc_frente);
+    }
+
+    public LiveData<Bitmap> getFoto_doc_verso() {
+        return foto_doc_verso;
+    }
+
+    public void setFoto_doc_verso(Bitmap foto_doc_verso) {
+        this.foto_doc_verso.setValue(foto_doc_verso);
     }
 
     public LiveData<Bitmap> getFoto_comprovante_res() {

@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import android.text.Editable;
 import android.text.TextUtils;
@@ -28,6 +29,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AddressComponent;
+import com.google.android.libraries.places.api.model.AddressComponents;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
@@ -96,17 +99,17 @@ public class Step_2 extends Fragment {
 
         if (requestCode == 100 && resultCode == Activity.RESULT_OK){
             Place place = Autocomplete.getPlaceFromIntent(data);
-//            List<String> atributtions = place.getAttributions();
-//            address.setActive(true);
-//            address.setCity();
-//            address.setCountry();
-//            address.setLatitude();
-//            address.setLongitude();
-//            address.setNeighborhood();
-//            address.setNumber();
-//            address.setState();
-//            address.setStreet();
-//            address.setZipCode();
+            List<AddressComponent> components = place.getAddressComponents().asList();
+            rua.setText(place.getAddress());
+//            List<String> rua = components.get(0).getTypes();
+//            Toast.makeText(requireActivity(), "Tamanho: " + components.size(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(requireActivity(), "item 0: " + components.get(0), Toast.LENGTH_LONG).show();
+//            Toast.makeText(requireActivity(), "item 0: " + components.get(1), Toast.LENGTH_LONG).show();
+//            Toast.makeText(requireActivity(), "item 0: " + components.get(2), Toast.LENGTH_LONG).show();
+//            Toast.makeText(requireActivity(), "item 0: " + components.get(3), Toast.LENGTH_LONG).show();
+//            Toast.makeText(requireActivity(), "item 0: " + components.get(4), Toast.LENGTH_LONG).show();
+//            Toast.makeText(requireActivity(), "item 0: " + components.get(5), Toast.LENGTH_LONG).show();
+
         }else if(resultCode == AutocompleteActivity.RESULT_ERROR){
             Status status = Autocomplete.getStatusFromIntent(data);
             Toast.makeText(requireActivity(), status.getStatusMessage(), Toast.LENGTH_SHORT).show();
@@ -124,9 +127,41 @@ public class Step_2 extends Fragment {
         btn_avancar_cadastro_step_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_step_2_to_step_3);
+//                if(validarCampos()){
+                    Navigation.findNavController(v).navigate(R.id.action_step_2_to_step_3);
+//                }
             }
         });
+    }
+
+    private boolean validarCampos() {
+        if(TextUtils.equals(sexo_spinner.getSelectedItem().toString(), "Selecione")){
+            Toast.makeText(requireActivity(), "Selecione o seu sexo", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if(TextUtils.equals(estado_civil_spinner.getSelectedItem().toString(), "Selecione")){
+            Toast.makeText(requireActivity(), "Selecione o seu estado cívil", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if(TextUtils.isEmpty(rua.getText().toString())){
+            rua.setError("Insira uma Rua válida");
+            return false;
+        } else if (TextUtils.isEmpty(bairro.getText().toString())){
+            bairro.setError("Insira um Bairro válido");
+            return false;
+        } else if (TextUtils.isEmpty(numero.getText().toString())){
+            numero.setError("Insira um Número válido");
+            return false;
+        } else if(TextUtils.isEmpty(cep.getText().toString())){
+            cep.setError("Insira um Cep válido");
+            return false;
+        } else if (TextUtils.isEmpty(cidade.getText().toString())){
+            cidade.setError("Insira uma Cidade válida");
+            return false;
+        } else if (TextUtils.isEmpty(estado.getText().toString())){
+            estado.setError("Insira um Estado válido");
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private void maskController() {

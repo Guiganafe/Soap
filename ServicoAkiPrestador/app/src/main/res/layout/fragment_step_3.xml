@@ -104,29 +104,6 @@
                 android:layout_marginEnd="10sp"
                 android:paddingTop="10sp"
                 android:paddingBottom="5sp"
-                android:text="Documento de identificação"
-                android:textColor="@color/colorBlack"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/edt_doc_id_cadastro"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginStart="10sp"
-                android:layout_marginEnd="10sp"
-                android:background="@drawable/edit_text_gray"
-                android:maxLines="1"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10sp"
-                android:layout_marginTop="5sp"
-                android:layout_marginEnd="10sp"
-                android:paddingTop="10sp"
-                android:paddingBottom="5sp"
                 android:text="Tipo de documento"
                 android:textColor="@color/colorBlack"
                 android:textSize="16sp" />
@@ -138,52 +115,6 @@
                 android:layout_marginStart="10sp"
                 android:layout_marginEnd="10sp"
                 android:background="@drawable/edit_text_gray" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10sp"
-                android:layout_marginTop="5sp"
-                android:layout_marginEnd="10sp"
-                android:paddingTop="10sp"
-                android:paddingBottom="5sp"
-                android:text="Orgão emissor"
-                android:textColor="@color/colorBlack"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/edt_orgao_emissao_cadastro"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginStart="10sp"
-                android:layout_marginEnd="10sp"
-                android:background="@drawable/edit_text_gray"
-                android:maxLines="1"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10sp"
-                android:layout_marginTop="5sp"
-                android:layout_marginEnd="10sp"
-                android:paddingTop="10sp"
-                android:paddingBottom="5sp"
-                android:text="Data de emissão"
-                android:textColor="@color/colorBlack"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/edt_data_emissão_cadastro"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginStart="10sp"
-                android:layout_marginEnd="10sp"
-                android:background="@drawable/edit_text_gray"
-                android:maxLines="1"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp" />
 
         </LinearLayout>
 

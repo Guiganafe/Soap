@@ -48,24 +48,15 @@
         tools:layout="@layout/fragment_step_4" >
         <action
             android:id="@+id/action_step_4_to_step_5_1"
-            app:destination="@id/step_5_1" />
+            app:destination="@id/step_5" />
     </fragment>
     <fragment
-        android:id="@+id/step_5_1"
-        android:name="br.com.justworks.prestador.ServicoAki.CreateAccount.Step_5_1"
-        android:label="fragment_step_5_1"
-        tools:layout="@layout/fragment_step_5_1" >
+        android:id="@+id/step_5"
+        android:name="br.com.justworks.prestador.ServicoAki.CreateAccount.Step_5"
+        android:label="fragment_step_5"
+        tools:layout="@layout/fragment_step_5">
         <action
-            android:id="@+id/action_step_5_1_to_step_5_2"
-            app:destination="@id/step_5_2" />
-    </fragment>
-    <fragment
-        android:id="@+id/step_5_2"
-        android:name="br.com.justworks.prestador.ServicoAki.CreateAccount.Step_5_2"
-        android:label="fragment_step_5_2"
-        tools:layout="@layout/fragment_step_5_2" >
-        <action
-            android:id="@+id/action_step_5_2_to_step_6"
+            android:id="@+id/action_step_5_to_step_6"
             app:destination="@id/step_6" />
     </fragment>
     <fragment

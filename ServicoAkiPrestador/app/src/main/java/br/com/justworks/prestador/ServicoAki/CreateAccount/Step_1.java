@@ -164,9 +164,9 @@ public class Step_1 extends Fragment {
         btn_avancar_cadastro_step_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validarCampos()) {
+//                if(validarCampos()) {
                     Navigation.findNavController(v).navigate(R.id.action_step_1_to_step_2);
-                }
+                //}
             }
         });
 

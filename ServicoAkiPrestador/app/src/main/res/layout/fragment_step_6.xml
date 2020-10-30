@@ -76,7 +76,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:gravity="center_vertical"
-        android:text="Foto do CPF"
+        android:text="Foto do comprovante de residência"
         android:textColor="@color/colorBlack"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -101,7 +101,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/foto_comprovante_cadastro"
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:src="@drawable/peopledocument"
@@ -111,7 +111,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
     <Button
-        android:id="@+id/btn_tirar_foto_frente"
+        android:id="@+id/btn_tirar_foto_comprovante"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"

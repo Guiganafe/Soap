@@ -8,8 +8,8 @@
     <string name="cadastro_profissional">Cadastro profissional</string>
     <string name="foto_confirmar_id">Precisamos de uma foto sua, segurando RG ou CNH, para confirmar sua identidade.</string>
     <string name="explicacao_foto_id">É necessário que a foto seja uma selfie, tirada por você mesmo, que as informações estejam legiveis e que o documento não cubra seu rosto. Vamos lá?</string>
-    <string name="frente_doc_foto">Agora precisamos de uma foto da frente do documento para conferir os dados</string>
-    <string name="foto_frente_cpf">Por último, precisamos de uma foto da frente do seu CPF para conferir os dados</string>
+    <string name="frente_doc_foto">Agora precisamos de uma foto da frente e outra do verso do documento para conferir os dados</string>
+    <string name="foto_frente_cpf">Por último, precisamos de uma foto de um comprovante de residência para conferir os dados</string>
     <string name="solicitacao_completa">Após essa etapa, sua solicitação estará completa e deverá ser aprovada em até 24 horas</string>
 
     <string-array name="planets_array">
@@ -18,14 +18,22 @@
     </string-array>
 
     <string-array name="sexo_array">
+        <item>Selecione</item>
         <item>Masculino</item>
         <item>Feminino</item>
     </string-array>
 
     <string-array name="estado_civil_array">
+        <item>Selecione</item>
         <item>Casado(a)</item>
         <item>Solteiro(a)</item>
         <item>Separado(a)</item>
         <item>Viúvo(a)</item>
+    </string-array>
+
+    <string-array name="tipo_doc_array">
+        <item>Selecione</item>
+        <item>RG</item>
+        <item>CNH</item>
     </string-array>
 </resources>
