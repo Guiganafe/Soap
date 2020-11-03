@@ -12,11 +12,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import br.com.justworks.prestador.ServicoAki.ProfissionalViewModel;
 import br.com.justworks.prestador.ServicoAki.R;
@@ -63,7 +65,9 @@ public class Step_4 extends Fragment {
         btn_avancar_cadastro_step_5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_step_4_to_step_5_1);
+                if(validarCampos()){
+                    Navigation.findNavController(v).navigate(R.id.action_step_4_to_step_5_1);
+                }
             }
         });
 
@@ -89,6 +93,15 @@ public class Step_4 extends Fragment {
             profissionalViewModel.setFoto_selfie_doc(imageBitmap);
             foto_id.setImageBitmap(imageBitmap);
             tirar_foto.setText("Tirar outra");
+        }
+    }
+
+    private boolean validarCampos() {
+        if(profissionalViewModel.getFoto_selfie_doc().getValue() == null){
+            Toast.makeText(requireActivity(), "A selfie com documento é obrigatória!", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
         }
     }
 

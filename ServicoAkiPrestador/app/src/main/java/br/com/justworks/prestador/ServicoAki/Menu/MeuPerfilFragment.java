@@ -80,7 +80,7 @@ public class MeuPerfilFragment extends Fragment {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if(documentSnapshot.exists()){
                     String name = documentSnapshot.getString(userEnum.USER_NAME.getDisplayName());
-                    String imageUrl = documentSnapshot.getString(userEnum.USER_IMAGEURL.getDisplayName());
+                    String imageUrl = documentSnapshot.getString(userEnum.USER_IMAGE_URL.getDisplayName());
                     String email = documentSnapshot.getString(userEnum.USER_EMAIL.getDisplayName());
                     String phoneNumber = documentSnapshot.getString(userEnum.USER_PHONE.getDisplayName());
                     Boolean isAuthenticated = documentSnapshot.getBoolean(userEnum.USER_IS_AUTHENTICATED.getDisplayName());

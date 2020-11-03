@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import br.com.justworks.prestador.ServicoAki.ProfissionalViewModel;
 import br.com.justworks.prestador.ServicoAki.R;
@@ -62,7 +63,9 @@ public class Step_5 extends Fragment {
         btn_avancar_cadastro_step_5_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+            if(validarCampos()){
                 Navigation.findNavController(v).navigate(R.id.action_step_5_to_step_6);
+            }
             }
         });
 
@@ -105,6 +108,18 @@ public class Step_5 extends Fragment {
             //Salva a imagem no bitmap
             profissionalViewModel.setFoto_doc_verso(imageBitmap);
             foto_verso.setImageBitmap(imageBitmap);
+        }
+    }
+
+    private boolean validarCampos() {
+        if(profissionalViewModel.getFoto_doc_frente().getValue() == null){
+            Toast.makeText(requireActivity(), "A foto da frente do documento é obrigatória!", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if(profissionalViewModel.getFoto_doc_verso().getValue() == null){
+            Toast.makeText(requireActivity(), "A foto do verso do documento é obrigatória!", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
         }
     }
 

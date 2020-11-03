@@ -340,7 +340,7 @@ public class CriarEvento extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if(documentSnapshot.exists()){
                     name = documentSnapshot.getString(userEnum.USER_NAME.getDisplayName());
-                    imageUrl = documentSnapshot.getString(userEnum.USER_IMAGEURL.getDisplayName());
+                    imageUrl = documentSnapshot.getString(userEnum.USER_IMAGE_URL.getDisplayName());
                     email = documentSnapshot.getString(userEnum.USER_EMAIL.getDisplayName());
                     phoneNumber = documentSnapshot.getString(userEnum.USER_PHONE.getDisplayName());
                     isAuthenticated = documentSnapshot.getBoolean(userEnum.USER_IS_AUTHENTICATED.getDisplayName());
