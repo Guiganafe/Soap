@@ -3,6 +3,8 @@ package br.com.justworks.prestador.ServicoAki.CreateAccount;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,6 +21,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
+
+import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.ProfissionalViewModel;
 import br.com.justworks.prestador.ServicoAki.R;
 
@@ -28,11 +39,22 @@ public class Step_6 extends Fragment {
     private ProfissionalViewModel profissionalViewModel;
     private ImageView foto_comprovante_cadastro;
 
+    private String userID = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
+
+    private StorageReference storageRef;
+
+    StorageReference selfieImageRef = storageRef.child("users/" + userID + "_selfieImage.jpg");
+    StorageReference backIdImageRef = storageRef.child("users/" + userID + "_backIdImage.jpg");
+    StorageReference frontIdImageRef = storageRef.child("users/" + userID + "_frontIdImage.jpg");
+    StorageReference governmentDocRef = storageRef.child("users/" + userID + "_governmentDoc.jpg");
+    StorageReference profAddressRef = storageRef.child("users/" + userID + "_proofOfAddressImage.jpg");
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         profissionalViewModel = new ViewModelProvider(requireActivity()).get(ProfissionalViewModel.class);
+        storageRef = FirebaseStorage.getInstance().getReference();
     }
 
     @Override
@@ -110,6 +132,29 @@ public class Step_6 extends Fragment {
 
     private void finalizarCadastro() {
 
+        Bitmap fotoPerfilBitmap = profissionalViewModel.getFoto_selfie_doc().getValue();
+        Bitmap fotoSelfieBitmap = profissionalViewModel.getFoto_selfie_doc().getValue();
+        Bitmap fotoFrenteDocBitmap = profissionalViewModel.getFoto_selfie_doc().getValue();
+        Bitmap fotoVersoDocBitmap = profissionalViewModel.getFoto_selfie_doc().getValue();
+        Bitmap fotoComprovanteBitmap = profissionalViewModel.getFoto_selfie_doc().getValue();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        fotoPerfilBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = selfieImageRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Uri downloadUrl = taskSnapshot.getUploadSessionUri();
+
+            }
+        });
     }
 
     private void inicializarComponentes(View view) {
