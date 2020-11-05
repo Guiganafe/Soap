@@ -2,7 +2,6 @@ package br.com.justworks.prestador.ServicoAki.CreateAccount;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 
 import android.text.Editable;
 import android.text.TextUtils;
@@ -30,7 +28,6 @@ import android.widget.Toast;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AddressComponent;
-import com.google.android.libraries.places.api.model.AddressComponents;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
@@ -39,10 +36,12 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import java.util.Arrays;
 import java.util.List;
 
-import br.com.justworks.prestador.ServicoAki.Activity.CriarEvento;
-import br.com.justworks.prestador.ServicoAki.ProfissionalViewModel;
+import br.com.justworks.prestador.ServicoAki.ViewModel.EndereçoViewModel;
+import br.com.justworks.prestador.ServicoAki.ViewModel.EstadoCivilViewModel;
+import br.com.justworks.prestador.ServicoAki.ViewModel.ProfissionalViewModel;
 import br.com.justworks.prestador.ServicoAki.R;
 import br.com.justworks.prestador.ServicoAki.Util.MaskEditUtil;
+import br.com.justworks.prestador.ServicoAki.ViewModel.SexoViewModel;
 
 public class Step_2 extends Fragment {
 
@@ -52,12 +51,18 @@ public class Step_2 extends Fragment {
     private Spinner sexo_spinner, estado_civil_spinner;
     private EditText rua, numero, complemento, bairro, cep, cidade, estado;
     private ProfissionalViewModel profissionalViewModel;
+    private EndereçoViewModel endereçoViewModel;
+    private SexoViewModel sexoViewModel;
+    private EstadoCivilViewModel estadoCivilViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         profissionalViewModel = new ViewModelProvider(requireActivity()).get(ProfissionalViewModel.class);
+        endereçoViewModel = new ViewModelProvider(requireActivity()).get(EndereçoViewModel.class);
+        sexoViewModel = new ViewModelProvider(requireActivity()).get(SexoViewModel.class);
+        estadoCivilViewModel = new ViewModelProvider(requireActivity()).get(EstadoCivilViewModel.class);
     }
 
     @Override
@@ -177,7 +182,7 @@ public class Step_2 extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                profissionalViewModel.setRua(s.toString());
+                endereçoViewModel.setRua(s.toString());
             }
 
             @Override
@@ -194,7 +199,7 @@ public class Step_2 extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                profissionalViewModel.setNumero(s.toString());
+                endereçoViewModel.setNumero(s.toString());
             }
 
             @Override
@@ -211,7 +216,7 @@ public class Step_2 extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                profissionalViewModel.setComplemento(s.toString());
+                endereçoViewModel.setComplemento(s.toString());
             }
 
             @Override
@@ -228,7 +233,7 @@ public class Step_2 extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                profissionalViewModel.setBairro(s.toString());
+                endereçoViewModel.setBairro(s.toString());
             }
 
             @Override
@@ -245,7 +250,7 @@ public class Step_2 extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                profissionalViewModel.setCep(s.toString());
+                endereçoViewModel.setCep(s.toString());
             }
 
             @Override
@@ -262,7 +267,7 @@ public class Step_2 extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                profissionalViewModel.setCidade(s.toString());
+                endereçoViewModel.setCidade(s.toString());
             }
 
             @Override
@@ -279,7 +284,7 @@ public class Step_2 extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                profissionalViewModel.setEstado(s.toString());
+                endereçoViewModel.setEstado(s.toString());
             }
 
             @Override
@@ -319,7 +324,13 @@ public class Step_2 extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String sexo = sexo_spinner.getSelectedItem().toString();
-                profissionalViewModel.setSexo(sexo);
+                sexoViewModel.setSexoPtbR(sexo);
+
+                if(position == 1){
+                    sexoViewModel.setSexoEn("Male");
+                } else if(position == 2){
+                    sexoViewModel.setSexoEn("Female");
+                }
             }
 
             @Override
@@ -335,8 +346,18 @@ public class Step_2 extends Fragment {
         estado_civil_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
                 String estado_civil = estado_civil_spinner.getSelectedItem().toString();
-                profissionalViewModel.setEstadoCivil(estado_civil);
+                estadoCivilViewModel.setEstadoCivilPtBr(estado_civil);
+                if(position == 1){
+                    estadoCivilViewModel.setEstadoCivilEn("Married");
+                } else if(position == 2){
+                    estadoCivilViewModel.setEstadoCivilEn("Single");
+                } else if(position == 3){
+                    estadoCivilViewModel.setEstadoCivilEn("Divorced");
+                } else if(position == 4){
+                    estadoCivilViewModel.setEstadoCivilEn("Widower");
+                }
             }
 
             @Override

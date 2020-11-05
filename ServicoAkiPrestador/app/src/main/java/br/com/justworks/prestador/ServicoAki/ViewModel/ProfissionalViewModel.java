@@ -1,4 +1,4 @@
-package br.com.justworks.prestador.ServicoAki;
+package br.com.justworks.prestador.ServicoAki.ViewModel;
 
 import android.graphics.Bitmap;
 
@@ -9,27 +9,23 @@ import androidx.lifecycle.ViewModel;
 public class ProfissionalViewModel extends ViewModel {
 
     private MutableLiveData<Bitmap> foto_perfil = new MutableLiveData<>();
+    private MutableLiveData<String> foto_perfil_url = new MutableLiveData<>();
     private MutableLiveData<String> nome_completo = new MutableLiveData<>();
     private MutableLiveData<String> email = new MutableLiveData<>();
     private MutableLiveData<String> telefone = new MutableLiveData<>();
     private MutableLiveData<String> senha = new MutableLiveData<>();
     private MutableLiveData<String> confirmarSenha = new MutableLiveData<>();
-    private MutableLiveData<String> sexo = new MutableLiveData<>();
-    private MutableLiveData<String> estadoCivil = new MutableLiveData<>();
-    private MutableLiveData<String> rua = new MutableLiveData<>();
-    private MutableLiveData<String> numero = new MutableLiveData<>();
-    private MutableLiveData<String> complemento = new MutableLiveData<>();
-    private MutableLiveData<String> bairro = new MutableLiveData<>();
-    private MutableLiveData<String> cep = new MutableLiveData<>();
-    private MutableLiveData<String> cidade = new MutableLiveData<>();
-    private MutableLiveData<String> estado = new MutableLiveData<>();
     private MutableLiveData<String> cpf = new MutableLiveData<>();
     private MutableLiveData<String> nome_mae = new MutableLiveData<>();
     private MutableLiveData<String> doc_tipo = new MutableLiveData<>();
     private MutableLiveData<Bitmap> foto_selfie_doc = new MutableLiveData<>();
+    private MutableLiveData<String> foto_selfie_url = new MutableLiveData<>();
     private MutableLiveData<Bitmap> foto_doc_frente = new MutableLiveData<>();
+    private MutableLiveData<String> foto_doc_frente_url = new MutableLiveData<>();
     private MutableLiveData<Bitmap> foto_doc_verso = new MutableLiveData<>();
+    private MutableLiveData<String> foto_doc_verso_url = new MutableLiveData<>();
     private MutableLiveData<Bitmap> foto_comprovante_res = new MutableLiveData<>();
+    private MutableLiveData<String> foto_comprovante_res_url = new MutableLiveData<>();
 
     public LiveData<Bitmap> getFoto_perfil() {
         return foto_perfil;
@@ -77,78 +73,6 @@ public class ProfissionalViewModel extends ViewModel {
 
     public void setConfirmarSenha(String confirmarSenha) {
         this.confirmarSenha.setValue(confirmarSenha);
-    }
-
-    public LiveData<String> getSexo() {
-        return sexo;
-    }
-
-    public void setSexo(String sexo) {
-        this.sexo.setValue(sexo);
-    }
-
-    public LiveData<String> getEstadoCivil() {
-        return estadoCivil;
-    }
-
-    public void setEstadoCivil(String estadoCivil) {
-        this.estadoCivil.setValue(estadoCivil);
-    }
-
-    public LiveData<String> getRua() {
-        return rua;
-    }
-
-    public void setRua(String rua) {
-        this.rua.setValue(rua);
-    }
-
-    public LiveData<String> getNumero() {
-        return numero;
-    }
-
-    public void setNumero(String numero) {
-        this.numero.setValue(numero);
-    }
-
-    public LiveData<String> getComplemento() {
-        return complemento;
-    }
-
-    public void setComplemento(String complemento) {
-        this.complemento.setValue(complemento);
-    }
-
-    public LiveData<String> getBairro() {
-        return bairro;
-    }
-
-    public void setBairro(String bairro) {
-        this.bairro.setValue(bairro);
-    }
-
-    public LiveData<String> getCep() {
-        return cep;
-    }
-
-    public void setCep(String cep) {
-        this.cep.setValue(cep);
-    }
-
-    public LiveData<String> getCidade() {
-        return cidade;
-    }
-
-    public void setCidade(String cidade) {
-        this.cidade.setValue(cidade);
-    }
-
-    public LiveData<String> getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado.setValue(estado);
     }
 
     public LiveData<String> getCpf() {
@@ -205,5 +129,45 @@ public class ProfissionalViewModel extends ViewModel {
 
     public void setFoto_comprovante_res(Bitmap foto_comprovante_res) {
         this.foto_comprovante_res.setValue(foto_comprovante_res);
+    }
+
+    public LiveData<String> getFoto_perfil_url() {
+        return foto_perfil_url;
+    }
+
+    public void setFoto_perfil_url(String foto_perfil_url) {
+        this.foto_perfil_url.setValue(foto_perfil_url);
+    }
+
+    public LiveData<String> getFoto_selfie_url() {
+        return foto_selfie_url;
+    }
+
+    public void setFoto_selfie_url(String foto_selfie_url) {
+        this.foto_selfie_url.setValue(foto_selfie_url);
+    }
+
+    public LiveData<String> getFoto_doc_frente_url() {
+        return foto_doc_frente_url;
+    }
+
+    public void setFoto_doc_frente_url(String foto_doc_frente_url) {
+        this.foto_doc_frente_url.setValue(foto_doc_frente_url);
+    }
+
+    public LiveData<String> getFoto_doc_verso_url() {
+        return foto_doc_verso_url;
+    }
+
+    public void setFoto_doc_verso_url(String foto_doc_verso_url) {
+        this.foto_doc_verso_url.setValue(foto_doc_verso_url);
+    }
+
+    public LiveData<String> getFoto_comprovante_res_url() {
+        return foto_comprovante_res_url;
+    }
+
+    public void setFoto_comprovante_res_url(String foto_comprovante_res_url) {
+        this.foto_comprovante_res_url.setValue(foto_comprovante_res_url);
     }
 }

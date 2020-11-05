@@ -3,12 +3,12 @@ package br.com.justworks.prestador.ServicoAki.Model;
 public class Address {
     private Boolean active;
     private String city, country, neighborhood, number, state, street, zipCode;
-    private int latitude, longitude;
+    private double latitude, longitude;
 
     public Address() {
     }
 
-    public Address(Boolean active, String city, String country, String neighborhood, String number, String state, String street, String zipCode, int latitude, int longitude) {
+    public Address(Boolean active, String city, String country, String neighborhood, String number, String state, String street, String zipCode, double latitude, double longitude) {
         this.active = active;
         this.city = city;
         this.country = country;
@@ -85,7 +85,7 @@ public class Address {
         this.zipCode = zipCode;
     }
 
-    public int getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
@@ -93,7 +93,7 @@ public class Address {
         this.latitude = latitude;
     }
 
-    public int getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 

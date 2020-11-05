@@ -2,7 +2,6 @@ package br.com.justworks.prestador.ServicoAki.Enum;
 
 public enum userEnum {
 
-    USER_ACTIVE("active"),
     USER_ADDRESS("addres"),
     USER_BIRTHDATE("birthDate"),
     USER_BIRTHDATE_TIMESTAMP("birthDateTimestamp"),
