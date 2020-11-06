@@ -1,4 +1,4 @@
-package br.com.justworks.prestador.ServicoAki.CreateAccount;
+package br.com.justworks.prestador.ServicoAki.CompleteAccount;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -44,7 +44,7 @@ public class Step_4 extends Fragment {
         return inflater.inflate(R.layout.fragment_step_4, container, false);
     }
 
-    @Override
+     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         inicializarComponentes(view);

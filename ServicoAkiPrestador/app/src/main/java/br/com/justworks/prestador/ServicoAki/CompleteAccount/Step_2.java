@@ -1,4 +1,4 @@
-package br.com.justworks.prestador.ServicoAki.CreateAccount;
+package br.com.justworks.prestador.ServicoAki.CompleteAccount;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -132,9 +132,9 @@ public class Step_2 extends Fragment {
         btn_avancar_cadastro_step_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if(validarCampos()){
+                if(validarCampos()){
                     Navigation.findNavController(v).navigate(R.id.action_step_2_to_step_3);
-//                }
+                }
             }
         });
     }

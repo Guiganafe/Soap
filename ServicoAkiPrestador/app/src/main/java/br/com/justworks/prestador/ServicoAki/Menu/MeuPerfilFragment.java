@@ -22,7 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.bumptech.glide.Glide;
 import br.com.justworks.prestador.ServicoAki.Enum.userEnum;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
-import br.com.justworks.prestador.ServicoAki.LoginActivity;
+import br.com.justworks.prestador.ServicoAki.Activity.LoginActivity;
 import br.com.justworks.prestador.ServicoAki.Model.User;
 import br.com.justworks.prestador.ServicoAki.R;
 import de.hdodenhof.circleimageview.CircleImageView;

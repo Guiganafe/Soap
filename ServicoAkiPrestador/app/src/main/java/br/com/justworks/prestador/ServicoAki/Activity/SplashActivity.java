@@ -1,4 +1,4 @@
-package br.com.justworks.prestador.ServicoAki;
+package br.com.justworks.prestador.ServicoAki.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
+import br.com.justworks.prestador.ServicoAki.R;
 
 public class SplashActivity extends AppCompatActivity {
 

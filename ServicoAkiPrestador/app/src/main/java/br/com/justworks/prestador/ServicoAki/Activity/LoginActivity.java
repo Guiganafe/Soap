@@ -1,4 +1,4 @@
-package br.com.justworks.prestador.ServicoAki;
+package br.com.justworks.prestador.ServicoAki.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,7 +33,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.com.justworks.prestador.ServicoAki.Constants;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
+import br.com.justworks.prestador.ServicoAki.R;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -55,7 +57,6 @@ public class LoginActivity extends AppCompatActivity {
      * Instancia do firebase
      */
     private FirebaseAuth firebaseAuth;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,10 +182,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser user) {
-        Toast.makeText(LoginActivity.this, "Login realizado com sucesso", Toast.LENGTH_LONG).show();
-        Intent completarPerfilIntent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(completarPerfilIntent);
-        finish();
+        if(user != null){
+            Toast.makeText(LoginActivity.this, "Login realizado com sucesso", Toast.LENGTH_LONG).show();
+            Intent completarCadastroIntent = new Intent(LoginActivity.this, CompletarCadastroActivity.class);
+            startActivity(completarCadastroIntent);
+            finish();
+        }
     }
 
 
@@ -206,16 +209,12 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        //progressBar.setVisibility(View.VISIBLE);
-
         firebaseAuth.signInWithEmailAndPassword(email, senha).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Toast.makeText(LoginActivity.this, "Login realizado com sucesso", Toast.LENGTH_SHORT).show();
-                    Intent completarPerfilIntent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(completarPerfilIntent);
-                    finish();
+                    final FirebaseUser userEmailAndPassword = firebaseAuth.getCurrentUser();
+                    updateUI(userEmailAndPassword);
                 }else{
                     Toast.makeText(LoginActivity.this, "Falha no login", Toast.LENGTH_SHORT).show();
                 }

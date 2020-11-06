@@ -9,16 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.CriarEvento"
+        <activity android:name=".Activity.CadastroActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".CadastroActivity"
+            android:name=".Activity.CriarEvento"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".Activity.CompletarCadastroActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".Activity.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".Activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

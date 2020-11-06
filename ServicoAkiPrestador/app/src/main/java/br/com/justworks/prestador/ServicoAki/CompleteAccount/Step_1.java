@@ -1,4 +1,4 @@
-package br.com.justworks.prestador.ServicoAki.CreateAccount;
+package br.com.justworks.prestador.ServicoAki.CompleteAccount;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -23,8 +23,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.StorageReference;
+
+import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.ViewModel.ProfissionalViewModel;
 import br.com.justworks.prestador.ServicoAki.R;
+import br.com.justworks.prestador.ServicoAki.Enum.userEnum;
 import br.com.justworks.prestador.ServicoAki.Util.MaskEditUtil;
 
 public class Step_1 extends Fragment {
@@ -34,12 +43,17 @@ public class Step_1 extends Fragment {
     private ImageView foto_perfil, remover_foto;
     private EditText nome_cadastro, email_cadastro, telefone_cadastro, senha, confirmar_senha;
     ProfissionalViewModel profissionalViewModel;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private StorageReference mStorageRef;
+    private String userID;
+    FirebaseAuth firebaseAuth;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         profissionalViewModel = new ViewModelProvider(requireActivity()).get(ProfissionalViewModel.class);
+        userID = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
     }
 
     @Override
@@ -53,10 +67,30 @@ public class Step_1 extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         inicializarComponentes(view);
+        loadUserInfo();
         maskController();
         onClickController();
         textWatcherController();
         loadController();
+    }
+
+    private void loadUserInfo() {
+        db.collection("users").document(userID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot.exists()){
+                    String email = documentSnapshot.getString(userEnum.USER_EMAIL.getDisplayName());
+                    email_cadastro.setText(email);
+                }else{
+
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
     }
 
     private void textWatcherController() {
@@ -161,9 +195,9 @@ public class Step_1 extends Fragment {
         btn_avancar_cadastro_step_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if(validarCampos()) {
+                if(validarCampos()) {
                     Navigation.findNavController(v).navigate(R.id.action_step_1_to_step_2);
-                //}
+                }
             }
         });
 
@@ -234,6 +268,12 @@ public class Step_1 extends Fragment {
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        firebaseAuth = FirebaseService.getFirebaseAuth();
+    }
+
     private void inicializarComponentes(View view) {
         btn_voltar_cadastro_step_0 = (Button) view.findViewById(R.id.btn_voltar_cadastro_step_0);
         btn_avancar_cadastro_step_2 = (Button) view.findViewById(R.id.btn_avancar_cadastro_step_2);
@@ -245,5 +285,7 @@ public class Step_1 extends Fragment {
         telefone_cadastro = (EditText) view.findViewById(R.id.edt_telefone_cadastro);
         senha = (EditText) view.findViewById(R.id.edt_senha_cadastro);
         confirmar_senha = (EditText) view.findViewById(R.id.edt_confirmar_senha_cadastro);
+
+        email_cadastro.setFocusable(false);
     }
 }

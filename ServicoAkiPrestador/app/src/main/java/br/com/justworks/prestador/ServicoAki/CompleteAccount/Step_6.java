@@ -1,4 +1,4 @@
-package br.com.justworks.prestador.ServicoAki.CreateAccount;
+package br.com.justworks.prestador.ServicoAki.CompleteAccount;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -270,7 +270,6 @@ public class Step_6 extends Fragment {
 
         CivilState civilState = new CivilState(estadoCivilPt, estadoCivilEn);
 
-        String email = profissionalViewModel.getEmail().getValue();
         String senha = profissionalViewModel.getSenha().getValue();
 
         Boolean ativo;
@@ -290,30 +289,7 @@ public class Step_6 extends Fragment {
 
         final Address address = new Address(ativo, cidade, pais, bairro, numero, estado, rua, cep, longitude, latitude);
 
-        firebaseAuth.createUserWithEmailAndPassword(email, senha).addOnCompleteListener(requireActivity(), new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    DocumentReference documentReference = db.collection("users").document(userID);
-                    Map<String, Object> user = new HashMap<>();
-                    user.put(userEnum.USER_ADDRESS.getDisplayName(), address);
-                    user.put(userEnum.USER_BIRTHDATE.getDisplayName(), profissionalViewModel.get);
-                    user.put(Constants.KEY_PROFESSIONAL.getDisplayName(), true);
-                    documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d(TAG, "onSuccess: usuário salvo no firestore: " + userID);
-                        }
-                    });
 
-//                    Intent CompletarPerfilIntent = new Intent(CadastroActivity.this, MainActivity.class);
-//                    startActivity(CompletarPerfilIntent);
-//                    finish();
-                }else{
-                    Toast.makeText(requireActivity(), "Falha no cadastro", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
     }
 
 

@@ -1,4 +1,4 @@
-package br.com.justworks.prestador.ServicoAki.CreateAccount;
+package br.com.justworks.prestador.ServicoAki.CompleteAccount;
 
 import android.os.Bundle;
 
