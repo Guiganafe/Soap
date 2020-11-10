@@ -48,12 +48,9 @@ public class Step_2 extends Fragment {
     private Button btn_voltar_cadastro_step_1,  btn_avancar_cadastro_step_3;
     private ImageView imagem_perfil;
     private TextView nome_exibir, email_exibir;
-    private Spinner sexo_spinner, estado_civil_spinner;
-    private EditText rua, numero, complemento, bairro, cep, cidade, estado;
+    private EditText edt_rua, edt_numero, edt_complemento, edt_bairro, edt_cep, edt_cidade, edt_estado;
     private ProfissionalViewModel profissionalViewModel;
     private EndereçoViewModel endereçoViewModel;
-    private SexoViewModel sexoViewModel;
-    private EstadoCivilViewModel estadoCivilViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,8 +58,6 @@ public class Step_2 extends Fragment {
 
         profissionalViewModel = new ViewModelProvider(requireActivity()).get(ProfissionalViewModel.class);
         endereçoViewModel = new ViewModelProvider(requireActivity()).get(EndereçoViewModel.class);
-        sexoViewModel = new ViewModelProvider(requireActivity()).get(SexoViewModel.class);
-        estadoCivilViewModel = new ViewModelProvider(requireActivity()).get(EstadoCivilViewModel.class);
     }
 
     @Override
@@ -80,15 +75,13 @@ public class Step_2 extends Fragment {
         onClick();
         textWatcherController();
         loadController();
-        spinnerController();
         placesController();
     }
 
     private void placesController() {
         Places.initialize(requireActivity(), "AIzaSyDju8DWlyeC9dF7Yn3_GlNNOrzuQbGRKjI");
 
-        rua.setFocusable(false);
-        rua.setOnClickListener(new View.OnClickListener() {
+        edt_rua.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ADDRESS_COMPONENTS);
@@ -104,18 +97,49 @@ public class Step_2 extends Fragment {
 
         if (requestCode == 100 && resultCode == Activity.RESULT_OK){
             Place place = Autocomplete.getPlaceFromIntent(data);
-            List<AddressComponent> components = place.getAddressComponents().asList();
-            rua.setText(place.getAddress());
-//            List<String> rua = components.get(0).getTypes();
-//            Toast.makeText(requireActivity(), "Tamanho: " + components.size(), Toast.LENGTH_LONG).show();
-//            Toast.makeText(requireActivity(), "item 0: " + components.get(0), Toast.LENGTH_LONG).show();
-//            Toast.makeText(requireActivity(), "item 0: " + components.get(1), Toast.LENGTH_LONG).show();
-//            Toast.makeText(requireActivity(), "item 0: " + components.get(2), Toast.LENGTH_LONG).show();
-//            Toast.makeText(requireActivity(), "item 0: " + components.get(3), Toast.LENGTH_LONG).show();
-//            Toast.makeText(requireActivity(), "item 0: " + components.get(4), Toast.LENGTH_LONG).show();
-//            Toast.makeText(requireActivity(), "item 0: " + components.get(5), Toast.LENGTH_LONG).show();
 
-        }else if(resultCode == AutocompleteActivity.RESULT_ERROR){
+            /*
+                Salva a latitude e longitude do endereço na ViewModel
+             */
+            endereçoViewModel.setLatitude(place.getLatLng().latitude);
+            endereçoViewModel.setLongitude(place.getLatLng().longitude);
+
+            List<AddressComponent> components = place.getAddressComponents().asList();
+
+            for (AddressComponent list_components: place.getAddressComponents().asList()) {
+
+                String type = list_components.getTypes().get(0);
+
+                if(TextUtils.equals(type, "route")){
+                    edt_rua.setText(list_components.getName());
+                } else if(TextUtils.equals(type, "country")){
+                    endereçoViewModel.setPais(list_components.getName());
+                } else if(TextUtils.equals(type, "street_number")){
+                    edt_numero.setText(list_components.getName());
+                    edt_numero.setFocusable(true);
+                } else if(TextUtils.equals(type, "postal_code") || TextUtils.equals(type, "postal_code_prefix")){
+                    edt_cep.setText(list_components.getName());
+                    edt_cep.setFocusable(true);
+                } else if(TextUtils.equals(type, "sublocality") || TextUtils.equals(type, "sublocality_level_1")){
+                    edt_bairro.setText(list_components.getName());
+                } else if(TextUtils.equals(type, "administrative_area_level_2") || TextUtils.equals(type, "locality")){
+                    edt_cidade.setText(list_components.getName());
+                } else if(TextUtils.equals(type, "administrative_area_level_1")){
+                    edt_estado.setText(list_components.getShortName());
+                }
+            }
+
+//            if(TextUtils.isEmpty(edt_rua.getText())){
+//                edt_rua.setFocusable(true);
+//            }
+//            if(TextUtils.isEmpty(edt_numero.getText())){
+//                edt_numero.setFocusable(true);
+//            }
+//            if(TextUtils.isEmpty(edt_bairro.getText())){
+//                edt_bairro.setFocusable(true);
+//            }
+
+        } else if(resultCode == AutocompleteActivity.RESULT_ERROR){
             Status status = Autocomplete.getStatusFromIntent(data);
             Toast.makeText(requireActivity(), status.getStatusMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -133,36 +157,35 @@ public class Step_2 extends Fragment {
             @Override
             public void onClick(View v) {
                 if(validarCampos()){
+                    enviarDados();
                     Navigation.findNavController(v).navigate(R.id.action_step_2_to_step_3);
                 }
             }
         });
     }
 
+    private void enviarDados() {
+
+    }
+
     private boolean validarCampos() {
-        if(TextUtils.equals(sexo_spinner.getSelectedItem().toString(), "Selecione")){
-            Toast.makeText(requireActivity(), "Selecione o seu sexo", Toast.LENGTH_SHORT).show();
+        if(TextUtils.isEmpty(edt_rua.getText().toString())){
+            edt_rua.setError("Insira uma Rua válida");
             return false;
-        } else if(TextUtils.equals(estado_civil_spinner.getSelectedItem().toString(), "Selecione")){
-            Toast.makeText(requireActivity(), "Selecione o seu estado cívil", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(edt_bairro.getText().toString())){
+            edt_bairro.setError("Insira um Bairro válido");
             return false;
-        } else if(TextUtils.isEmpty(rua.getText().toString())){
-            rua.setError("Insira uma Rua válida");
+        } else if (TextUtils.isEmpty(edt_numero.getText().toString())){
+            edt_numero.setError("Insira um Número válido");
             return false;
-        } else if (TextUtils.isEmpty(bairro.getText().toString())){
-            bairro.setError("Insira um Bairro válido");
+        } else if(TextUtils.isEmpty(edt_cep.getText().toString())){
+            edt_cep.setError("Insira um Cep válido");
             return false;
-        } else if (TextUtils.isEmpty(numero.getText().toString())){
-            numero.setError("Insira um Número válido");
+        } else if (TextUtils.isEmpty(edt_cidade.getText().toString())){
+            edt_cidade.setError("Insira uma Cidade válida");
             return false;
-        } else if(TextUtils.isEmpty(cep.getText().toString())){
-            cep.setError("Insira um Cep válido");
-            return false;
-        } else if (TextUtils.isEmpty(cidade.getText().toString())){
-            cidade.setError("Insira uma Cidade válida");
-            return false;
-        } else if (TextUtils.isEmpty(estado.getText().toString())){
-            estado.setError("Insira um Estado válido");
+        } else if (TextUtils.isEmpty(edt_estado.getText().toString())){
+            edt_estado.setError("Insira um Estado válido");
             return false;
         } else {
             return true;
@@ -170,11 +193,11 @@ public class Step_2 extends Fragment {
     }
 
     private void maskController() {
-        cep.addTextChangedListener(MaskEditUtil.mask(cep, MaskEditUtil.FORMAT_CEP));
+        edt_cep.addTextChangedListener(MaskEditUtil.mask(edt_cep, MaskEditUtil.FORMAT_CEP));
     }
 
     private void textWatcherController() {
-        rua.addTextChangedListener(new TextWatcher() {
+        edt_rua.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -191,7 +214,7 @@ public class Step_2 extends Fragment {
             }
         });
 
-        numero.addTextChangedListener(new TextWatcher() {
+        edt_numero.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -208,7 +231,7 @@ public class Step_2 extends Fragment {
             }
         });
 
-        complemento.addTextChangedListener(new TextWatcher() {
+        edt_complemento.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -225,7 +248,7 @@ public class Step_2 extends Fragment {
             }
         });
 
-        bairro.addTextChangedListener(new TextWatcher() {
+        edt_bairro.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -242,7 +265,7 @@ public class Step_2 extends Fragment {
             }
         });
 
-        cep.addTextChangedListener(new TextWatcher() {
+        edt_cep.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -259,7 +282,7 @@ public class Step_2 extends Fragment {
             }
         });
 
-        cidade.addTextChangedListener(new TextWatcher() {
+        edt_cidade.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -276,7 +299,7 @@ public class Step_2 extends Fragment {
             }
         });
 
-        estado.addTextChangedListener(new TextWatcher() {
+        edt_estado.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -315,72 +338,18 @@ public class Step_2 extends Fragment {
         }
     }
 
-    private void spinnerController() {
-        ArrayAdapter<CharSequence> sexoAdapter = ArrayAdapter.createFromResource(requireActivity(), R.array.sexo_array, android.R.layout.simple_spinner_item);
-        sexoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sexo_spinner.setAdapter(sexoAdapter);
-
-        sexo_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String sexo = sexo_spinner.getSelectedItem().toString();
-                sexoViewModel.setSexoPtbR(sexo);
-
-                if(position == 1){
-                    sexoViewModel.setSexoEn("Male");
-                } else if(position == 2){
-                    sexoViewModel.setSexoEn("Female");
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        ArrayAdapter<CharSequence> estadoCivilAdapter = ArrayAdapter.createFromResource(requireActivity(), R.array.estado_civil_array, android.R.layout.simple_spinner_item);
-        estadoCivilAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        estado_civil_spinner.setAdapter(estadoCivilAdapter);
-
-        estado_civil_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                String estado_civil = estado_civil_spinner.getSelectedItem().toString();
-                estadoCivilViewModel.setEstadoCivilPtBr(estado_civil);
-                if(position == 1){
-                    estadoCivilViewModel.setEstadoCivilEn("Married");
-                } else if(position == 2){
-                    estadoCivilViewModel.setEstadoCivilEn("Single");
-                } else if(position == 3){
-                    estadoCivilViewModel.setEstadoCivilEn("Divorced");
-                } else if(position == 4){
-                    estadoCivilViewModel.setEstadoCivilEn("Widower");
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
-
     private void inicializarComponentes(View view) {
         btn_voltar_cadastro_step_1 = (Button) view.findViewById(R.id.btn_voltar_cadastro_step_1);
         btn_avancar_cadastro_step_3 = (Button) view.findViewById(R.id.btn_avancar_cadastro_step_3);
         imagem_perfil = (ImageView) view.findViewById(R.id.imageSelectedProfile);
         nome_exibir = (TextView) view.findViewById(R.id.nome_exibir);
         email_exibir = (TextView) view.findViewById(R.id.email_exibir);
-        sexo_spinner = (Spinner) view.findViewById(R.id.spinner_sexo_cadastro);
-        estado_civil_spinner = (Spinner) view.findViewById(R.id.spinner_estado_civil_cadastro);
-        rua = (EditText) view.findViewById(R.id.edt_rua_cadastro);
-        numero = (EditText) view.findViewById(R.id.edt_numero_cadastro);
-        complemento = (EditText) view.findViewById(R.id.edt_complemento_cadastro);
-        bairro = (EditText) view.findViewById(R.id.edt_bairro_cadastro);
-        cep = (EditText) view.findViewById(R.id.edt_cep_cadastro);
-        cidade = (EditText) view.findViewById(R.id.edt_cidade_cadastro);
-        estado = (EditText) view.findViewById(R.id.edt_estado_cadastro);
+        edt_rua = (EditText) view.findViewById(R.id.edt_rua_cadastro);
+        edt_numero = (EditText) view.findViewById(R.id.edt_numero_cadastro);
+        edt_complemento = (EditText) view.findViewById(R.id.edt_complemento_cadastro);
+        edt_bairro = (EditText) view.findViewById(R.id.edt_bairro_cadastro);
+        edt_cep = (EditText) view.findViewById(R.id.edt_cep_cadastro);
+        edt_cidade = (EditText) view.findViewById(R.id.edt_cidade_cadastro);
+        edt_estado = (EditText) view.findViewById(R.id.edt_estado_cadastro);
     }
 }

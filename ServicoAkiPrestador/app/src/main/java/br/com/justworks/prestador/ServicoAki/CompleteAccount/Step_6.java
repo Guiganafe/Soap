@@ -20,21 +20,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Model.Address;
@@ -44,7 +38,6 @@ import br.com.justworks.prestador.ServicoAki.ViewModel.EndereçoViewModel;
 import br.com.justworks.prestador.ServicoAki.ViewModel.EstadoCivilViewModel;
 import br.com.justworks.prestador.ServicoAki.ViewModel.ProfissionalViewModel;
 import br.com.justworks.prestador.ServicoAki.R;
-import br.com.justworks.prestador.ServicoAki.Enum.userEnum;
 import br.com.justworks.prestador.ServicoAki.ViewModel.SexoViewModel;
 
 public class Step_6 extends Fragment {
@@ -66,7 +59,6 @@ public class Step_6 extends Fragment {
 
     private StorageReference storageRef;
 
-    StorageReference profileImageRef = storageRef.child("users/" + userID + "_profileImage.jpg");
     StorageReference selfieImageRef = storageRef.child("users/" + userID + "_selfieImage.jpg");
     StorageReference backIdImageRef = storageRef.child("users/" + userID + "_backIdImage.jpg");
     StorageReference frontIdImageRef = storageRef.child("users/" + userID + "_frontIdImage.jpg");
@@ -165,29 +157,12 @@ public class Step_6 extends Fragment {
 
     private void finalizarCadastro() {
 
-        Bitmap fotoPerfilBitmap = profissionalViewModel.getFoto_selfie_doc().getValue();
         Bitmap fotoSelfieBitmap = profissionalViewModel.getFoto_selfie_doc().getValue();
         Bitmap fotoFrenteDocBitmap = profissionalViewModel.getFoto_selfie_doc().getValue();
         Bitmap fotoVersoDocBitmap = profissionalViewModel.getFoto_selfie_doc().getValue();
         Bitmap fotoComprovanteBitmap = profissionalViewModel.getFoto_selfie_doc().getValue();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        fotoPerfilBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] dataFotoPerfil = baos.toByteArray();
-
-        UploadTask uploadTask = profileImageRef.putBytes(dataFotoPerfil);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri downloadUrl = taskSnapshot.getUploadSessionUri();
-                profissionalViewModel.setFoto_perfil_url(downloadUrl.toString());
-            }
-        });
 
         fotoSelfieBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] dataFotoSelfie = baos.toByteArray();

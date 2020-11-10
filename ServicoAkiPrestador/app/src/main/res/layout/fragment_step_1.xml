@@ -162,36 +162,25 @@
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp" />
 
-            <View
-                style="@style/DividerGray"
-                android:layout_marginTop="10sp"/>
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10sp"
+                android:layout_marginTop="5sp"
                 android:layout_marginEnd="10sp"
                 android:paddingTop="10sp"
-                android:text="Senha"
+                android:paddingBottom="5sp"
+                android:text="Sexo"
                 android:textColor="@color/colorBlack"
                 android:textSize="16sp" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
+            <Spinner
+                android:id="@+id/spinner_sexo_cadastro"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
                 android:layout_marginStart="10sp"
                 android:layout_marginEnd="10sp"
-                app:endIconMode="password_toggle">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_senha_cadastro"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/edit_text_gray"
-                    android:inputType="textPassword"
-                    android:paddingStart="5dp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                android:background="@drawable/edit_text_gray" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -200,26 +189,18 @@
                 android:layout_marginTop="5sp"
                 android:layout_marginEnd="10sp"
                 android:paddingTop="10sp"
-                android:text="Confirmar senha"
+                android:paddingBottom="5sp"
+                android:text="Estado Civil"
                 android:textColor="@color/colorBlack"
                 android:textSize="16sp" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
+            <Spinner
+                android:id="@+id/spinner_estado_civil_cadastro"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
                 android:layout_marginStart="10sp"
                 android:layout_marginEnd="10sp"
-                app:endIconMode="password_toggle">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_confirmar_senha_cadastro"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/edit_text_gray"
-                    android:inputType="textPassword"
-                    android:paddingStart="5dp"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
+                android:background="@drawable/edit_text_gray" />
 
         </LinearLayout>
 

@@ -101,46 +101,6 @@
                 android:layout_marginEnd="10sp"
                 android:paddingTop="10sp"
                 android:paddingBottom="5sp"
-                android:text="Sexo"
-                android:textColor="@color/colorBlack"
-                android:textSize="16sp" />
-
-            <Spinner
-                android:id="@+id/spinner_sexo_cadastro"
-                android:layout_width="fill_parent"
-                android:layout_height="40dp"
-                android:layout_marginStart="10sp"
-                android:layout_marginEnd="10sp"
-                android:background="@drawable/edit_text_gray" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10sp"
-                android:layout_marginTop="5sp"
-                android:layout_marginEnd="10sp"
-                android:paddingTop="10sp"
-                android:paddingBottom="5sp"
-                android:text="Estado Civil"
-                android:textColor="@color/colorBlack"
-                android:textSize="16sp" />
-
-            <Spinner
-                android:id="@+id/spinner_estado_civil_cadastro"
-                android:layout_width="fill_parent"
-                android:layout_height="40dp"
-                android:layout_marginStart="10sp"
-                android:layout_marginEnd="10sp"
-                android:background="@drawable/edit_text_gray" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10sp"
-                android:layout_marginTop="5sp"
-                android:layout_marginEnd="10sp"
-                android:paddingTop="10sp"
-                android:paddingBottom="5sp"
                 android:text="Rua"
                 android:textColor="@color/colorBlack"
                 android:textSize="16sp" />
@@ -153,6 +113,7 @@
                 android:layout_marginEnd="10sp"
                 android:background="@drawable/edit_text_gray"
                 android:maxLines="1"
+                android:focusable="false"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp" />
 
@@ -187,6 +148,7 @@
                         android:layout_marginEnd="10sp"
                         android:background="@drawable/edit_text_gray"
                         android:maxLines="1"
+                        android:focusable="false"
                         android:paddingStart="5dp"
                         android:paddingEnd="5dp" />
 
@@ -255,6 +217,7 @@
                         android:layout_marginEnd="10sp"
                         android:background="@drawable/edit_text_gray"
                         android:maxLines="1"
+                        android:focusable="false"
                         android:paddingStart="5dp"
                         android:paddingEnd="5dp" />
 
@@ -284,6 +247,7 @@
                         android:layout_marginEnd="10sp"
                         android:background="@drawable/edit_text_gray"
                         android:maxLines="1"
+                        android:focusable="false"
                         android:paddingStart="5dp"
                         android:paddingEnd="5dp" />
 
@@ -322,6 +286,7 @@
                         android:layout_marginEnd="10sp"
                         android:background="@drawable/edit_text_gray"
                         android:maxLines="1"
+                        android:focusable="false"
                         android:paddingStart="5dp"
                         android:paddingEnd="5dp" />
 
@@ -351,6 +316,7 @@
                         android:layout_marginEnd="10sp"
                         android:background="@drawable/edit_text_gray"
                         android:maxLines="1"
+                        android:focusable="false"
                         android:paddingStart="5dp"
                         android:paddingEnd="5dp" />
 

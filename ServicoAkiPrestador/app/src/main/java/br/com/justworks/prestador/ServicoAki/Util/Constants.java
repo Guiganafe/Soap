@@ -1,4 +1,4 @@
-package br.com.justworks.prestador.ServicoAki;
+package br.com.justworks.prestador.ServicoAki.Util;
 
 public enum Constants {
     KEY_EMAIL("email"),

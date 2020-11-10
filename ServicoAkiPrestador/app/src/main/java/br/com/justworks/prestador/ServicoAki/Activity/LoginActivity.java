@@ -33,7 +33,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-import br.com.justworks.prestador.ServicoAki.Constants;
+import br.com.justworks.prestador.ServicoAki.Util.Constants;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.R;
 
