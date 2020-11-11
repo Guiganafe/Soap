@@ -11,13 +11,16 @@ public class ProfissionalViewModel extends ViewModel {
     private MutableLiveData<Bitmap> foto_perfil = new MutableLiveData<>();
     private MutableLiveData<String> foto_perfil_url = new MutableLiveData<>();
     private MutableLiveData<String> nome_completo = new MutableLiveData<>();
+    private MutableLiveData<String> data_nascimento = new MutableLiveData<>();
     private MutableLiveData<String> email = new MutableLiveData<>();
     private MutableLiveData<String> telefone = new MutableLiveData<>();
     private MutableLiveData<String> senha = new MutableLiveData<>();
     private MutableLiveData<String> confirmarSenha = new MutableLiveData<>();
     private MutableLiveData<String> cpf = new MutableLiveData<>();
     private MutableLiveData<String> nome_mae = new MutableLiveData<>();
-    private MutableLiveData<String> doc_tipo = new MutableLiveData<>();
+    private MutableLiveData<String> rg = new MutableLiveData<>();
+    private MutableLiveData<String> orgao_emissor = new MutableLiveData<>();
+    private MutableLiveData<String> data_emissao = new MutableLiveData<>();
     private MutableLiveData<Bitmap> foto_selfie_doc = new MutableLiveData<>();
     private MutableLiveData<String> foto_selfie_url = new MutableLiveData<>();
     private MutableLiveData<Bitmap> foto_doc_frente = new MutableLiveData<>();
@@ -91,12 +94,28 @@ public class ProfissionalViewModel extends ViewModel {
         this.nome_mae.setValue(nome_mae);
     }
 
-    public LiveData<String> getDoc_tipo() {
-        return doc_tipo;
+    public LiveData<String> getRg() {
+        return rg;
     }
 
-    public void setDoc_tipo(String doc_tipo) {
-        this.doc_tipo.setValue(doc_tipo);
+    public void setRg(String rg) {
+        this.rg.setValue(rg);
+    }
+
+    public LiveData<String> getOrgao_emissor() {
+        return orgao_emissor;
+    }
+
+    public void setOrgao_emissor(String orgao_emissor) {
+        this.orgao_emissor.setValue(orgao_emissor);
+    }
+
+    public LiveData<String> getDataEmissao() {
+        return data_emissao;
+    }
+
+    public void setData_emissao(String data_emissao) {
+        this.rg.setValue(data_emissao);
     }
 
     public LiveData<Bitmap> getFoto_selfie_doc() {
@@ -169,5 +188,13 @@ public class ProfissionalViewModel extends ViewModel {
 
     public void setFoto_comprovante_res_url(String foto_comprovante_res_url) {
         this.foto_comprovante_res_url.setValue(foto_comprovante_res_url);
+    }
+
+    public LiveData<String> getData_nascimento() {
+        return data_nascimento;
+    }
+
+    public void setData_nascimento(String data_nascimento) {
+        this.data_nascimento.setValue(data_nascimento);
     }
 }

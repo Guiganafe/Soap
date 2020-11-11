@@ -104,8 +104,6 @@ public class Step_2 extends Fragment {
             endereçoViewModel.setLatitude(place.getLatLng().latitude);
             endereçoViewModel.setLongitude(place.getLatLng().longitude);
 
-            List<AddressComponent> components = place.getAddressComponents().asList();
-
             for (AddressComponent list_components: place.getAddressComponents().asList()) {
 
                 String type = list_components.getTypes().get(0);
@@ -116,10 +114,8 @@ public class Step_2 extends Fragment {
                     endereçoViewModel.setPais(list_components.getName());
                 } else if(TextUtils.equals(type, "street_number")){
                     edt_numero.setText(list_components.getName());
-                    edt_numero.setFocusable(true);
                 } else if(TextUtils.equals(type, "postal_code") || TextUtils.equals(type, "postal_code_prefix")){
                     edt_cep.setText(list_components.getName());
-                    edt_cep.setFocusable(true);
                 } else if(TextUtils.equals(type, "sublocality") || TextUtils.equals(type, "sublocality_level_1")){
                     edt_bairro.setText(list_components.getName());
                 } else if(TextUtils.equals(type, "administrative_area_level_2") || TextUtils.equals(type, "locality")){
@@ -129,15 +125,9 @@ public class Step_2 extends Fragment {
                 }
             }
 
-//            if(TextUtils.isEmpty(edt_rua.getText())){
-//                edt_rua.setFocusable(true);
-//            }
-//            if(TextUtils.isEmpty(edt_numero.getText())){
-//                edt_numero.setFocusable(true);
-//            }
-//            if(TextUtils.isEmpty(edt_bairro.getText())){
-//                edt_bairro.setFocusable(true);
-//            }
+            edt_numero.setFocusable(true);
+            edt_bairro.setFocusable(true);
+            edt_cep.setFocusable(true);
 
         } else if(resultCode == AutocompleteActivity.RESULT_ERROR){
             Status status = Autocomplete.getStatusFromIntent(data);
@@ -351,5 +341,9 @@ public class Step_2 extends Fragment {
         edt_cep = (EditText) view.findViewById(R.id.edt_cep_cadastro);
         edt_cidade = (EditText) view.findViewById(R.id.edt_cidade_cadastro);
         edt_estado = (EditText) view.findViewById(R.id.edt_estado_cadastro);
+
+        edt_rua.setFocusable(false);
+        edt_cidade.setFocusable(false);
+        edt_estado.setFocusable(false);
     }
 }

@@ -52,7 +52,7 @@ public class Step_1 extends Fragment {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private ImageView foto_perfil, remover_foto;
     private Spinner sexo_spinner, estado_civil_spinner;
-    private EditText nome_cadastro, email_cadastro, telefone_cadastro;
+    private EditText nome_cadastro, email_cadastro, telefone_cadastro, data_nascimento;
     ProfissionalViewModel profissionalViewModel;
     private SexoViewModel sexoViewModel;
     private EstadoCivilViewModel estadoCivilViewModel;
@@ -155,6 +155,23 @@ public class Step_1 extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 profissionalViewModel.setTelefone(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        data_nascimento.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                profissionalViewModel.setData_nascimento(s.toString());
             }
 
             @Override
@@ -342,8 +359,7 @@ public class Step_1 extends Fragment {
         telefone_cadastro = (EditText) view.findViewById(R.id.edt_telefone_cadastro);
         sexo_spinner = (Spinner) view.findViewById(R.id.spinner_sexo_cadastro);
         estado_civil_spinner = (Spinner) view.findViewById(R.id.spinner_estado_civil_cadastro);
-//        senha = (EditText) view.findViewById(R.id.edt_senha_cadastro);
-//        confirmar_senha = (EditText) view.findViewById(R.id.edt_confirmar_senha_cadastro);
+        data_nascimento = (EditText) view.findViewById(R.id.edt_data_nasc_cadastro);
 
         email_cadastro.setFocusable(false);
     }

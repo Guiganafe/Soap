@@ -113,7 +113,6 @@
                 android:layout_marginEnd="10sp"
                 android:background="@drawable/edit_text_gray"
                 android:maxLines="1"
-                android:focusable="false"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp" />
 
@@ -148,7 +147,7 @@
                         android:layout_marginEnd="10sp"
                         android:background="@drawable/edit_text_gray"
                         android:maxLines="1"
-                        android:focusable="false"
+                        android:inputType="number"
                         android:paddingStart="5dp"
                         android:paddingEnd="5dp" />
 
@@ -178,7 +177,6 @@
                         android:layout_marginEnd="10sp"
                         android:background="@drawable/edit_text_gray"
                         android:maxLines="1"
-                        android:inputType="number"
                         android:paddingStart="5dp"
                         android:paddingEnd="5dp" />
 
@@ -217,7 +215,6 @@
                         android:layout_marginEnd="10sp"
                         android:background="@drawable/edit_text_gray"
                         android:maxLines="1"
-                        android:focusable="false"
                         android:paddingStart="5dp"
                         android:paddingEnd="5dp" />
 
@@ -247,7 +244,6 @@
                         android:layout_marginEnd="10sp"
                         android:background="@drawable/edit_text_gray"
                         android:maxLines="1"
-                        android:focusable="false"
                         android:paddingStart="5dp"
                         android:paddingEnd="5dp" />
 
@@ -286,7 +282,6 @@
                         android:layout_marginEnd="10sp"
                         android:background="@drawable/edit_text_gray"
                         android:maxLines="1"
-                        android:focusable="false"
                         android:paddingStart="5dp"
                         android:paddingEnd="5dp" />
 
@@ -316,7 +311,6 @@
                         android:layout_marginEnd="10sp"
                         android:background="@drawable/edit_text_gray"
                         android:maxLines="1"
-                        android:focusable="false"
                         android:paddingStart="5dp"
                         android:paddingEnd="5dp" />
 

@@ -29,7 +29,7 @@ public class Step_3 extends Fragment {
 
     private Button btn_voltar_cadastro_step_2,  btn_avancar_cadastro_step_4_1;
     private Spinner spinner_tipo_doc;
-    private EditText cpf, nome_mae;
+    private EditText cpf, nome_mae, rg, orgao_emissor, data_emissao;
     private ProfissionalViewModel profissionalViewModel;
 
     @Override
@@ -52,28 +52,28 @@ public class Step_3 extends Fragment {
         inicializarComponentes(view);
 
         onClick();
-        spinnerController();
+        //spinnerController();
         textWatcherController();
     }
 
-    private void spinnerController() {
-        ArrayAdapter<CharSequence> sexoAdapter = ArrayAdapter.createFromResource(requireActivity(), R.array.tipo_doc_array, android.R.layout.simple_spinner_item);
-        sexoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_tipo_doc.setAdapter(sexoAdapter);
-
-        spinner_tipo_doc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String tipo = spinner_tipo_doc.getSelectedItem().toString();
-                profissionalViewModel.setDoc_tipo(tipo);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }
+//    private void spinnerController() {
+//        ArrayAdapter<CharSequence> sexoAdapter = ArrayAdapter.createFromResource(requireActivity(), R.array.tipo_doc_array, android.R.layout.simple_spinner_item);
+//        sexoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinner_tipo_doc.setAdapter(sexoAdapter);
+//
+//        spinner_tipo_doc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                String tipo = spinner_tipo_doc.getSelectedItem().toString();
+//                profissionalViewModel.setDoc_tipo(tipo);
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
+//    }
 
     private void textWatcherController() {
         cpf.addTextChangedListener(new TextWatcher() {
@@ -103,6 +103,57 @@ public class Step_3 extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 profissionalViewModel.setNome_mae(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        rg.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                profissionalViewModel.setRg(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        orgao_emissor.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                profissionalViewModel.setOrgao_emissor(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        data_emissao.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                profissionalViewModel.setData_emissao(s.toString());
             }
 
             @Override
@@ -141,8 +192,17 @@ public class Step_3 extends Fragment {
         } else if(TextUtils.isEmpty(nome_mae.getText().toString())){
             nome_mae.setError("Insira o nome da sua mãe");
             return false;
-        } else if(TextUtils.equals(spinner_tipo_doc.getSelectedItem().toString(), "Selecione")){
-            Toast.makeText(requireActivity(), "Selecione o documento", Toast.LENGTH_SHORT).show();
+//        } else if(TextUtils.equals(spinner_tipo_doc.getSelectedItem().toString(), "Selecione")){
+//            Toast.makeText(requireActivity(), "Selecione o documento", Toast.LENGTH_SHORT).show();
+//            return false;
+        } else if(TextUtils.isEmpty(rg.getText().toString())){
+            rg.setError("Insira um RG válido");
+            return false;
+        } else if(TextUtils.isEmpty(orgao_emissor.getText().toString())){
+            orgao_emissor.setError("Insira um orgão emissor válido");
+            return false;
+        } else if(TextUtils.isEmpty(data_emissao.getText().toString())){
+            data_emissao.setError("Insira uma data de emissão válida");
             return false;
         } else {
             return true;
@@ -152,8 +212,11 @@ public class Step_3 extends Fragment {
     private void inicializarComponentes(View view) {
         btn_voltar_cadastro_step_2 = (Button) view.findViewById(R.id.btn_voltar_cadastro_step_2);
         btn_avancar_cadastro_step_4_1 = (Button) view.findViewById(R.id.btn_avancar_cadastro_step_4_1);
-        spinner_tipo_doc = (Spinner) view.findViewById(R.id.spinner_tipo_doc_cadastro);
+        //spinner_tipo_doc = (Spinner) view.findViewById(R.id.spinner_tipo_doc_cadastro);
         nome_mae = (EditText) view.findViewById(R.id.edt_nome_mae_cadastro);
         cpf = (EditText) view.findViewById(R.id.edt_cpf_cadastro);
+        rg = (EditText) view.findViewById(R.id.edt_rg_cadastro);
+        orgao_emissor = (EditText) view.findViewById(R.id.edt_orgao_emissor_cadastro);
+        data_emissao = (EditText) view.findViewById(R.id.edt_data_emissao_cadastro);
     }
 }

@@ -172,14 +172,14 @@
                 android:textAllCaps="false" />
 
             <Button
-                android:id="@+id/btn_finalizar_cadastro"
+                android:id="@+id/btn_avancar_cadastro_step_7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="10sp"
                 android:layout_weight="1"
                 android:background="@drawable/button_orange"
-                android:text="Concluir"
+                android:text="Avançar"
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite" />
 

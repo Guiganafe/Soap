@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.provider.MediaStore;
 import android.util.Log;
@@ -44,7 +45,7 @@ public class Step_6 extends Fragment {
 
     private static final String TAG = "Step_6";
 
-    private Button btn_voltar_cadastro_step_5,  btn_finalizar_cadastro, btn_tirar_foto_comprovante;
+    private Button btn_voltar_cadastro_step_5,  btn_avancar_cadastro_step_7, btn_tirar_foto_comprovante;
     private ProfissionalViewModel profissionalViewModel;
     private SexoViewModel sexoViewModel;
     private EndereçoViewModel endereçoViewModel;
@@ -59,11 +60,7 @@ public class Step_6 extends Fragment {
 
     private StorageReference storageRef;
 
-    StorageReference selfieImageRef = storageRef.child("users/" + userID + "_selfieImage.jpg");
-    StorageReference backIdImageRef = storageRef.child("users/" + userID + "_backIdImage.jpg");
-    StorageReference frontIdImageRef = storageRef.child("users/" + userID + "_frontIdImage.jpg");
-    StorageReference governmentDocRef = storageRef.child("users/" + userID + "_governmentDoc.jpg");
-    StorageReference profAddressRef = storageRef.child("users/" + userID + "_proofOfAddressImage.jpg");
+    //StorageReference governmentDocRef = storageRef.child("users/" + userID + "_governmentDoc.jpg");
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,12 +103,13 @@ public class Step_6 extends Fragment {
             }
         });
 
-        btn_finalizar_cadastro.setOnClickListener(new View.OnClickListener() {
+        btn_avancar_cadastro_step_7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validarCampos()){
-                    finalizarCadastro();
-                }
+            if(validarCampos()){
+                enviarDados();
+                Navigation.findNavController(v).navigate(R.id.action_step_6_to_step_7);
+            }
             }
         });
 
@@ -155,70 +153,17 @@ public class Step_6 extends Fragment {
         }
     }
 
-    private void finalizarCadastro() {
+    private void enviarDados() {
+        StorageReference profAddressRef = storageRef.child("users/" + userID + "_proofOfAddressImage.jpg");
 
-        Bitmap fotoSelfieBitmap = profissionalViewModel.getFoto_selfie_doc().getValue();
-        Bitmap fotoFrenteDocBitmap = profissionalViewModel.getFoto_selfie_doc().getValue();
-        Bitmap fotoVersoDocBitmap = profissionalViewModel.getFoto_selfie_doc().getValue();
         Bitmap fotoComprovanteBitmap = profissionalViewModel.getFoto_selfie_doc().getValue();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-        fotoSelfieBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] dataFotoSelfie = baos.toByteArray();
-
-        UploadTask uploadTask2 = selfieImageRef.putBytes(dataFotoSelfie);
-        uploadTask2.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri downloadUrl = taskSnapshot.getUploadSessionUri();
-                profissionalViewModel.setFoto_selfie_url(downloadUrl.toString());
-            }
-        });
-
-        fotoFrenteDocBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] dataFotoFrenteDoc = baos.toByteArray();
-
-        UploadTask uploadTask3 = frontIdImageRef.putBytes(dataFotoFrenteDoc);
-        uploadTask3.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri downloadUrl = taskSnapshot.getUploadSessionUri();
-                profissionalViewModel.setFoto_doc_frente_url(downloadUrl.toString());
-            }
-        });
-
-        fotoVersoDocBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] dataFotoVersoDoc = baos.toByteArray();
-
-        UploadTask uploadTask4 = backIdImageRef.putBytes(dataFotoVersoDoc);
-        uploadTask4.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri downloadUrl = taskSnapshot.getUploadSessionUri();
-                profissionalViewModel.setFoto_doc_verso_url(downloadUrl.toString());
-            }
-        });
-
         fotoComprovanteBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] dataFotoComprovante = baos.toByteArray();
 
-        UploadTask uploadTask5 = backIdImageRef.putBytes(dataFotoComprovante);
+        UploadTask uploadTask5 = profAddressRef.putBytes(dataFotoComprovante);
         uploadTask5.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
@@ -232,46 +177,42 @@ public class Step_6 extends Fragment {
             }
         });
 
-        String sexoPt, sexoEn;
-        sexoPt = sexoViewModel.getSexoPtbr().getValue();
-        sexoEn = sexoViewModel.getSexoEn().getValue();
-
-        Sex sexo = new Sex(sexoPt, sexoEn);
-
-        String estadoCivilPt, estadoCivilEn;
-
-        estadoCivilPt = estadoCivilViewModel.getEstadoCivilPtBr().getValue();
-        estadoCivilEn = estadoCivilViewModel.getEstadoCivilEn().getValue();
-
-        CivilState civilState = new CivilState(estadoCivilPt, estadoCivilEn);
-
-        String senha = profissionalViewModel.getSenha().getValue();
-
-        Boolean ativo;
-        String cidade, pais, bairro, numero, estado, rua, cep;
-        double latitude, longitude;
-
-        ativo = endereçoViewModel.getActive().getValue();
-        cidade = endereçoViewModel.getCidade().getValue();
-        pais = endereçoViewModel.getPais().getValue();
-        bairro = endereçoViewModel.getBairro().getValue();
-        numero = endereçoViewModel.getNumero().getValue();
-        estado = endereçoViewModel.getEstado().getValue();
-        rua = endereçoViewModel.getRua().getValue();
-        cep = endereçoViewModel.getCep().getValue();
-        longitude = endereçoViewModel.getLongitude().getValue();
-        latitude = endereçoViewModel.getLatitude().getValue();
-
-        final Address address = new Address(ativo, cidade, pais, bairro, numero, estado, rua, cep, longitude, latitude);
-
-
+//        String sexoPt, sexoEn;
+//        sexoPt = sexoViewModel.getSexoPtbr().getValue();
+//        sexoEn = sexoViewModel.getSexoEn().getValue();
+//
+//        Sex sexo = new Sex(sexoPt, sexoEn);
+//
+//        String estadoCivilPt, estadoCivilEn;
+//
+//        estadoCivilPt = estadoCivilViewModel.getEstadoCivilPtBr().getValue();
+//        estadoCivilEn = estadoCivilViewModel.getEstadoCivilEn().getValue();
+//
+//        CivilState civilState = new CivilState(estadoCivilPt, estadoCivilEn);
+//
+//        String senha = profissionalViewModel.getSenha().getValue();
+//
+//        Boolean ativo;
+//        String cidade, pais, bairro, numero, estado, rua, cep;
+//        double latitude, longitude;
+//
+//        ativo = endereçoViewModel.getActive().getValue();
+//        cidade = endereçoViewModel.getCidade().getValue();
+//        pais = endereçoViewModel.getPais().getValue();
+//        bairro = endereçoViewModel.getBairro().getValue();
+//        numero = endereçoViewModel.getNumero().getValue();
+//        estado = endereçoViewModel.getEstado().getValue();
+//        rua = endereçoViewModel.getRua().getValue();
+//        cep = endereçoViewModel.getCep().getValue();
+//        longitude = endereçoViewModel.getLongitude().getValue();
+//        latitude = endereçoViewModel.getLatitude().getValue();
+//
+//        final Address address = new Address(ativo, cidade, pais, bairro, numero, estado, rua, cep, longitude, latitude);
     }
-
-
 
     private void inicializarComponentes(View view) {
         btn_voltar_cadastro_step_5 = (Button) view.findViewById(R.id.btn_voltar_cadastro_step_5);
-        btn_finalizar_cadastro = (Button) view.findViewById(R.id.btn_finalizar_cadastro);
+        btn_avancar_cadastro_step_7 = (Button) view.findViewById(R.id.btn_avancar_cadastro_step_7);
         foto_comprovante_cadastro = (ImageView) view.findViewById(R.id.foto_comprovante_cadastro);
         btn_tirar_foto_comprovante = (Button) view.findViewById(R.id.btn_tirar_foto_comprovante);
     }
