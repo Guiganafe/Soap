@@ -66,7 +66,7 @@ public class Step_4 extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         inicializarComponentes(view);
-        btn_avancar_cadastro_step_5.setEnabled(false);
+        //btn_avancar_cadastro_step_5.setEnabled(false);
         onClick();
         loadController();
     }
@@ -82,10 +82,10 @@ public class Step_4 extends Fragment {
         btn_avancar_cadastro_step_5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validarCampos()){
-                    enviarDados();
+//                if(validarCampos()){
+//                    enviarDados();
                     Navigation.findNavController(v).navigate(R.id.action_step_4_to_step_5_1);
-                }
+        //        }
             }
         });
 
@@ -111,7 +111,7 @@ public class Step_4 extends Fragment {
             profissionalViewModel.setFoto_selfie_doc(imageBitmap);
             foto_id.setImageBitmap(imageBitmap);
             tirar_foto.setText("Tirar outra");
-            btn_avancar_cadastro_step_5.setEnabled(true);
+            //btn_avancar_cadastro_step_5.setEnabled(true);
         }
     }
 
