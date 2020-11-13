@@ -2,17 +2,17 @@ package br.com.justworks.prestador.ServicoAki.Model;
 
 public class CategoriesServices {
     private boolean active;
-    private CaegoriesDescription description;
+    private Description description;
     private ImageIconUrl imageIconUrl;
     private String imageUrl;
-    private CategoriesName name;
+    private Name name;
     private int qtdServices;
     private int qtdUsers;
 
     public CategoriesServices() {
     }
 
-    public CategoriesServices(boolean active, CaegoriesDescription description, ImageIconUrl imageIconUrl, String imageUrl, CategoriesName name, int qtdServices, int qtdUsers) {
+    public CategoriesServices(boolean active, Description description, ImageIconUrl imageIconUrl, String imageUrl, Name name, int qtdServices, int qtdUsers) {
         this.active = active;
         this.description = description;
         this.imageIconUrl = imageIconUrl;
@@ -30,11 +30,11 @@ public class CategoriesServices {
         this.active = active;
     }
 
-    public CaegoriesDescription getDescription() {
+    public Description getDescription() {
         return description;
     }
 
-    public void setDescription(CaegoriesDescription description) {
+    public void setDescription(Description description) {
         this.description = description;
     }
 
@@ -54,11 +54,11 @@ public class CategoriesServices {
         this.imageUrl = imageUrl;
     }
 
-    public CategoriesName getName() {
+    public Name getName() {
         return name;
     }
 
-    public void setName(CategoriesName name) {
+    public void setName(Name name) {
         this.name = name;
     }
 

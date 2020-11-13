@@ -1,12 +1,12 @@
 package br.com.justworks.prestador.ServicoAki.Model;
 
-public class CaegoriesDescription {
+public class Description {
     private String ptbr;
 
-    public CaegoriesDescription() {
+    public Description() {
     }
 
-    public CaegoriesDescription(String ptbr) {
+    public Description(String ptbr) {
         this.ptbr = ptbr;
     }
 

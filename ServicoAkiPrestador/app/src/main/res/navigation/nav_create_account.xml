@@ -63,7 +63,7 @@
         android:id="@+id/step_6"
         android:name="br.com.justworks.prestador.ServicoAki.CompleteAccount.Step_6"
         android:label="fragment_step_6"
-        tools:layout="@layout/fragment_step_6" >
+        tools:layout="@layout/fragment_step_6">
         <action
             android:id="@+id/action_step_6_to_step_7"
             app:destination="@id/step_7" />
@@ -72,5 +72,23 @@
         android:id="@+id/step_7"
         android:name="br.com.justworks.prestador.ServicoAki.CompleteAccount.Step_7"
         android:label="fragment_step_7"
-        tools:layout="@layout/fragment_step_7" />
+        tools:layout="@layout/fragment_step_7" >
+        <action
+            android:id="@+id/action_step_7_to_step_8"
+            app:destination="@id/step_8" />
+    </fragment>
+    <fragment
+        android:id="@+id/step_8"
+        android:name="br.com.justworks.prestador.ServicoAki.CompleteAccount.Step_8"
+        android:label="fragment_step_8"
+        tools:layout="@layout/fragment_step_8" >
+        <action
+            android:id="@+id/action_step_8_to_step_9"
+            app:destination="@id/step_9" />
+    </fragment>
+    <fragment
+        android:id="@+id/step_9"
+        android:name="br.com.justworks.prestador.ServicoAki.CompleteAccount.Step_9"
+        android:label="fragment_step_9"
+        tools:layout="@layout/fragment_step_9" />
 </navigation>

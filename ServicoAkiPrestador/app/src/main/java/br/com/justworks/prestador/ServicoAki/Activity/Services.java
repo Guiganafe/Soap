@@ -14,9 +14,5 @@ public class Services extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_services);
-
-        Intent intent = getIntent();
-        String id_categoria = intent.getStringExtra("id_categoria");
-        Toast.makeText(this, "id: " + id_categoria, Toast.LENGTH_SHORT).show();
     }
 }

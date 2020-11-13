@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +30,7 @@ import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Model.CategoriesServices;
 import br.com.justworks.prestador.ServicoAki.Model.ScheduleItems;
 import br.com.justworks.prestador.ServicoAki.R;
+import br.com.justworks.prestador.ServicoAki.ViewModel.ServicoViewModel;
 
 public class Step_7 extends Fragment {
 
@@ -35,6 +38,14 @@ public class Step_7 extends Fragment {
     private RecyclerView recyclerView;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference categoriesReference = db.collection("categoriesServices");
+    private ServicoViewModel servicoViewModel;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        servicoViewModel = new ViewModelProvider(requireActivity()).get(ServicoViewModel.class);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,13 +69,12 @@ public class Step_7 extends Fragment {
     private void onClickController() {
         adapter.setOnItemClickListener(new CategoriesItemAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                //CategoriesServices categoriesServices = documentSnapshot.toObject(CategoriesServices.class);
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position, View v) {
+                CategoriesServices categoriesServices = documentSnapshot.toObject(CategoriesServices.class);
                 String id = documentSnapshot.getId();
-                Toast.makeText(requireActivity(), "position: " + position + " id: " + id, Toast.LENGTH_SHORT).show();
-                Intent servicesIntent = new Intent(requireActivity(), Services.class);
-                servicesIntent.putExtra("id_categoria", id);
-                startActivity(servicesIntent);
+                servicoViewModel.setCategoriaId(id);
+                servicoViewModel.setCategoriesServices(categoriesServices);
+                Navigation.findNavController(v).navigate(R.id.action_step_7_to_step_8);
             }
         });
     }

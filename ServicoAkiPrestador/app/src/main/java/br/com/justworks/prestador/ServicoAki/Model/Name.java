@@ -1,13 +1,13 @@
 package br.com.justworks.prestador.ServicoAki.Model;
 
-public class CategoriesName {
+public class Name {
     private String en;
     private String ptbr;
 
-    public CategoriesName() {
+    public Name() {
     }
 
-    public CategoriesName(String en, String ptbr) {
+    public Name(String en, String ptbr) {
         this.en = en;
         this.ptbr = ptbr;
     }

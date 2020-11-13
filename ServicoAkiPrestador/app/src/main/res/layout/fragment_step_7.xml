@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="10sp"
-            android:text="Etapa 7 de 7"
+            android:text="Etapa 7 passo 1"
             android:textSize="16sp" />
 
         <TextView
