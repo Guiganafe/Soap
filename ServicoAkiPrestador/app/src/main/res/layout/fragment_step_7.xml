@@ -70,13 +70,13 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_avancar_cadastro_step_7"
+        android:id="@+id/btn_concluir_cadastro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
         android:layout_marginEnd="70dp"
         android:layout_weight="1"
-        android:background="@drawable/button_orange"
+        android:background="@drawable/edit_text_gray"
         android:text="Concluir"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"

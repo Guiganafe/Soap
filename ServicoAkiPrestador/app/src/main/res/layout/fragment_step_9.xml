@@ -63,7 +63,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/email_exibir"
+                        android:id="@+id/tx_nome_selectedCategorie"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Nome categoria"
@@ -71,7 +71,7 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/nome_exibir"
+                        android:id="@+id/tx_nome_selectedService"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Nome serviço"

@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
                     if(TextUtils.isEmpty(comprovanteResidencia)){
                         Intent complearCadastro = new Intent(MainActivity.this, CompletarCadastroActivity.class);
                         startActivity(complearCadastro);
+                        finish();
                     }
                 }
             }

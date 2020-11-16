@@ -20,9 +20,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-import br.com.justworks.prestador.ServicoAki.Adapter.CategoriesItemAdapter;
 import br.com.justworks.prestador.ServicoAki.Adapter.ServicesItemAdapter;
-import br.com.justworks.prestador.ServicoAki.Model.CategoriesServices;
 import br.com.justworks.prestador.ServicoAki.Model.Services;
 import br.com.justworks.prestador.ServicoAki.R;
 import br.com.justworks.prestador.ServicoAki.ViewModel.ServicoViewModel;
@@ -77,7 +75,10 @@ public class Step_8 extends Fragment {
         adapter.setOnItemClickListener(new ServicesItemAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position, View v) {
-
+                String serviceId = documentSnapshot.getId();
+                Services services = documentSnapshot.toObject(Services.class);
+                servicoViewModel.setServices(services);
+                servicoViewModel.setServiceId(serviceId);
                 Navigation.findNavController(v).navigate(R.id.action_step_8_to_step_9);
             }
         });

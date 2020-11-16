@@ -47,9 +47,6 @@ public class Step_6 extends Fragment {
 
     private Button btn_voltar_cadastro_step_5,  btn_avancar_cadastro_step_7, btn_tirar_foto_comprovante;
     private ProfissionalViewModel profissionalViewModel;
-    private SexoViewModel sexoViewModel;
-    private EndereçoViewModel endereçoViewModel;
-    private EstadoCivilViewModel estadoCivilViewModel;
     private ImageView foto_comprovante_cadastro;
 
     private FirebaseAuth firebaseAuth;
@@ -67,9 +64,6 @@ public class Step_6 extends Fragment {
         super.onCreate(savedInstanceState);
 
         profissionalViewModel = new ViewModelProvider(requireActivity()).get(ProfissionalViewModel.class);
-        endereçoViewModel = new ViewModelProvider(requireActivity()).get(EndereçoViewModel.class);
-        sexoViewModel = new ViewModelProvider(requireActivity()).get(SexoViewModel.class);
-        estadoCivilViewModel = new ViewModelProvider(requireActivity()).get(EstadoCivilViewModel.class);
         storageRef = FirebaseStorage.getInstance().getReference();
     }
 
@@ -176,38 +170,6 @@ public class Step_6 extends Fragment {
                 profissionalViewModel.setFoto_comprovante_res_url(downloadUrl.toString());
             }
         });
-
-//        String sexoPt, sexoEn;
-//        sexoPt = sexoViewModel.getSexoPtbr().getValue();
-//        sexoEn = sexoViewModel.getSexoEn().getValue();
-//
-//        Sex sexo = new Sex(sexoPt, sexoEn);
-//
-//        String estadoCivilPt, estadoCivilEn;
-//
-//        estadoCivilPt = estadoCivilViewModel.getEstadoCivilPtBr().getValue();
-//        estadoCivilEn = estadoCivilViewModel.getEstadoCivilEn().getValue();
-//
-//        CivilState civilState = new CivilState(estadoCivilPt, estadoCivilEn);
-//
-//        String senha = profissionalViewModel.getSenha().getValue();
-//
-//        Boolean ativo;
-//        String cidade, pais, bairro, numero, estado, rua, cep;
-//        double latitude, longitude;
-//
-//        ativo = endereçoViewModel.getActive().getValue();
-//        cidade = endereçoViewModel.getCidade().getValue();
-//        pais = endereçoViewModel.getPais().getValue();
-//        bairro = endereçoViewModel.getBairro().getValue();
-//        numero = endereçoViewModel.getNumero().getValue();
-//        estado = endereçoViewModel.getEstado().getValue();
-//        rua = endereçoViewModel.getRua().getValue();
-//        cep = endereçoViewModel.getCep().getValue();
-//        longitude = endereçoViewModel.getLongitude().getValue();
-//        latitude = endereçoViewModel.getLatitude().getValue();
-//
-//        final Address address = new Address(ativo, cidade, pais, bairro, numero, estado, rua, cep, longitude, latitude);
     }
 
     private void inicializarComponentes(View view) {

@@ -1,24 +1,54 @@
 package br.com.justworks.prestador.ServicoAki.Model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Address {
-    private Boolean active;
-    private String city, country, neighborhood, number, state, street, zipCode;
+    private Boolean active, defaul_address;
+    private String addressName, addressType, city, country, neighborhood, number, state, street, userId, zipCode;
     private double latitude, longitude;
 
     public Address() {
     }
 
-    public Address(Boolean active, String city, String country, String neighborhood, String number, String state, String street, String zipCode, double latitude, double longitude) {
+    public Address(Boolean active, String addressName, String addressType, String city, String country, String neighborhood, String number, String state, String street, String userId, String zipCode, double latitude, double longitude) {
         this.active = active;
+        this.addressName = addressName;
+        this.addressType = addressType;
         this.city = city;
         this.country = country;
         this.neighborhood = neighborhood;
         this.number = number;
         this.state = state;
         this.street = street;
+        this.userId = userId;
         this.zipCode = zipCode;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public String getAddressName() {
+        return addressName;
+    }
+
+    public void setAddressName(String addressName) {
+        this.addressName = addressName;
+    }
+
+    public String getAddressType() {
+        return addressType;
+    }
+
+    public void setAddressType(String addressType) {
+        this.addressType = addressType;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public Boolean getActive() {
@@ -99,5 +129,24 @@ public class Address {
 
     public void setLongitude(int longitude) {
         this.longitude = longitude;
+    }
+
+    public Map<String, Object> toMap(){
+        Map<String, Object> data = new HashMap<>();
+        data.put("active", active);
+        data.put("addressName", addressName);
+        data.put("addressType", addressType);
+        data.put("city", city);
+        data.put("country", country);
+        data.put("neighborhood", neighborhood);
+        data.put("number", number);
+        data.put("state", state);
+        data.put("street", street);
+        data.put("userId", userId);
+        data.put("zipCode", zipCode);
+        data.put("longitude", longitude);
+        data.put("latitude", latitude);
+
+        return data;
     }
 }
