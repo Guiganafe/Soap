@@ -52,28 +52,9 @@ public class Step_3 extends Fragment {
         inicializarComponentes(view);
 
         onClick();
-        //spinnerController();
+        maskController();
         textWatcherController();
     }
-
-//    private void spinnerController() {
-//        ArrayAdapter<CharSequence> sexoAdapter = ArrayAdapter.createFromResource(requireActivity(), R.array.tipo_doc_array, android.R.layout.simple_spinner_item);
-//        sexoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinner_tipo_doc.setAdapter(sexoAdapter);
-//
-//        spinner_tipo_doc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                String tipo = spinner_tipo_doc.getSelectedItem().toString();
-//                profissionalViewModel.setDoc_tipo(tipo);
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-//    }
 
     private void textWatcherController() {
         cpf.addTextChangedListener(new TextWatcher() {
@@ -165,6 +146,8 @@ public class Step_3 extends Fragment {
 
     private void maskController() {
         cpf.addTextChangedListener(MaskEditUtil.mask(cpf, MaskEditUtil.FORMAT_CPF));
+        rg.addTextChangedListener(MaskEditUtil.mask(rg, MaskEditUtil.FORMAT_RG));
+        data_emissao.addTextChangedListener(MaskEditUtil.mask(data_emissao, MaskEditUtil.FORMAT_DATE));
     }
 
     private void onClick() {

@@ -183,7 +183,7 @@ public class Step_7 extends Fragment {
     }
 
     private void setUpReciclerView() {
-        Query query = categoriesReference.whereGreaterThan("qtdServices", 0).orderBy("qtdServices").orderBy("name.ptbr");
+        Query query = categoriesReference.whereGreaterThan("qtdServices", 0).whereEqualTo("active", true).orderBy("qtdServices").orderBy("name.ptbr");
 
         FirestoreRecyclerOptions<CategoriesServices> options = new FirestoreRecyclerOptions.Builder<CategoriesServices>()
                 .setQuery(query, CategoriesServices.class)

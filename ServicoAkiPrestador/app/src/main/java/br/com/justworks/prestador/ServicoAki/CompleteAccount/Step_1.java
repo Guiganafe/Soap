@@ -35,8 +35,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.ViewModel.EstadoCivilViewModel;
@@ -199,17 +201,18 @@ public class Step_1 extends Fragment {
 //                if(validarCampos()) {
 //                    enviarDados();
                     Navigation.findNavController(v).navigate(R.id.action_step_1_to_step_2);
-              //  }
+                //}
             }
         });
 
         adicionar_foto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                }
+                CropImage.activity().start(requireActivity());
+//                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+//                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+//                }
             }
         });
 
@@ -265,6 +268,7 @@ public class Step_1 extends Fragment {
             Toast.makeText(requireActivity(), "Selecione o seu estado cívil", Toast.LENGTH_SHORT).show();
             return false;
         } else {
+            btn_avancar_cadastro_step_2.setEnabled(true);
             return true;
         }
     }
@@ -340,6 +344,26 @@ public class Step_1 extends Fragment {
             foto_perfil.setPadding(0,0,0,0);
             foto_perfil.setBackground(null);
         }
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == Activity.RESULT_OK) {
+                Uri resultUri = result.getUri();
+                Bitmap imageBitmap = null;
+                try {
+                    imageBitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), resultUri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //Salva a imagem no bitmap
+                profissionalViewModel.setFoto_perfil(imageBitmap);
+                foto_perfil.setImageBitmap(imageBitmap);
+                foto_perfil.setPadding(0,0,0,0);
+                foto_perfil.setBackground(null);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
     }
 
     @Override
@@ -351,6 +375,7 @@ public class Step_1 extends Fragment {
     private void inicializarComponentes(View view) {
         btn_voltar_cadastro_step_0 = (Button) view.findViewById(R.id.btn_voltar_cadastro_step_0);
         btn_avancar_cadastro_step_2 = (Button) view.findViewById(R.id.btn_avancar_cadastro_step_2);
+        btn_avancar_cadastro_step_2.setEnabled(false);
         adicionar_foto = (Button) view.findViewById(R.id.btn_adicionar_foto);
         remover_foto = (ImageView) view.findViewById(R.id.btn_remover_foto);
         foto_perfil = (ImageView) view.findViewById(R.id.img_perfil);
