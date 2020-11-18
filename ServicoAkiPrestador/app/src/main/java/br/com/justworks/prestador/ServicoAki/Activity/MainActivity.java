@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if(documentSnapshot.exists()){
-                    comprovanteResidencia = documentSnapshot.getString(userEnum.USER_PROF_ADDRESS_IMAGE.getDisplayName());
+                    comprovanteResidencia = documentSnapshot.getString("proofOfAddressImage");
                     if(TextUtils.isEmpty(comprovanteResidencia)){
                         Intent complearCadastro = new Intent(MainActivity.this, CompletarCadastroActivity.class);
                         startActivity(complearCadastro);
@@ -59,34 +59,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void inicializarUsuario() {
-//        db.collection("users").document(FirebaseService.getFirebaseAuth().getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//            @Override
-//            public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                if(documentSnapshot.exists()){
-//
-//                    comprovanteResidencia = documentSnapshot.getString(userEnum.USER_PROF_ADDRESS_IMAGE.getDisplayName());
-//
-//                    if(TextUtils.isEmpty(comprovanteResidencia)){
-//                        Intent complearCadastro = new Intent(MainActivity.this, CompletarCadastroActivity.class);
-//                        startActivity(complearCadastro);
-//                    }
-//
-//                    name = documentSnapshot.getString(userEnum.USER_NAME.getDisplayName());
-//                    imageUrl = documentSnapshot.getString(userEnum.USER_IMAGE_URL.getDisplayName());
-//                    email = documentSnapshot.getString(userEnum.USER_EMAIL.getDisplayName());
-//                    phoneNumber = documentSnapshot.getString(userEnum.USER_PHONE.getDisplayName());
-//                    isAuthenticated = documentSnapshot.getBoolean(userEnum.USER_IS_AUTHENTICATED.getDisplayName());
-//                    isProfessional = documentSnapshot.getBoolean(userEnum.USER_IS_PROFESSIONAL.getDisplayName());
-//
-//                    user.setName(name);
-//                    user.setImageUrl(imageUrl);
-//                    user.setEmail(email);
-//                    user.setPhoneNumber(phoneNumber);
-//                    user.setProfessional(isProfessional);
-//                    user.setAuthenticated(isAuthenticated);
-//                }
-//            }
-//        });
+        db.collection("users").document(FirebaseService.getFirebaseAuth().getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot.exists()){
+
+                    comprovanteResidencia = documentSnapshot.getString(userEnum.USER_PROF_ADDRESS_IMAGE.getDisplayName());
+
+                    if(TextUtils.isEmpty(comprovanteResidencia)){
+                        Intent complearCadastro = new Intent(MainActivity.this, CompletarCadastroActivity.class);
+                        startActivity(complearCadastro);
+                    }
+
+                    name = documentSnapshot.getString(userEnum.USER_NAME.getDisplayName());
+                    imageUrl = documentSnapshot.getString(userEnum.USER_IMAGE_URL.getDisplayName());
+                    email = documentSnapshot.getString(userEnum.USER_EMAIL.getDisplayName());
+                    phoneNumber = documentSnapshot.getString(userEnum.USER_PHONE.getDisplayName());
+                    isAuthenticated = documentSnapshot.getBoolean(userEnum.USER_IS_AUTHENTICATED.getDisplayName());
+                    isProfessional = documentSnapshot.getBoolean(userEnum.USER_IS_PROFESSIONAL.getDisplayName());
+
+                    user.setName(name);
+                    user.setImageUrl(imageUrl);
+                    user.setEmail(email);
+                    user.setPhoneNumber(phoneNumber);
+                    user.setProfessional(isProfessional);
+                    user.setAuthenticated(isAuthenticated);
+                }
+            }
+        });
     }
 
     @Override

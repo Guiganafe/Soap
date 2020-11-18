@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Address {
     private Boolean active, defaul_address;
-    private String addressName, addressType, city, country, neighborhood, number, state, street, userId, zipCode;
+    private String addressName, addressType, city, country, neighborhood, number, state, street, userId, zipCode, regionId;
     private double latitude, longitude;
 
     public Address() {
@@ -144,8 +144,9 @@ public class Address {
         data.put("street", street);
         data.put("userId", userId);
         data.put("zipCode", zipCode);
-        data.put("longitude", longitude);
         data.put("latitude", latitude);
+        data.put("longitude", longitude);
+        data.put("regionId", "");
 
         return data;
     }

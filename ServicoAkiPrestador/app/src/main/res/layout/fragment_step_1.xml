@@ -55,17 +55,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-<!--                <com.theartofdev.edmodo.cropper.CropImageView-->
-<!--                    android:id="@+id/img_perfil"-->
-<!--                    android:layout_width="100dp"-->
-<!--                    android:layout_height="100dp"-->
-<!--                    android:padding="35dp"-->
-<!--                    android:layout_marginStart="10sp"-->
-<!--                    android:layout_marginEnd="10sp"-->
-<!--                    android:layout_gravity="center_vertical"-->
-<!--                    android:src="@drawable/ic_person"-->
-<!--                    android:background="@drawable/edit_text_gray"/>-->
-
                 <ImageView
                     android:id="@+id/img_perfil"
                     android:layout_width="100dp"

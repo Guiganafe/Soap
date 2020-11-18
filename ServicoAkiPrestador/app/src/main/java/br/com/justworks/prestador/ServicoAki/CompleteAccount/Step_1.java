@@ -35,7 +35,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -185,6 +184,7 @@ public class Step_1 extends Fragment {
 
     private void maskController() {
         telefone_cadastro.addTextChangedListener(MaskEditUtil.mask(telefone_cadastro, MaskEditUtil.FORMAT_TELL));
+        data_nascimento.addTextChangedListener(MaskEditUtil.mask(data_nascimento, MaskEditUtil.FORMAT_DATE));
     }
 
     private void onClickController() {
@@ -198,21 +198,20 @@ public class Step_1 extends Fragment {
         btn_avancar_cadastro_step_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if(validarCampos()) {
-//                    enviarDados();
+                if(validarCampos()) {
+                    enviarDados();
                     Navigation.findNavController(v).navigate(R.id.action_step_1_to_step_2);
-                //}
+                }
             }
         });
 
         adicionar_foto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CropImage.activity().start(requireActivity());
-//                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-//                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-//                }
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                }
             }
         });
 
@@ -230,13 +229,13 @@ public class Step_1 extends Fragment {
 
     private void enviarDados() {
         StorageReference profileImageRef = storageRef.child("users/" + userID + "_profileImage.jpg");
-        Bitmap fotoPerfilBitmap = profissionalViewModel.getFoto_perfil().getValue();
+        Bitmap bitmap = profissionalViewModel.getFoto_perfil().getValue();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        fotoPerfilBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] dataFotoPerfil = baos.toByteArray();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
 
-        UploadTask uploadTask = profileImageRef.putBytes(dataFotoPerfil);
+        UploadTask uploadTask = profileImageRef.putBytes(data);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
@@ -268,7 +267,6 @@ public class Step_1 extends Fragment {
             Toast.makeText(requireActivity(), "Selecione o seu estado cívil", Toast.LENGTH_SHORT).show();
             return false;
         } else {
-            btn_avancar_cadastro_step_2.setEnabled(true);
             return true;
         }
     }
@@ -344,26 +342,6 @@ public class Step_1 extends Fragment {
             foto_perfil.setPadding(0,0,0,0);
             foto_perfil.setBackground(null);
         }
-
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == Activity.RESULT_OK) {
-                Uri resultUri = result.getUri();
-                Bitmap imageBitmap = null;
-                try {
-                    imageBitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), resultUri);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                //Salva a imagem no bitmap
-                profissionalViewModel.setFoto_perfil(imageBitmap);
-                foto_perfil.setImageBitmap(imageBitmap);
-                foto_perfil.setPadding(0,0,0,0);
-                foto_perfil.setBackground(null);
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
-            }
-        }
     }
 
     @Override
@@ -375,7 +353,6 @@ public class Step_1 extends Fragment {
     private void inicializarComponentes(View view) {
         btn_voltar_cadastro_step_0 = (Button) view.findViewById(R.id.btn_voltar_cadastro_step_0);
         btn_avancar_cadastro_step_2 = (Button) view.findViewById(R.id.btn_avancar_cadastro_step_2);
-        btn_avancar_cadastro_step_2.setEnabled(false);
         adicionar_foto = (Button) view.findViewById(R.id.btn_adicionar_foto);
         remover_foto = (ImageView) view.findViewById(R.id.btn_remover_foto);
         foto_perfil = (ImageView) view.findViewById(R.id.img_perfil);

@@ -1,5 +1,6 @@
 package br.com.justworks.prestador.ServicoAki.CompleteAccount;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -11,6 +12,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,15 +23,23 @@ import android.widget.Toast;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.FirebaseFunctionsException;
 import com.google.firebase.functions.HttpsCallableResult;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,7 +52,9 @@ import br.com.justworks.prestador.ServicoAki.Model.Address;
 import br.com.justworks.prestador.ServicoAki.Model.CategoriesServices;
 import br.com.justworks.prestador.ServicoAki.Model.CivilState;
 import br.com.justworks.prestador.ServicoAki.Model.ScheduleItems;
+import br.com.justworks.prestador.ServicoAki.Model.ServiceUser;
 import br.com.justworks.prestador.ServicoAki.Model.Sex;
+import br.com.justworks.prestador.ServicoAki.Model.User;
 import br.com.justworks.prestador.ServicoAki.R;
 import br.com.justworks.prestador.ServicoAki.ViewModel.EndereçoViewModel;
 import br.com.justworks.prestador.ServicoAki.ViewModel.EstadoCivilViewModel;
@@ -62,6 +74,7 @@ public class Step_7 extends Fragment {
     private SexoViewModel sexoViewModel;
     private EndereçoViewModel endereçoViewModel;
     private EstadoCivilViewModel estadoCivilViewModel;
+    private String userID = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -126,6 +139,31 @@ public class Step_7 extends Fragment {
     }
 
     private void concluirCadastro() {
+
+        String name, email, birthDate, imageUrl, motherName, phoneNumber, dispatchingAgency, emissionDate,
+                governmentId, identifyDocument, selfieUrl, frontUrl, backUrl, comprovanteUrl;
+        name = profissionalViewModel.getNome_completo().getValue();
+        email = profissionalViewModel.getEmail().getValue();
+        birthDate = profissionalViewModel.getData_nascimento().getValue();
+        imageUrl = profissionalViewModel.getFoto_perfil_url().getValue();
+        motherName = profissionalViewModel.getNome_mae().getValue();
+        phoneNumber = profissionalViewModel.getTelefone().getValue();
+        dispatchingAgency = profissionalViewModel.getOrgao_emissor().getValue();
+        emissionDate = profissionalViewModel.getDataEmissao().getValue();
+        governmentId = profissionalViewModel.getCpf().getValue();
+        identifyDocument = profissionalViewModel.getRg().getValue();
+        selfieUrl = profissionalViewModel.getFoto_selfie_url().getValue();
+        frontUrl = profissionalViewModel.getFoto_doc_frente_url().getValue();
+        backUrl = profissionalViewModel.getFoto_doc_verso_url().getValue();
+        comprovanteUrl = profissionalViewModel.getFoto_comprovante_res_url().getValue();
+
+        Date data = new Date();
+        try {
+            data = dataTimestamp();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         String sexoPt, sexoEn;
         sexoPt = sexoViewModel.getSexoPtbr().getValue();
         sexoEn = sexoViewModel.getSexoEn().getValue();
@@ -157,16 +195,62 @@ public class Step_7 extends Fragment {
         longitude = endereçoViewModel.getLongitude().getValue();
         latitude = endereçoViewModel.getLatitude().getValue();
 
-        final Address address = new Address(active, addressName, addressType, city, country, neighborhood, number, state, userId, street, zipCode, longitude, latitude);
+        final Address address = new Address(active, addressName, addressType, city, country, neighborhood, number, state, street, userId , zipCode, latitude, longitude);
 
-        addAddress(address);
+        ArrayList<ServiceUser> serviceUser = servicoViewModel.getServices_list().getValue();
+
+        sendAddress(address);
+
+        User user = new User();
+
+        user.setCreatedEnv("Android");
+        user.setActive(true);
+        user.setNew(true);
+        user.setProfessional(true);
+        user.setAuthenticated(false);
+        user.setName(name);
+        user.setEmail(email);
+        user.setBirthDate(birthDate);
+        user.setBirthDateTimestamp(data.toString());
+        user.setCivilState(civilState);
+        user.setImageUrl(imageUrl);
+        user.setMotherName(motherName);
+        user.setPhoneNumber(phoneNumber);
+        user.setSex(sexo);
+        user.setDispatchingAgency(dispatchingAgency);
+        user.setEmissionDate(emissionDate);
+        user.setGovernamentId(governmentId);
+        user.setIdentifyDocument(identifyDocument);
+        user.setDocumentSelfie(selfieUrl);
+        user.setIdFrontImage(frontUrl);
+        user.setIdBackImage(backUrl);
+        user.setProofOfAddressImage(comprovanteUrl);
+        user.setServiceUser(serviceUser);
+
+        db.collection("users").document(userID).set(user.toMap(), SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Intent mainIntent = new Intent(requireActivity(), MainActivity.class);
+                startActivity(mainIntent);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(requireActivity(), "Erro ao salvar o usuário", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         Intent mainIntent = new Intent(requireActivity(), MainActivity.class);
         startActivity(mainIntent);
         requireActivity().finish();
     }
 
-    private Task<String> addAddress(Address address) {
+    private Date dataTimestamp() throws ParseException {
+        Date date = new SimpleDateFormat("dd/MM/yyyy").parse(profissionalViewModel.getData_nascimento().getValue());
+        return date;
+    }
+
+    private Task<String> sendAddress(Address address) {
         FirebaseFunctions functions = FirebaseFunctions.getInstance();
 
         return functions
