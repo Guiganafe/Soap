@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +20,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -32,14 +32,8 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
-import br.com.justworks.prestador.ServicoAki.Model.Address;
-import br.com.justworks.prestador.ServicoAki.Model.CivilState;
-import br.com.justworks.prestador.ServicoAki.Model.Sex;
-import br.com.justworks.prestador.ServicoAki.ViewModel.EndereçoViewModel;
-import br.com.justworks.prestador.ServicoAki.ViewModel.EstadoCivilViewModel;
 import br.com.justworks.prestador.ServicoAki.ViewModel.ProfissionalViewModel;
 import br.com.justworks.prestador.ServicoAki.R;
-import br.com.justworks.prestador.ServicoAki.ViewModel.SexoViewModel;
 
 public class Step_6 extends Fragment {
 
@@ -56,8 +50,6 @@ public class Step_6 extends Fragment {
     private String userID = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
 
     private StorageReference storageRef;
-
-    //StorageReference governmentDocRef = storageRef.child("users/" + userID + "_governmentDoc.jpg");
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,10 +92,10 @@ public class Step_6 extends Fragment {
         btn_avancar_cadastro_step_7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            if(validarCampos()){
-                enviarDados();
+//            if(validarCampos()){
+//                enviarDados();
                 Navigation.findNavController(v).navigate(R.id.action_step_6_to_step_7);
-            }
+           // }
             }
         });
 
@@ -148,7 +140,7 @@ public class Step_6 extends Fragment {
     }
 
     private void enviarDados() {
-        StorageReference profAddressRef = storageRef.child("users/" + userID + "_proofOfAddressImage.jpg");
+        final StorageReference profAddressRef = storageRef.child("users/" + userID + "_proofOfAddressImage.jpg");
 
         Bitmap fotoComprovanteBitmap = profissionalViewModel.getFoto_selfie_doc().getValue();
 
@@ -158,16 +150,23 @@ public class Step_6 extends Fragment {
         byte[] dataFotoComprovante = baos.toByteArray();
 
         UploadTask uploadTask5 = profAddressRef.putBytes(dataFotoComprovante);
-        uploadTask5.addOnFailureListener(new OnFailureListener() {
+        Task<Uri> urlTask2 = uploadTask5.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                // Continue with the task to get the download URL
+                return profAddressRef.getDownloadUrl();
             }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri downloadUrl = taskSnapshot.getUploadSessionUri();
-                profissionalViewModel.setFoto_comprovante_res_url(downloadUrl.toString());
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    profissionalViewModel.setFoto_comprovante_res_url(downloadUri.toString());
+                }
             }
         });
     }

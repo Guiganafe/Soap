@@ -69,6 +69,7 @@ public class ServicoViewModel extends ViewModel {
         } else {
             ArrayList<ServiceUser> services_list = new ArrayList<>();
             services_list.add(service);
+            this.services_list.setValue(services_list);
         }
 
     }

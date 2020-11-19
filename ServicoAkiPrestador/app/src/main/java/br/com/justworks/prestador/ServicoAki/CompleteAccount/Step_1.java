@@ -27,8 +27,11 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -37,7 +40,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.ViewModel.EstadoCivilViewModel;
@@ -59,7 +61,6 @@ public class Step_1 extends Fragment {
     private EstadoCivilViewModel estadoCivilViewModel;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FirebaseAuth firebaseAuth;
     private String userID = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
     private StorageReference storageRef;
 
@@ -198,10 +199,10 @@ public class Step_1 extends Fragment {
         btn_avancar_cadastro_step_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validarCampos()) {
-                    enviarDados();
+//                if(validarCampos()) {
+//                    enviarDados();
                     Navigation.findNavController(v).navigate(R.id.action_step_1_to_step_2);
-                }
+               //}
             }
         });
 
@@ -228,7 +229,7 @@ public class Step_1 extends Fragment {
     }
 
     private void enviarDados() {
-        StorageReference profileImageRef = storageRef.child("users/" + userID + "_profileImage.jpg");
+        final StorageReference profileImageRef = storageRef.child("users/" + userID + "_profileImage.jpg");
         Bitmap bitmap = profissionalViewModel.getFoto_perfil().getValue();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -236,26 +237,50 @@ public class Step_1 extends Fragment {
         byte[] data = baos.toByteArray();
 
         UploadTask uploadTask = profileImageRef.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
+
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                // Continue with the task to get the download URL
+                return profileImageRef.getDownloadUrl();
             }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri downloadUrl = taskSnapshot.getUploadSessionUri();
-                profissionalViewModel.setFoto_perfil_url(downloadUrl.toString());
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    profissionalViewModel.setFoto_perfil_url(downloadUri.toString());
+                }
             }
         });
     }
 
     private boolean validarCampos() {
-        if(TextUtils.isEmpty(nome_cadastro.getText().toString())){
-            nome_cadastro.setError("Insira um nome válido!");
+        String nome = nome_cadastro.getText().toString();
+        String telefone = telefone_cadastro.getText().toString();
+        String dataDeNascimento = data_nascimento.getText().toString();
+
+        if(TextUtils.isEmpty(nome)){
+            nome_cadastro.setError("O nome é obrigatório");
             return false;
-        } else if(TextUtils.isEmpty(telefone_cadastro.getText().toString())){
-            telefone_cadastro.setError("Insira um telefone válido!");
+        } else if(nome_cadastro.getTextSize() < 3){
+            nome_cadastro.setError("Insira um nome válido");
+            return false;
+        } else if(TextUtils.isEmpty(telefone)){
+            telefone_cadastro.setError("O telefone é obrigatório");
+            return false;
+        } else if(telefone.matches("(\\(\\d{2}\\)\\s)(\\d{4,5}\\-\\d{4})")){
+            telefone_cadastro.setError("Insira um telefone válido");
+            return false;
+        } else if(TextUtils.isEmpty(dataDeNascimento)){
+            data_nascimento.setError("A data de nascimento é obrigatória");
+            return false;
+        } else if(!dataDeNascimento.matches("^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d$")){
+            data_nascimento.setError("Insira uma data de nascimento válida");
             return false;
         } else if(profissionalViewModel.getFoto_perfil().getValue() == null){
             Toast.makeText(requireActivity(), "Insira uma foto de perfil!", Toast.LENGTH_SHORT).show();
@@ -347,7 +372,6 @@ public class Step_1 extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        firebaseAuth = FirebaseService.getFirebaseAuth();
     }
 
     private void inicializarComponentes(View view) {

@@ -20,8 +20,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -82,10 +85,10 @@ public class Step_4 extends Fragment {
         btn_avancar_cadastro_step_5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validarCampos()){
-                    enviarDados();
+//                if(validarCampos()){
+//                    enviarDados();
                     Navigation.findNavController(v).navigate(R.id.action_step_4_to_step_5_1);
-                }
+              //  }
             }
         });
 
@@ -116,7 +119,7 @@ public class Step_4 extends Fragment {
     }
 
     private void enviarDados() {
-        StorageReference selfieImageRef = storageRef.child("users/" + userID + "_selfieImage.jpg");
+        final StorageReference selfieImageRef = storageRef.child("users/" + userID + "_selfieImage.jpg");
         Bitmap fotoSelfieBitmap = profissionalViewModel.getFoto_selfie_doc().getValue();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -124,16 +127,24 @@ public class Step_4 extends Fragment {
         byte[] dataFotoSelfie = baos.toByteArray();
 
         UploadTask uploadTask = selfieImageRef.putBytes(dataFotoSelfie);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
+
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                // Continue with the task to get the download URL
+                return selfieImageRef.getDownloadUrl();
             }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri downloadUrl = taskSnapshot.getUploadSessionUri();
-                profissionalViewModel.setFoto_selfie_url(downloadUrl.toString());
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    profissionalViewModel.setFoto_selfie_url(downloadUri.toString());
+                }
             }
         });
     }
