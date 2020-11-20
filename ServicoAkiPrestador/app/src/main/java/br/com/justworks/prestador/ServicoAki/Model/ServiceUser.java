@@ -8,15 +8,15 @@ public class ServiceUser {
     private Description description;
     private String id;
     private boolean moveToClient;
-    private double movementCost;
+    private String movementCost;
     private Name name;
     private boolean offersMeterial;
-    private double price;
+    private String price;
 
     public ServiceUser() {
     }
 
-    public ServiceUser(int avgExecutionTime, ArrayList<CategoriesServices> category, Description description, String id, boolean moveToClient, double movementCost, Name name, boolean offersMeterial, double price) {
+    public ServiceUser(int avgExecutionTime, ArrayList<CategoriesServices> category, Description description, String id, boolean moveToClient, String movementCost, Name name, boolean offersMeterial, String price) {
         this.avgExecutionTime = avgExecutionTime;
         this.category = category;
         this.description = description;
@@ -68,11 +68,11 @@ public class ServiceUser {
         this.moveToClient = moveToClient;
     }
 
-    public double getMovementCost() {
+    public String getMovementCost() {
         return movementCost;
     }
 
-    public void setMovementCost(double movementCost) {
+    public void setMovementCost(String movementCost) {
         this.movementCost = movementCost;
     }
 
@@ -92,11 +92,11 @@ public class ServiceUser {
         this.offersMeterial = offersMeterial;
     }
 
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 }

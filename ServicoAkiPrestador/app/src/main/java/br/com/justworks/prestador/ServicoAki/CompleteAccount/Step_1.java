@@ -2,12 +2,16 @@ package br.com.justworks.prestador.ServicoAki.CompleteAccount;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -24,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -56,6 +61,7 @@ public class Step_1 extends Fragment {
     private ImageView foto_perfil, remover_foto;
     private Spinner sexo_spinner, estado_civil_spinner;
     private EditText nome_cadastro, email_cadastro, telefone_cadastro, data_nascimento;
+    private ProgressBar progressBar;
     ProfissionalViewModel profissionalViewModel;
     private SexoViewModel sexoViewModel;
     private EstadoCivilViewModel estadoCivilViewModel;
@@ -199,10 +205,10 @@ public class Step_1 extends Fragment {
         btn_avancar_cadastro_step_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if(validarCampos()) {
-//                    enviarDados();
+                if(validarCampos()) {
+                    enviarDados();
                     Navigation.findNavController(v).navigate(R.id.action_step_1_to_step_2);
-               //}
+               }
             }
         });
 
@@ -273,7 +279,7 @@ public class Step_1 extends Fragment {
         } else if(TextUtils.isEmpty(telefone)){
             telefone_cadastro.setError("O telefone é obrigatório");
             return false;
-        } else if(telefone.matches("(\\(\\d{2}\\)\\s)(\\d{4,5}\\-\\d{4})")){
+        } else if(!telefone.matches("\\(\\d{2}\\)(\\d{4,5}\\-\\d{4})")){
             telefone_cadastro.setError("Insira um telefone válido");
             return false;
         } else if(TextUtils.isEmpty(dataDeNascimento)){
@@ -292,6 +298,10 @@ public class Step_1 extends Fragment {
             Toast.makeText(requireActivity(), "Selecione o seu estado cívil", Toast.LENGTH_SHORT).show();
             return false;
         } else {
+//            Resources res = requireActivity().getResources();
+//            Drawable btn_orange = ResourcesCompat.getDrawable(res, R.drawable.button_orange, null);
+//            btn_avancar_cadastro_step_2.setBackground(btn_orange);
+//            btn_avancar_cadastro_step_2.setEnabled(true);
             return true;
         }
     }
@@ -386,7 +396,9 @@ public class Step_1 extends Fragment {
         sexo_spinner = (Spinner) view.findViewById(R.id.spinner_sexo_cadastro);
         estado_civil_spinner = (Spinner) view.findViewById(R.id.spinner_estado_civil_cadastro);
         data_nascimento = (EditText) view.findViewById(R.id.edt_data_nasc_cadastro);
-
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar_step_1);
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setProgress(15);
         email_cadastro.setFocusable(false);
     }
 }

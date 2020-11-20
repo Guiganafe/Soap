@@ -18,8 +18,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import java.text.NumberFormat;
 
 import br.com.justworks.prestador.ServicoAki.ViewModel.ProfissionalViewModel;
 import br.com.justworks.prestador.ServicoAki.R;
@@ -31,6 +34,7 @@ public class Step_3 extends Fragment {
     private Spinner spinner_tipo_doc;
     private EditText cpf, nome_mae, rg, orgao_emissor, data_emissao;
     private ProfissionalViewModel profissionalViewModel;
+    private ProgressBar progressBar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -146,7 +150,6 @@ public class Step_3 extends Fragment {
 
     private void maskController() {
         cpf.addTextChangedListener(MaskEditUtil.mask(cpf, MaskEditUtil.FORMAT_CPF));
-        rg.addTextChangedListener(MaskEditUtil.mask(rg, MaskEditUtil.FORMAT_RG));
         data_emissao.addTextChangedListener(MaskEditUtil.mask(data_emissao, MaskEditUtil.FORMAT_DATE));
     }
 
@@ -161,31 +164,34 @@ public class Step_3 extends Fragment {
         btn_avancar_cadastro_step_4_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if(validarCampos()) {
+                if(validarCampos()) {
                     Navigation.findNavController(v).navigate(R.id.action_step_3_to_step_4);
-                //}
+                }
             }
         });
     }
 
     private boolean validarCampos() {
         if(TextUtils.isEmpty(cpf.getText().toString())){
+            cpf.setError("O CPF é obrigatório");
+            return false;
+        } else if(!cpf.getText().toString().matches("^(\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2})$")){
             cpf.setError("Insira um CPF válido");
             return false;
-        } else if(TextUtils.isEmpty(nome_mae.getText().toString())){
-            nome_mae.setError("Insira o nome da sua mãe");
+        }  else if(TextUtils.isEmpty(nome_mae.getText().toString())){
+            nome_mae.setError("O nome da Mãe é obrigatório");
             return false;
-//        } else if(TextUtils.equals(spinner_tipo_doc.getSelectedItem().toString(), "Selecione")){
-//            Toast.makeText(requireActivity(), "Selecione o documento", Toast.LENGTH_SHORT).show();
-//            return false;
         } else if(TextUtils.isEmpty(rg.getText().toString())){
-            rg.setError("Insira um RG válido");
+            rg.setError("O RG é obrigatório");
             return false;
         } else if(TextUtils.isEmpty(orgao_emissor.getText().toString())){
-            orgao_emissor.setError("Insira um orgão emissor válido");
+            orgao_emissor.setError("O Orgão emissor é obrigatório");
             return false;
         } else if(TextUtils.isEmpty(data_emissao.getText().toString())){
-            data_emissao.setError("Insira uma data de emissão válida");
+            data_emissao.setError("A Data de Emissão é obrigatória");
+            return false;
+        } else if(!data_emissao.getText().toString().matches("^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d$")){
+            data_emissao.setError("Insira uma Data de Emissão obrigatória");
             return false;
         } else {
             return true;
@@ -201,5 +207,8 @@ public class Step_3 extends Fragment {
         rg = (EditText) view.findViewById(R.id.edt_rg_cadastro);
         orgao_emissor = (EditText) view.findViewById(R.id.edt_orgao_emissor_cadastro);
         data_emissao = (EditText) view.findViewById(R.id.edt_data_emissao_cadastro);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar_step_3);
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setProgress(45);
     }
 }

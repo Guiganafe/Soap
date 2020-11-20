@@ -102,7 +102,8 @@
                 android:layout_marginStart="10sp"
                 android:layout_marginEnd="10sp"
                 android:background="@drawable/edit_text_gray"
-                android:maxLines="1"
+                android:singleLine="true"
+                android:inputType="number"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp" />
 
@@ -125,7 +126,8 @@
                 android:layout_marginStart="10sp"
                 android:layout_marginEnd="10sp"
                 android:background="@drawable/edit_text_gray"
-                android:maxLines="1"
+                android:singleLine="true"
+                android:inputType="number"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp" />
 
@@ -170,6 +172,7 @@
                 android:background="@drawable/edit_text_gray" />
 
             <TextView
+                android:id="@+id/tv_custo_deslocamento_servico"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10sp"
@@ -188,7 +191,8 @@
                 android:layout_marginStart="10sp"
                 android:layout_marginEnd="10sp"
                 android:background="@drawable/edit_text_gray"
-                android:maxLines="1"
+                android:singleLine="true"
+                android:inputType="number"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp" />
 
@@ -211,7 +215,7 @@
                 android:layout_marginStart="10sp"
                 android:layout_marginEnd="10sp"
                 android:background="@drawable/edit_text_gray"
-                android:lines="5"
+                android:lines="3"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp" />
 

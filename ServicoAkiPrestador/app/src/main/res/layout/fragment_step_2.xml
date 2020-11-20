@@ -322,6 +322,15 @@
 
     </ScrollView>
 
+    <ProgressBar
+        android:id="@+id/progressBar_step_2"
+        style="@style/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:progressDrawable="@drawable/progress_bar_drawable"
+        app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
         android:layout_height="0dp"

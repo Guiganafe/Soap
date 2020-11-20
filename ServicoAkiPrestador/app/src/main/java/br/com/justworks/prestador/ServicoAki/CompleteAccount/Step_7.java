@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -75,6 +76,7 @@ public class Step_7 extends Fragment {
     private EndereçoViewModel endereçoViewModel;
     private EstadoCivilViewModel estadoCivilViewModel;
     private String userID = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
+    private ProgressBar progressBar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -295,5 +297,8 @@ public class Step_7 extends Fragment {
     private void inicializarComponentes(View view) {
         recyclerView = view.findViewById(R.id.reciclerView_categories);
         concluirCadastro = (Button) view.findViewById(R.id.btn_concluir_cadastro);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar_step_7);
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setProgress(95);
     }
 }

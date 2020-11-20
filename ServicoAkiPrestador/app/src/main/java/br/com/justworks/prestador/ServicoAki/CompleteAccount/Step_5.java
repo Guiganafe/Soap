@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
@@ -43,7 +44,7 @@ public class Step_5 extends Fragment {
     private ProfissionalViewModel profissionalViewModel;
     private Button tirar_foto_frente, tirar_foto_verso;
     private ImageView foto_frente, foto_verso;
-
+    private ProgressBar progressBar;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth;
     private String userID = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
@@ -85,10 +86,10 @@ public class Step_5 extends Fragment {
         btn_avancar_cadastro_step_5_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//            if(validarCampos()){
-//                enviarDados();
-                Navigation.findNavController(v).navigate(R.id.action_step_5_to_step_6);
-           // }
+                if(validarCampos()){
+                    enviarDados();
+                    Navigation.findNavController(v).navigate(R.id.action_step_5_to_step_6);
+                }
             }
         });
 
@@ -221,5 +222,8 @@ public class Step_5 extends Fragment {
         tirar_foto_frente = (Button) view.findViewById(R.id.btn_tirar_foto_frente);
         foto_verso = (ImageView) view.findViewById(R.id.foto_verso_Cadastro);
         tirar_foto_verso = (Button) view.findViewById(R.id.btn_tirar_foto_verso);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar_step_5);
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setProgress(75);
     }
 }

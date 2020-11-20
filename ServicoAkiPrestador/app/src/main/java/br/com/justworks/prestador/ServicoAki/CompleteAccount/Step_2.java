@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +50,7 @@ public class Step_2 extends Fragment {
     private ImageView imagem_perfil;
     private TextView nome_exibir, email_exibir;
     private EditText edt_rua, edt_numero, edt_complemento, edt_bairro, edt_cep, edt_cidade, edt_estado;
+    private ProgressBar progressBar;
     private ProfissionalViewModel profissionalViewModel;
     private EndereçoViewModel endereçoViewModel;
 
@@ -146,10 +148,10 @@ public class Step_2 extends Fragment {
         btn_avancar_cadastro_step_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if(validarCampos()){
-//                    enviarDados();
+                if(validarCampos()){
+                    enviarDados();
                     Navigation.findNavController(v).navigate(R.id.action_step_2_to_step_3);
-               // }
+                }
             }
         });
     }
@@ -341,7 +343,9 @@ public class Step_2 extends Fragment {
         edt_cep = (EditText) view.findViewById(R.id.edt_cep_cadastro);
         edt_cidade = (EditText) view.findViewById(R.id.edt_cidade_cadastro);
         edt_estado = (EditText) view.findViewById(R.id.edt_estado_cadastro);
-
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar_step_2);
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setProgress(30);
         edt_rua.setFocusable(false);
         edt_cidade.setFocusable(false);
         edt_estado.setFocusable(false);

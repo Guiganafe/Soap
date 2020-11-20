@@ -48,6 +48,13 @@ public class MeuPerfilFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        firebaseAuth = FirebaseService.getFirebaseAuth();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        if(firebaseUser == null){
+            Intent loginIntent = new Intent(getContext(), LoginActivity.class);
+            startActivity(loginIntent);
+        }
+
         inicializarComponentes(view);
 
         carregarInfoUsuarios();
@@ -66,12 +73,6 @@ public class MeuPerfilFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        firebaseAuth = FirebaseService.getFirebaseAuth();
-        firebaseUser = firebaseAuth.getCurrentUser();
-        if(firebaseUser == null){
-            Intent loginIntent = new Intent(getContext(), LoginActivity.class);
-            startActivity(loginIntent);
-        }
     }
 
     private void carregarInfoUsuarios() {

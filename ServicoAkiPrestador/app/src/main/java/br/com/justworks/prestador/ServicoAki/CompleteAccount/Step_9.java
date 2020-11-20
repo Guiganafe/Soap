@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,8 @@ import br.com.justworks.prestador.ServicoAki.Model.Description;
 import br.com.justworks.prestador.ServicoAki.Model.ServiceUser;
 import br.com.justworks.prestador.ServicoAki.Model.Services;
 import br.com.justworks.prestador.ServicoAki.R;
+import br.com.justworks.prestador.ServicoAki.Util.Mask;
+import br.com.justworks.prestador.ServicoAki.Util.MaskEditUtil;
 import br.com.justworks.prestador.ServicoAki.ViewModel.ServicoViewModel;
 
 public class Step_9 extends Fragment {
@@ -39,6 +42,7 @@ public class Step_9 extends Fragment {
     private ImageView img_servico;
     private TextView tv_nome_servico;
     private TextView tv_nome_categoria;
+    private TextView tv_custo_deslocamento;
     private EditText valor_servico, duracao_servico, custo_deslocamento, descricao_servico;
     private Spinner fornece_material, desloca_cliente;
     private Button salvar_Servico;
@@ -71,9 +75,22 @@ public class Step_9 extends Fragment {
         spinnerController();
 
         onClickController();
+
+        maskController();
+    }
+
+    private void maskController() {
+        TextWatcher valorServico = Mask.monetario(valor_servico);
+        valor_servico.addTextChangedListener(valorServico);
+
+        TextWatcher valorDeslocamento = Mask.monetario(custo_deslocamento);
+        custo_deslocamento.addTextChangedListener(valorDeslocamento);
+
+        duracao_servico.addTextChangedListener(MaskEditUtil.mask(duracao_servico, MaskEditUtil.FORMAT_HORA_MINUTOS));
     }
 
     private void spinnerController() {
+        custo_deslocamento.setVisibility(View.GONE);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireActivity(), R.array.sim_nao_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fornece_material.setAdapter(adapter);
@@ -85,7 +102,7 @@ public class Step_9 extends Fragment {
 
                 if(position == 1){
                     material = true;
-                }else if(position == 2){
+                }else if(position == 2 || position == 0){
                     material = false;
                 }
             }
@@ -101,9 +118,13 @@ public class Step_9 extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 if(position == 1){
-                    material = true;
-                }else if(position == 2){
-                    material = false;
+                    desloca = true;
+                    tv_custo_deslocamento.setVisibility(View.VISIBLE);
+                    custo_deslocamento.setVisibility(View.VISIBLE);
+                }else if(position == 2 || position == 0){
+                    desloca = false;
+                    tv_custo_deslocamento.setVisibility(View.GONE);
+                    custo_deslocamento.setVisibility(View.GONE);
                 }
             }
 
@@ -124,12 +145,13 @@ public class Step_9 extends Fragment {
     }
 
     private void addServico() {
-        String descricao;
-        int duracao, custoDeslocamento, valor;
+        String descricao, valor, custoDeslocamento;
+        String duracao_txt = duracao_servico.getText().toString();
+        int duracao;
+        duracao = (Integer.parseInt(duracao_txt.substring(0,1)) * 60) + Integer.parseInt(duracao_txt.substring(3,4));
 
-        valor = Integer.parseInt(valor_servico.getText().toString());
-        duracao = Integer.parseInt(duracao_servico.getText().toString());
-        custoDeslocamento = Integer.parseInt(custo_deslocamento.getText().toString());
+        valor = valor_servico.getText().toString();
+        custoDeslocamento = custo_deslocamento.getText().toString();
         descricao = descricao_servico.getText().toString();
 
         Description description = new Description(descricao);
@@ -141,7 +163,7 @@ public class Step_9 extends Fragment {
         serviceUser.setCategory(service.getCategory());
         serviceUser.setDescription(description);
         serviceUser.setId(servicoViewModel.getServiceId().getValue());
-        serviceUser.setMoveToClient(material);
+        serviceUser.setMoveToClient(desloca);
         serviceUser.setMovementCost(custoDeslocamento);
         serviceUser.setName(service.getName());
         serviceUser.setPrice(valor);
@@ -169,6 +191,7 @@ public class Step_9 extends Fragment {
     }
 
     private void inicializarComponentes(View view) {
+        tv_custo_deslocamento = (TextView) view.findViewById(R.id.tv_custo_deslocamento_servico);
         img_servico = (ImageView) view.findViewById(R.id.imageSelectedService);
         tv_nome_servico = (TextView) view.findViewById(R.id.tx_nome_selectedService);
         tv_nome_categoria = (TextView) view.findViewById(R.id.tx_nome_selectedCategorie);

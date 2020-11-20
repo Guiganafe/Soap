@@ -6,13 +6,10 @@ import android.widget.EditText;
 
 public class MaskEditUtil {
     public static final String FORMAT_CPF = "###.###.###-##";
-    public static final String FORMAT_RG = "#.###.###";
-    public static final String FORMAT_FONE = "(##)####-####";
     public static final String FORMAT_TELL = "(##)#####-####";
     public static final String FORMAT_CEP = "#####-###";
     public static final String FORMAT_DATE = "##/##/####";
-    public static final String FORMAT_HOUR = "##:##";
-    public static final String FORMAT_MONEY = "R$ ###,##";
+    public static final String FORMAT_HORA_MINUTOS = "##:##";
 
     /**
      * Método que deve ser chamado para realizar a formatação
