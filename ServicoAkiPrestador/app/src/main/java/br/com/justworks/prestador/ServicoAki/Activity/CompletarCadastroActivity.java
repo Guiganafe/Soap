@@ -19,38 +19,33 @@ import br.com.justworks.prestador.ServicoAki.Enum.userEnum;
 
 public class CompletarCadastroActivity extends AppCompatActivity {
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private StorageReference mStorageRef;
-    private String userID;
+//    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+//    private StorageReference mStorageRef;
+//    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_completar_cadastro);
-
-        mStorageRef = FirebaseStorage.getInstance().getReference();
-        userID = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
-
-        db.collection("users").document(userID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists()){
-                    String USER_PROF_ADDRESS_IMAGE = documentSnapshot.getString(userEnum.USER_PROF_ADDRESS_IMAGE.getDisplayName());
-
-                    if(TextUtils.isEmpty(USER_PROF_ADDRESS_IMAGE)) {
-                        Toast.makeText(CompletarCadastroActivity.this, "Complete seu cadastro", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Intent mainIntent = new Intent(CompletarCadastroActivity.this, MainActivity.class);
-                        startActivity(mainIntent);
-                        finish();
-                    }
-                }
-            }
-        });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
+        Toast.makeText(CompletarCadastroActivity.this, "Complete seu cadastro", Toast.LENGTH_SHORT).show();
+//        mStorageRef = FirebaseStorage.getInstance().getReference();
+//        userID = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
+//
+//        db.collection("users").document(userID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                if(documentSnapshot.exists()){
+//                    String USER_PROF_ADDRESS_IMAGE = documentSnapshot.getString(userEnum.USER_PROF_ADDRESS_IMAGE.getDisplayName());
+//
+//                    if(TextUtils.isEmpty(USER_PROF_ADDRESS_IMAGE)) {
+//                        Toast.makeText(CompletarCadastroActivity.this, "Complete seu cadastro", Toast.LENGTH_SHORT).show();
+//                    }else{
+//                        Intent mainIntent = new Intent(CompletarCadastroActivity.this, MainActivity.class);
+//                        startActivity(mainIntent);
+//                        finish();
+//                    }
+//                }
+//            }
+//        });
     }
 }

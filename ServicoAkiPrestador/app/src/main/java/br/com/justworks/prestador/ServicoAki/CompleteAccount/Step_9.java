@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
+
+import org.w3c.dom.Text;
 
 import br.com.justworks.prestador.ServicoAki.Adapter.SvgSoftwareLayerSetter;
 import br.com.justworks.prestador.ServicoAki.Model.CategoriesServices;
@@ -80,12 +83,12 @@ public class Step_9 extends Fragment {
     }
 
     private void maskController() {
-        TextWatcher valorServico = Mask.monetario(valor_servico);
-        valor_servico.addTextChangedListener(valorServico);
-
-        TextWatcher valorDeslocamento = Mask.monetario(custo_deslocamento);
-        custo_deslocamento.addTextChangedListener(valorDeslocamento);
-
+//        TextWatcher valorServico = Mask.monetario(valor_servico);
+//        valor_servico.addTextChangedListener(Mask.insert("R$###,##", valor_servico));
+//
+//        TextWatcher valorDeslocamento = Mask.monetario(custo_deslocamento);
+//        custo_deslocamento.addTextChangedListener(valorDeslocamento);
+//
         duracao_servico.addTextChangedListener(MaskEditUtil.mask(duracao_servico, MaskEditUtil.FORMAT_HORA_MINUTOS));
     }
 
@@ -139,9 +142,32 @@ public class Step_9 extends Fragment {
         salvar_Servico.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addServico();
+                if(validarCampos()){
+                    addServico();
+                }
             }
         });
+    }
+
+    private boolean validarCampos() {
+        if(TextUtils.isEmpty(valor_servico.getText().toString())){
+            valor_servico.setError("O valor do servico é obrigatório");
+            return false;
+        } else if(TextUtils.isEmpty(duracao_servico.getText().toString())){
+            duracao_servico.setError("A duração do servico é obrigatória");
+            return false;
+        } else if(TextUtils.equals(fornece_material.getSelectedItem().toString(), "Selecione")){
+            Toast.makeText(requireActivity(), "Selecione uma opção para o fornecimento de material", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if(TextUtils.equals(desloca_cliente.getSelectedItem().toString(), "Selecione")){
+            Toast.makeText(requireActivity(), "Selecione uma opção para o deslocamento ao cliente", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if(TextUtils.equals(desloca_cliente.getSelectedItem().toString(), "Sim") && TextUtils.isEmpty(custo_deslocamento.getText().toString())){
+            custo_deslocamento.setError("O custo do deslocamento é obrigatório");
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private void addServico() {

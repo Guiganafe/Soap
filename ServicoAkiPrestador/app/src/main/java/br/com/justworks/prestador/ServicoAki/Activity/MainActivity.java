@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         inicializarComponentes();
         inicializarUsuario();
+        validarUsuario();
     }
 
     private void validarUsuario() {
@@ -92,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        validarUsuario();
     }
 
     private void inicializarComponentes() {

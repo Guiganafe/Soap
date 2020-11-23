@@ -135,9 +135,20 @@ public class Step_7 extends Fragment {
         concluirCadastro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                concluirCadastro();
+                if(validarCampos()){
+                    concluirCadastro();   
+                }
             }
         });
+    }
+
+    private boolean validarCampos() {
+        if(servicoViewModel.getServices_list().getValue() == null){
+            Toast.makeText(requireActivity(), "Selecione ao menos um serviço", Toast.LENGTH_SHORT).show();
+            return false;
+        }else{
+            return true;
+        }
     }
 
     private void concluirCadastro() {
@@ -234,6 +245,7 @@ public class Step_7 extends Fragment {
             public void onSuccess(Void aVoid) {
                 Intent mainIntent = new Intent(requireActivity(), MainActivity.class);
                 startActivity(mainIntent);
+                requireActivity().finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -286,6 +298,9 @@ public class Step_7 extends Fragment {
         super.onStart();
         adapter.startListening();
         loadController();
+        if(servicoViewModel.getServices_list().getValue() != null){
+            progressBar.setProgress(100);
+        }
     }
 
     @Override
@@ -299,6 +314,11 @@ public class Step_7 extends Fragment {
         concluirCadastro = (Button) view.findViewById(R.id.btn_concluir_cadastro);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar_step_7);
         progressBar.setVisibility(View.VISIBLE);
-        progressBar.setProgress(95);
+        if(servicoViewModel.getServices_list().getValue() == null){
+            progressBar.setProgress(95);
+        }else{
+            progressBar.setProgress(100);
+        }
+
     }
 }

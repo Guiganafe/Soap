@@ -82,7 +82,7 @@ public abstract class Mask {
 
                     String cleanString = s.toString().replaceAll("[R$,.]", "");
 
-                    double parsed = Double.parseDouble(cleanString);
+                    float parsed = Float.parseFloat(cleanString);
                     String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
 
                     current = formatted.replaceAll("[R$]", "");

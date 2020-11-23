@@ -142,7 +142,7 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:autoSizeMaxTextSize="20sp"
+        android:autoSizeMaxTextSize="18sp"
         android:autoSizeTextType="uniform"
         android:fontFamily="sans-serif"
         android:gravity="center_vertical"
@@ -167,6 +167,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:singleLine="true"
             android:background="@drawable/edit_text_gray"
             android:paddingStart="5dp" />
 
@@ -175,7 +176,7 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:autoSizeMaxTextSize="20sp"
+        android:autoSizeMaxTextSize="18sp"
         android:autoSizeTextType="uniform"
         android:fontFamily="sans-serif"
         android:gravity="center_vertical"
@@ -217,6 +218,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:singleLine="true"
             android:background="@drawable/edit_text_gray"
             android:inputType="textPassword"
             android:paddingStart="5dp" />

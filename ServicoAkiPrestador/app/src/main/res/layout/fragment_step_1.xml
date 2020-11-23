@@ -35,7 +35,7 @@
                 android:layout_marginStart="10sp"
                 android:layout_marginEnd="10sp"
                 android:paddingTop="10sp"
-                android:text="Etapa 1 de 6"
+                android:text="Etapa 1 de 7"
                 android:textSize="16sp" />
 
             <TextView

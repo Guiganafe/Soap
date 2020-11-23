@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">ServicoAki Prestador</string>
+    <string name="app_name">Serviço Aki Profissional</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="today">Hoje</string>
-    <string name="cadastro_aprovacao">Para a segurança de todos, o cadastro de profissionais na plataforma é sujeito a aprovação.</string>
+    <string name="cadastro_aprovacao">Para a segurança de todos, o cadastro de profissionais é sujeito a aprovação.</string>
     <string name="cadastro_cpf">Tenha seu CPF e documento de identificação em mãos antes de continuar.</string>
     <string name="cadastro_profissional">Cadastro profissional</string>
     <string name="foto_confirmar_id">Precisamos de uma foto sua, segurando RG ou CNH, para confirmar sua identidade.</string>
