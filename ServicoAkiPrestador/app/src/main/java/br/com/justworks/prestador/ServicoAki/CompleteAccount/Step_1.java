@@ -1,9 +1,16 @@
 package br.com.justworks.prestador.ServicoAki.CompleteAccount;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,18 +18,24 @@ import android.os.Bundle;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -45,7 +58,15 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import br.com.justworks.prestador.ServicoAki.Activity.MainActivity;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.ViewModel.EstadoCivilViewModel;
 import br.com.justworks.prestador.ServicoAki.ViewModel.ProfissionalViewModel;
@@ -56,6 +77,9 @@ import br.com.justworks.prestador.ServicoAki.ViewModel.SexoViewModel;
 
 public class Step_1 extends Fragment {
 
+    public static final int CAMERA_PERM_CODE = 101;
+    public static final int CAMERA_REQUEST_CODE = 102;
+    public static final int GALLERY_REQUEST_CODE = 105;
     private Button btn_voltar_cadastro_step_0,  btn_avancar_cadastro_step_2, adicionar_foto;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private ImageView foto_perfil, remover_foto;
@@ -65,7 +89,7 @@ public class Step_1 extends Fragment {
     ProfissionalViewModel profissionalViewModel;
     private SexoViewModel sexoViewModel;
     private EstadoCivilViewModel estadoCivilViewModel;
-
+    private String currentPhotoPath;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private String userID = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
     private StorageReference storageRef;
@@ -205,20 +229,17 @@ public class Step_1 extends Fragment {
         btn_avancar_cadastro_step_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if(validarCampos()) {
-//                    enviarDados();
+                if(validarCampos()) {
+                    enviarDados();
                     Navigation.findNavController(v).navigate(R.id.action_step_1_to_step_2);
-               //}
+               }
             }
         });
 
         adicionar_foto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                }
+                selectImage();
             }
         });
 
@@ -298,10 +319,6 @@ public class Step_1 extends Fragment {
             Toast.makeText(requireActivity(), "Selecione o seu estado cívil", Toast.LENGTH_SHORT).show();
             return false;
         } else {
-//            Resources res = requireActivity().getResources();
-//            Drawable btn_orange = ResourcesCompat.getDrawable(res, R.drawable.button_orange, null);
-//            btn_avancar_cadastro_step_2.setBackground(btn_orange);
-//            btn_avancar_cadastro_step_2.setEnabled(true);
             return true;
         }
     }
@@ -364,20 +381,130 @@ public class Step_1 extends Fragment {
         });
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        //File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
 
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            //Salva a imagem no bitmap
-            profissionalViewModel.setFoto_perfil(imageBitmap);
-            foto_perfil.setImageBitmap(imageBitmap);
-            foto_perfil.setPadding(0,0,0,0);
-            foto_perfil.setBackground(null);
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(requireActivity(),
+                        "br.com.justworks.android.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
+            }
         }
     }
+
+    private void selectImage() {
+        final CharSequence[] options = { "Tirar foto", "Selecionar da galeria","Cancelar" };
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        builder.setTitle("Adicionar foto");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (options[item].equals("Tirar foto"))
+                {
+                    cameraPermissao();
+                }
+                else if (options[item].equals("Selecionar da galeria"))
+                {
+                    Intent galeria = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(galeria, GALLERY_REQUEST_CODE);
+                }
+                else if (options[item].equals("Cancelar")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    private void cameraPermissao() {
+        if(ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(requireActivity(), new String[] {Manifest.permission.CAMERA}, CAMERA_PERM_CODE);
+        } else {
+            dispatchTakePictureIntent();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode == CAMERA_PERM_CODE){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED);
+            dispatchTakePictureIntent();
+        } else {
+            Toast.makeText(requireActivity(), "A permissão é necessária", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == CAMERA_REQUEST_CODE) {
+                File fileCam = new File(currentPhotoPath);
+                foto_perfil.setPadding(0,0,0,0);
+                foto_perfil.setBackground(null);
+                foto_perfil.setImageURI(Uri.fromFile(fileCam));
+
+                Bitmap fotoCamera = BitmapFactory.decodeFile(currentPhotoPath);
+                profissionalViewModel.setFoto_perfil(fotoCamera);
+
+                Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                Uri contentUri = Uri.fromFile(fileCam);
+                mediaScanIntent.setData(contentUri);
+                requireActivity().sendBroadcast(mediaScanIntent);
+
+            } else if (requestCode == GALLERY_REQUEST_CODE) {
+                Uri contentUri = data.getData();
+                foto_perfil.setPadding(0,0,0,0);
+                foto_perfil.setBackground(null);
+                foto_perfil.setImageURI(contentUri);
+                Bitmap fotoGaleria = null;
+                try {
+                    fotoGaleria = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), contentUri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                profissionalViewModel.setFoto_perfil(fotoGaleria);
+                Toast.makeText(requireActivity(), "tem foto? " + profissionalViewModel.getFoto_perfil().getValue(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private String getFileExt(Uri contentUri) {
+        ContentResolver contentResolver = requireActivity().getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(contentUri));
+    }
+
 
     @Override
     public void onStart() {

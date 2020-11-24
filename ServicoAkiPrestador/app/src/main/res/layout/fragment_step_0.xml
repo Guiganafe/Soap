@@ -77,7 +77,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:autoSizeMaxTextSize="18sp"
+        android:autoSizeMaxTextSize="20sp"
         android:autoSizeMinTextSize="14sp"
         android:autoSizeStepGranularity="2sp"
         android:autoSizeTextType="uniform"
@@ -88,15 +88,17 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+        app:layout_constraintTop_toTopOf="@+id/guideline3"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:autoSizeMaxTextSize="18sp"
+        android:autoSizeMaxTextSize="20sp"
         android:autoSizeMinTextSize="14sp"
         android:autoSizeStepGranularity="2sp"
         android:autoSizeTextType="uniform"
