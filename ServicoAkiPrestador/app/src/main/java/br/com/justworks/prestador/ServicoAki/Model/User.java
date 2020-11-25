@@ -27,7 +27,7 @@ public class User {
     private String imageUrl;
     private String motherName;
     private String phoneNumber;
-    private Sex sex;
+    private String sex;
     private ArrayList<ServiceUser> serviceUser;
 
     public User() {
@@ -201,11 +201,11 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public Sex getSex() {
+    public String getSex() {
         return sex;
     }
 
-    public void setSex(Sex sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
 

@@ -45,7 +45,7 @@
                 android:layout_marginEnd="10sp"
                 android:layout_marginBottom="10sp"
                 android:paddingTop="5dp"
-                android:text="Informações pessoais"
+                android:text="Endereço"
                 android:textColor="@color/colorBlack"
                 android:textSize="20sp"
                 android:textStyle="bold" />

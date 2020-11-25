@@ -196,7 +196,6 @@ public class Step_9 extends Fragment {
 
         servicoViewModel.addService(serviceUser);
         Toast.makeText(requireActivity(), "Serviço adicionado com sucesso!", Toast.LENGTH_SHORT).show();
-        Toast.makeText(requireActivity(), "Tamanho da lista" + servicoViewModel.getServices_list().getValue().size(), Toast.LENGTH_SHORT).show();
         getActivity().onBackPressed();
         getActivity().onBackPressed();
     }

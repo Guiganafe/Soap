@@ -1,13 +1,18 @@
 package br.com.justworks.prestador.ServicoAki.Activity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.AttributeSet;
+import android.view.View;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -39,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         inicializarComponentes();
-        inicializarUsuario();
         validarUsuario();
+        inicializarUsuario();
     }
 
     private void validarUsuario() {
@@ -50,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
                 if(documentSnapshot.exists()){
                     comprovanteResidencia = documentSnapshot.getString("proofOfAddressImage");
                     if(TextUtils.isEmpty(comprovanteResidencia)){
-                        Intent complearCadastro = new Intent(MainActivity.this, CompletarCadastroActivity.class);
-                        startActivity(complearCadastro);
+                        Intent completarCadastro = new Intent(MainActivity.this, CompletarCadastroActivity.class);
+                        startActivity(completarCadastro);
                         finish();
                     }
                 }
@@ -64,14 +69,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if(documentSnapshot.exists()){
-
-                    comprovanteResidencia = documentSnapshot.getString(userEnum.USER_PROF_ADDRESS_IMAGE.getDisplayName());
-
-                    if(TextUtils.isEmpty(comprovanteResidencia)){
-                        Intent complearCadastro = new Intent(MainActivity.this, CompletarCadastroActivity.class);
-                        startActivity(complearCadastro);
-                    }
-
                     name = documentSnapshot.getString(userEnum.USER_NAME.getDisplayName());
                     imageUrl = documentSnapshot.getString(userEnum.USER_IMAGE_URL.getDisplayName());
                     email = documentSnapshot.getString(userEnum.USER_EMAIL.getDisplayName());

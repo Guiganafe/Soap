@@ -177,11 +177,8 @@ public class Step_7 extends Fragment {
             e.printStackTrace();
         }
 
-        String sexoPt, sexoEn;
+        String sexoPt;
         sexoPt = sexoViewModel.getSexoPtbr().getValue();
-        sexoEn = sexoViewModel.getSexoEn().getValue();
-
-        Sex sexo = new Sex(sexoPt, sexoEn);
 
         String estadoCivilPt, estadoCivilEn;
         estadoCivilPt = estadoCivilViewModel.getEstadoCivilPtBr().getValue();
@@ -229,7 +226,7 @@ public class Step_7 extends Fragment {
         user.setImageUrl(imageUrl);
         user.setMotherName(motherName);
         user.setPhoneNumber(phoneNumber);
-        user.setSex(sexo);
+        user.setSex(sexoPt);
         user.setDispatchingAgency(dispatchingAgency);
         user.setEmissionDate(emissionDate);
         user.setGovernamentId(governmentId);
@@ -253,10 +250,6 @@ public class Step_7 extends Fragment {
                 Toast.makeText(requireActivity(), "Erro ao salvar o usuário", Toast.LENGTH_SHORT).show();
             }
         });
-
-        Intent mainIntent = new Intent(requireActivity(), MainActivity.class);
-        startActivity(mainIntent);
-        requireActivity().finish();
     }
 
     private Date dataTimestamp() throws ParseException {

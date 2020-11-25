@@ -1,17 +1,24 @@
 package br.com.justworks.prestador.ServicoAki.CompleteAccount;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +40,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.ViewModel.ProfissionalViewModel;
@@ -49,6 +60,10 @@ public class Step_5 extends Fragment {
     private FirebaseAuth firebaseAuth;
     private String userID = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
     private StorageReference storageRef;
+    public static final int CAMERA_PERM_CODE = 101;
+    public static final int CAMERA_REQUEST_CODE_FRENTE = 102;
+    public static final int CAMERA_REQUEST_CODE_VERSO = 103;
+    private String currentPhotoPath;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -96,46 +111,126 @@ public class Step_5 extends Fragment {
         tirar_foto_frente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, 2);
-                }
+                cameraPermissao(CAMERA_REQUEST_CODE_FRENTE);
             }
         });
 
         tirar_foto_verso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, 3);
-                }
+                cameraPermissao(CAMERA_REQUEST_CODE_VERSO);
             }
         });
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        //File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
 
-        if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            //Salva a imagem no bitmap
-            profissionalViewModel.setFoto_doc_frente(imageBitmap);
-            foto_frente.setImageBitmap(imageBitmap);
-        }
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
 
-        if (requestCode == 3 && resultCode == Activity.RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            //Salva a imagem no bitmap
-            profissionalViewModel.setFoto_doc_verso(imageBitmap);
-            foto_verso.setImageBitmap(imageBitmap);
+    private void dispatchTakePictureIntentFrente() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(requireActivity(),
+                        "br.com.justworks.android.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE_FRENTE);
+            }
         }
     }
 
-    private void enviarDados() {
+    private void dispatchTakePictureIntentVerso() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(requireActivity(),
+                        "br.com.justworks.android.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE_VERSO);
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == CAMERA_REQUEST_CODE_FRENTE) {
+                File fileCam = new File(currentPhotoPath);
+                foto_frente.setImageURI(Uri.fromFile(fileCam));
+
+                Bitmap fotoCamera = BitmapFactory.decodeFile(currentPhotoPath);
+                profissionalViewModel.setFoto_doc_frente(fotoCamera);
+
+                Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                Uri contentUri = Uri.fromFile(fileCam);
+                mediaScanIntent.setData(contentUri);
+                requireActivity().sendBroadcast(mediaScanIntent);
+                currentPhotoPath = "";
+            }
+
+            if (requestCode == CAMERA_REQUEST_CODE_VERSO) {
+                File fileCam = new File(currentPhotoPath);
+                foto_verso.setImageURI(Uri.fromFile(fileCam));
+
+                Bitmap fotoCamera = BitmapFactory.decodeFile(currentPhotoPath);
+                profissionalViewModel.setFoto_doc_verso(fotoCamera);
+
+                Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                Uri contentUri = Uri.fromFile(fileCam);
+                mediaScanIntent.setData(contentUri);
+                requireActivity().sendBroadcast(mediaScanIntent);
+                currentPhotoPath = "";
+            }
+        }
+    }
+
+    private void cameraPermissao(int REQUEST_CODE) {
+        if(ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(requireActivity(), new String[] {Manifest.permission.CAMERA}, CAMERA_PERM_CODE);
+        } else {
+            if(REQUEST_CODE == 102) {
+                dispatchTakePictureIntentFrente();
+            } else if(REQUEST_CODE == 103) {
+                dispatchTakePictureIntentVerso();
+            }
+        }
+    }
+
+    private Task<String> enviarDados() {
         final StorageReference backIdImageRef = storageRef.child("users/" + userID + "_backIdImage.jpg");
         final StorageReference frontIdImageRef = storageRef.child("users/" + userID + "_frontIdImage.jpg");
 
@@ -191,6 +286,7 @@ public class Step_5 extends Fragment {
                 }
             }
         });
+        return null;
     }
 
     private boolean validarCampos() {

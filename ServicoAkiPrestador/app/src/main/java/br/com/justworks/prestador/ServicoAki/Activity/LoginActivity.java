@@ -184,8 +184,8 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser user) {
         if(user != null){
             Toast.makeText(LoginActivity.this, "Login realizado com sucesso", Toast.LENGTH_LONG).show();
-            Intent completarCadastroIntent = new Intent(LoginActivity.this, CompletarCadastroActivity.class);
-            startActivity(completarCadastroIntent);
+            Intent main = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(main);
             finish();
         }
     }

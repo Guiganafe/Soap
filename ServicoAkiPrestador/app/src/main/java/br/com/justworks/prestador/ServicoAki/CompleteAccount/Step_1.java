@@ -81,7 +81,6 @@ public class Step_1 extends Fragment {
     public static final int CAMERA_REQUEST_CODE = 102;
     public static final int GALLERY_REQUEST_CODE = 105;
     private Button btn_voltar_cadastro_step_0,  btn_avancar_cadastro_step_2, adicionar_foto;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
     private ImageView foto_perfil, remover_foto;
     private Spinner sexo_spinner, estado_civil_spinner;
     private EditText nome_cadastro, email_cadastro, telefone_cadastro, data_nascimento;
@@ -255,7 +254,7 @@ public class Step_1 extends Fragment {
         });
     }
 
-    private void enviarDados() {
+    private Task<String> enviarDados() {
         final StorageReference profileImageRef = storageRef.child("users/" + userID + "_profileImage.jpg");
         Bitmap bitmap = profissionalViewModel.getFoto_perfil().getValue();
 
@@ -284,6 +283,7 @@ public class Step_1 extends Fragment {
                 }
             }
         });
+        return null;
     }
 
     private boolean validarCampos() {
@@ -338,12 +338,11 @@ public class Step_1 extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String sexo = sexo_spinner.getSelectedItem().toString();
-                sexoViewModel.setSexoPtbR(sexo);
 
                 if(position == 1){
-                    sexoViewModel.setSexoEn("Male");
+                    sexoViewModel.setSexoPtbR("M");
                 } else if(position == 2){
-                    sexoViewModel.setSexoEn("Female");
+                    sexoViewModel.setSexoPtbR("F");
                 }
             }
 
@@ -494,7 +493,6 @@ public class Step_1 extends Fragment {
                     e.printStackTrace();
                 }
                 profissionalViewModel.setFoto_perfil(fotoGaleria);
-                Toast.makeText(requireActivity(), "tem foto? " + profissionalViewModel.getFoto_perfil().getValue(), Toast.LENGTH_SHORT).show();
             }
         }
     }

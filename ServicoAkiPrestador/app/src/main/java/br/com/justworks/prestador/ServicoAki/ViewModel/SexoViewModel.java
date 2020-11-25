@@ -8,7 +8,6 @@ public class SexoViewModel extends ViewModel {
 
     private MutableLiveData<String> sexoPtbR = new MutableLiveData<>();
 
-    private MutableLiveData<String> sexoEn = new MutableLiveData<>();
 
     public LiveData<String> getSexoPtbr() {
         return sexoPtbR;
@@ -18,12 +17,5 @@ public class SexoViewModel extends ViewModel {
         this.sexoPtbR.setValue(sexoPtbR);
     }
 
-    public LiveData<String> getSexoEn() {
-        return sexoEn;
-    }
-
-    public void setSexoEn(String sexoEn) {
-        this.sexoEn.setValue(sexoEn);
-    }
 
 }
