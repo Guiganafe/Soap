@@ -20,6 +20,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import com.bumptech.glide.Glide;
+
+import br.com.justworks.prestador.ServicoAki.Activity.MeusServicos;
 import br.com.justworks.prestador.ServicoAki.Enum.userEnum;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Activity.LoginActivity;
@@ -29,7 +31,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MeuPerfilFragment extends Fragment {
 
-    private TextView tv_logout, tv_name, tv_email, tv_authenticated, tv_phone;
+    private TextView tv_logout, tv_name, tv_email, tv_authenticated, tv_phone, tv_meusServicos;
     private CircleImageView imageView;
 
     private FirebaseAuth firebaseAuth;
@@ -66,6 +68,14 @@ public class MeuPerfilFragment extends Fragment {
                 Intent intent = new Intent(getContext(), LoginActivity.class);
                 startActivity(intent);
                 getActivity().finish();
+            }
+        });
+
+        tv_meusServicos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent meusServicos = new Intent(requireActivity(), MeusServicos.class);
+                startActivity(meusServicos);
             }
         });
     }
@@ -108,6 +118,7 @@ public class MeuPerfilFragment extends Fragment {
         tv_authenticated = (TextView) view.findViewById(R.id.tv_user_authenticated);
         tv_phone = (TextView) view.findViewById(R.id.tv_user_phone);
         imageView = (CircleImageView) view.findViewById(R.id.profile_image);
+        tv_meusServicos = (TextView) view.findViewById(R.id.tv_meusServicos);
     }
 
 

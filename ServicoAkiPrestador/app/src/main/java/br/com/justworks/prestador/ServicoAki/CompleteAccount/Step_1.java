@@ -369,7 +369,7 @@ public class Step_1 extends Fragment {
                 } else if(position == 3){
                     estadoCivilViewModel.setEstadoCivilEn("Divorced");
                 } else if(position == 4){
-                    estadoCivilViewModel.setEstadoCivilEn("Widower");
+                    estadoCivilViewModel.setEstadoCivilEn("Widowed");
                 }
             }
 
