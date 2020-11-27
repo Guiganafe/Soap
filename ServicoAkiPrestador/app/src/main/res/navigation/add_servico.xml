@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/add_servico"
+    app:startDestination="@id/selecionarCategoria">
+
+    <fragment
+        android:id="@+id/selecionarCategoria"
+        android:name="br.com.justworks.prestador.ServicoAki.Fragments.SelecionarCategoria"
+        android:label="fragment_selecionar_categoria"
+        tools:layout="@layout/fragment_selecionar_categoria" >
+        <action
+            android:id="@+id/action_selecionarCategoria_to_selecionarServico"
+            app:destination="@id/selecionarServico" />
+    </fragment>
+    <fragment
+        android:id="@+id/selecionarServico"
+        android:name="br.com.justworks.prestador.ServicoAki.Fragments.SelecionarServico"
+        android:label="fragment_selecionar_servico"
+        tools:layout="@layout/fragment_selecionar_servico" >
+        <action
+            android:id="@+id/action_selecionarServico_to_configurarServicos"
+            app:destination="@id/configurarServicos" />
+    </fragment>
+    <fragment
+        android:id="@+id/configurarServicos"
+        android:name="br.com.justworks.prestador.ServicoAki.Fragments.ConfigurarServicos"
+        android:label="fragment_configurar_servicos"
+        tools:layout="@layout/fragment_configurar_servicos" />
+</navigation>

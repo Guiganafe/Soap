@@ -16,11 +16,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import org.joda.time.DateTime;
+
+import java.util.Date;
 
 import br.com.justworks.prestador.ServicoAki.Activity.CriarEvento;
 import br.com.justworks.prestador.ServicoAki.Adapter.SchedulesItemAdapter;
@@ -93,7 +96,7 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
     private void pickerControl(@NonNull View view) {
         HorizontalPicker picker = (HorizontalPicker) view.findViewById(R.id.datePicker);
         picker.setListener(this)
-                .setDays(15)
+                .setDays(30)
                 .setOffset(7)
                 .setDateSelectedColor(Color.DKGRAY)
                 .setDateSelectedTextColor(Color.DKGRAY)
@@ -112,7 +115,7 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
 
     @Override
     public void onDateSelected(DateTime dateSelected) {
-        Log.i("HorizontalPicker","Fecha seleccionada="+dateSelected.toString());
+        Log.i("HorizontalPicker","Fecha seleccionada = " + dateSelected.toString());
     }
 
     private void inicializarComponentes(View view) {

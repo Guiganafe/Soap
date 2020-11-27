@@ -1,18 +1,17 @@
-package br.com.justworks.prestador.ServicoAki.CompleteAccount;
+package br.com.justworks.prestador.ServicoAki.Fragments;
 
 import android.content.Intent;
 import android.graphics.drawable.PictureDrawable;
+import android.net.ProxyInfo;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,20 +26,28 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
-import org.w3c.dom.Text;
+import java.util.HashMap;
+import java.util.Map;
 
+import br.com.justworks.prestador.ServicoAki.Activity.MainActivity;
 import br.com.justworks.prestador.ServicoAki.Adapter.SvgSoftwareLayerSetter;
+import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Model.CategoriesServices;
 import br.com.justworks.prestador.ServicoAki.Model.Description;
 import br.com.justworks.prestador.ServicoAki.Model.ServiceUser;
 import br.com.justworks.prestador.ServicoAki.Model.Services;
 import br.com.justworks.prestador.ServicoAki.R;
-import br.com.justworks.prestador.ServicoAki.Util.Mask;
 import br.com.justworks.prestador.ServicoAki.Util.MaskEditUtil;
 import br.com.justworks.prestador.ServicoAki.ViewModel.ServicoViewModel;
 
-public class Step_9 extends Fragment {
+public class ConfigurarServicos extends Fragment {
 
     private ImageView img_servico;
     private TextView tv_nome_servico;
@@ -51,6 +58,8 @@ public class Step_9 extends Fragment {
     private Button salvar_Servico;
     private ServicoViewModel servicoViewModel;
     private RequestBuilder<PictureDrawable> requestBuilder;
+    private String userID = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     boolean material, desloca;
 
@@ -64,7 +73,7 @@ public class Step_9 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_step_9, container, false);
+        return inflater.inflate(R.layout.fragment_configurar_servicos, container, false);
     }
 
     @Override
@@ -83,12 +92,6 @@ public class Step_9 extends Fragment {
     }
 
     private void maskController() {
-//        TextWatcher valorServico = Mask.monetario(valor_servico);
-//        valor_servico.addTextChangedListener(Mask.insert("R$###,##", valor_servico));
-//
-//        TextWatcher valorDeslocamento = Mask.monetario(custo_deslocamento);
-//        custo_deslocamento.addTextChangedListener(valorDeslocamento);
-//
         duracao_servico.addTextChangedListener(MaskEditUtil.mask(duracao_servico, MaskEditUtil.FORMAT_HORA_MINUTOS));
     }
 
@@ -195,9 +198,19 @@ public class Step_9 extends Fragment {
         serviceUser.setPrice(Double.parseDouble(valor));
 
         servicoViewModel.addService(serviceUser);
-        Toast.makeText(requireActivity(), "Serviço adicionado com sucesso!", Toast.LENGTH_SHORT).show();
-        getActivity().onBackPressed();
-        getActivity().onBackPressed();
+
+        db.collection("users").document(userID).update("services", FieldValue.arrayUnion(serviceUser)).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(requireActivity(), "Serviço adicionado com sucesso!", Toast.LENGTH_SHORT).show();
+                requireActivity().finish();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(requireActivity(), "Erro ao salvar o usuário", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void loadController() {
@@ -216,16 +229,16 @@ public class Step_9 extends Fragment {
     }
 
     private void inicializarComponentes(View view) {
-        tv_custo_deslocamento = (TextView) view.findViewById(R.id.tv_custo_deslocamento_servico);
-        img_servico = (ImageView) view.findViewById(R.id.imageSelectedService);
-        tv_nome_servico = (TextView) view.findViewById(R.id.tx_nome_selectedService);
-        tv_nome_categoria = (TextView) view.findViewById(R.id.tx_nome_selectedCategorie);
-        valor_servico = (EditText) view.findViewById(R.id.edt_valor_servico);
-        duracao_servico = (EditText) view.findViewById(R.id.edt_duracao_servico);
-        custo_deslocamento = (EditText) view.findViewById(R.id.edt_custo_deslocamento_servico);
-        descricao_servico = (EditText) view.findViewById(R.id.edt_descricao_personalizada_servico);
-        fornece_material = (Spinner) view.findViewById(R.id.spinner_material_servico);
-        desloca_cliente = (Spinner) view.findViewById(R.id.spinner_deslocamento_servico);
-        salvar_Servico = (Button) view.findViewById(R.id.btn_salvar_servico);
+        tv_custo_deslocamento = (TextView) view.findViewById(R.id.tv_custo_deslocamento_servicoConf);
+        img_servico = (ImageView) view.findViewById(R.id.imageSelectedServiceConf);
+        tv_nome_servico = (TextView) view.findViewById(R.id.tx_nome_selectedServiceConf);
+        tv_nome_categoria = (TextView) view.findViewById(R.id.tx_nome_selectedCategoriaConf);
+        valor_servico = (EditText) view.findViewById(R.id.edt_valor_servicoConf);
+        duracao_servico = (EditText) view.findViewById(R.id.edt_duracao_servicoConf);
+        custo_deslocamento = (EditText) view.findViewById(R.id.edt_custo_deslocamento_servicoConf);
+        descricao_servico = (EditText) view.findViewById(R.id.edt_descricao_personalizada_servicoConf);
+        fornece_material = (Spinner) view.findViewById(R.id.spinner_material_servicoConf);
+        desloca_cliente = (Spinner) view.findViewById(R.id.spinner_deslocamento_servicoConf);
+        salvar_Servico = (Button) view.findViewById(R.id.btn_salvar_servicoConf);
     }
 }

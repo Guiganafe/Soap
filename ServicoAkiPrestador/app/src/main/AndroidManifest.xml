@@ -13,9 +13,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.MeusServicos"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".Activity.Services"></activity>
+        <activity android:name=".Activity.EditarServico"></activity>
+        <activity
+            android:name=".Activity.AdicionarServico"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.MeusServicos"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.Services" />
         <activity
             android:name=".Activity.CadastroActivity"
             android:theme="@style/AppTheme.NoActionBar" />

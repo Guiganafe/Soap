@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import br.com.justworks.prestador.ServicoAki.Adapter.ServicesItemAdapter;
 import br.com.justworks.prestador.ServicoAki.Adapter.ServicesListAdapter;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
+import br.com.justworks.prestador.ServicoAki.Model.ServiceUser;
 import br.com.justworks.prestador.ServicoAki.Model.Services;
 import br.com.justworks.prestador.ServicoAki.Model.ServicesDocument;
 import br.com.justworks.prestador.ServicoAki.R;
@@ -38,7 +39,7 @@ public class MeusServicos extends AppCompatActivity implements ServicesListAdapt
     private RecyclerView.Adapter adapter;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ServicoViewModel servicoViewModel;
-    private ArrayList<Services> servicesUser;
+    private ArrayList<ServiceUser> servicesUser;
     private Context context = this;
     private ImageView addServico;
     private ServicesListAdapter.onServiceListenner serviceListenner = (ServicesListAdapter.onServiceListenner) this.context;
@@ -61,7 +62,7 @@ public class MeusServicos extends AppCompatActivity implements ServicesListAdapt
                 if(documentSnapshot.exists()){
                     servicesUser = documentSnapshot.toObject(ServicesDocument.class).services;
                     adapter = new ServicesListAdapter(servicesUser, context, serviceListenner);
-                    recyclerView.setHasFixedSize(true);
+                    recyclerView.setHasFixedSize(false);
                     recyclerView.setLayoutManager(new LinearLayoutManager(context));
                     recyclerView.setAdapter(adapter);
                 }
@@ -70,33 +71,32 @@ public class MeusServicos extends AppCompatActivity implements ServicesListAdapt
     }
 
     private void onClickController() {
-//        adapter.setOnItemClickListener(new ServicesItemAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(DocumentSnapshot documentSnapshot, int position, View v) {
-//                String serviceId = documentSnapshot.getId();
-//                br.com.justworks.prestador.ServicoAki.Model.Services services = documentSnapshot.toObject(Services.class);
-//                servicoViewModel.setServices(services);
-//                servicoViewModel.setServiceId(serviceId);
-//                Navigation.findNavController(v).navigate(R.id.action_step_8_to_step_9);
-//            }
-//        });
+        addServico.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addServicoIntent = new Intent(MeusServicos.this, AdicionarServico.class);
+                startActivity(addServicoIntent);
+            }
+        });
     }
 
     @Override
     public void onServiceClick(int position) {
         Toast.makeText(context, "a: " + servicesUser.get(position).getName().getPtbr(), Toast.LENGTH_SHORT).show();
-//        Intent intent = new Intent(this, AdicionarServico.class);
-//        startActivity(intent);
+        Intent addServicoIntent = new Intent(MeusServicos.this, EditarServico.class);
+        startActivity(addServicoIntent);
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        setUpReciclerView();
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        setUpReciclerView();
     }
 
     private void inicializarComponentes() {

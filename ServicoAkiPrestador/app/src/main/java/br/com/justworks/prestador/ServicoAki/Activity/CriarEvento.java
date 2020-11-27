@@ -36,12 +36,22 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
+import br.com.justworks.prestador.ServicoAki.BuildConfig;
 import br.com.justworks.prestador.ServicoAki.Enum.userEnum;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Model.Address;
@@ -67,6 +77,8 @@ public class CriarEvento extends AppCompatActivity {
     private TextView tv_local, tv_local_op, tv_valor, tv_valor_op, tv_servicos, tv_servicos_op;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference servicesReference = db.collection("scheduleItems");
+
+    private int horaInicio, minutoInicio, diaInicio, mesInicio, anoInicio, horaFim, minutoFim, diaFim, mesFim, anoFim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,42 +126,49 @@ public class CriarEvento extends AppCompatActivity {
         localEvento = local_evento.getText().toString();
         Boolean active = true;
 
-        if(TextUtils.isEmpty(tituloEvento)) {
+        if (TextUtils.isEmpty(tituloEvento)) {
             titulo_evento.setError("Insira um título para o evento");
             return;
-        } else if(TextUtils.isEmpty(inicioEventoData)) {
+        } else if (TextUtils.isEmpty(inicioEventoData)) {
             inicio_evento_data.setError("Insira uma data válida");
             return;
-        }else if(TextUtils.isEmpty(inicioEventoHora)) {
+        } else if (TextUtils.isEmpty(inicioEventoHora)) {
             inicio_evento_hora.setError("Insira uma hora válida");
             return;
-        }else if(TextUtils.isEmpty(fimEventoData)){
+        } else if (TextUtils.isEmpty(fimEventoData)) {
             fim_evento_data.setError("Insira uma data válida");
             return;
-        }else if(TextUtils.isEmpty(fimEventoHora)){
+        } else if (TextUtils.isEmpty(fimEventoHora)) {
             fim_evento_hora.setError("Insira uma hora válida");
             return;
-        }else if(TextUtils.isEmpty(valorEvento)){
+        } else if (TextUtils.isEmpty(valorEvento)) {
             valor_evento.setError("Insira um valor válido");
             return;
         }
-        if(TextUtils.isEmpty(localEvento)){
+        if (TextUtils.isEmpty(localEvento)) {
             local_evento.setError("Insira uma localização válida");
             return;
         }
 
-        Map<String, Object> scheduleItems = new HashMap<>();
+        Calendar dataInicio = Calendar.getInstance(Locale.getDefault()), dataFim = Calendar.getInstance(Locale.getDefault());
+        dataInicio.set(anoInicio, mesInicio, diaInicio, horaInicio, minutoInicio);
+        final DateFormat df = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss z");
+        String dataInicioFinal = df.format(dataInicio.getTime());
 
+        dataFim.set(anoFim, mesFim, diaFim, horaFim, minutoFim);
+        String dataFimFinal = df.format(dataFim.getTime());
+
+        Map<String, Object> scheduleItems = new HashMap<>();
         scheduleItems.put("title", tituloEvento);
-        scheduleItems.put("hourBegin", inicioEventoData + " " + inicioEventoHora);
-        scheduleItems.put("hourEnd", fimEventoData + " " + fimEventoHora);
+        scheduleItems.put("hourBegin", dataInicioFinal);
+        scheduleItems.put("hourEnd", dataFimFinal);
         scheduleItems.put("price", valorEvento);
         scheduleItems.put("address", address);
         scheduleItems.put("professional", professional);
         scheduleItems.put("scheduleId", FirebaseService.getFirebaseAuth().getCurrentUser().getUid());
         scheduleItems.put("active", active);
 
-    // Add a new document with a generated ID
+        // Add a new document with a generated ID
         db.collection("scheduleItems")
                 .add(scheduleItems)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -219,6 +238,8 @@ public class CriarEvento extends AppCompatActivity {
                 timePickerDialog = new TimePickerDialog(CriarEvento.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        horaInicio = hourOfDay;
+                        minutoInicio = minute;
                         inicio_evento_hora.setText(String.format("%02d:%02d", hourOfDay, minute));
                     }
                 }, hora, minuto, true);
@@ -233,6 +254,9 @@ public class CriarEvento extends AppCompatActivity {
                 datePickerDialog = new DatePickerDialog(CriarEvento.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        diaInicio = dayOfMonth;
+                        mesInicio = month;
+                        anoInicio = year;
                         inicio_evento_data.setText(String.format("%02d/%02d/%04d", dayOfMonth, month, year));
                     }
                 },ano, mes, dia);
@@ -246,6 +270,8 @@ public class CriarEvento extends AppCompatActivity {
                 timePickerDialog = new TimePickerDialog(CriarEvento.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        horaFim = hourOfDay;
+                        minutoFim = minute;
                         fim_evento_hora.setText(String.format("%02d:%02d", hourOfDay, minute));
                     }
                 }, hora, minuto, true);
@@ -260,6 +286,9 @@ public class CriarEvento extends AppCompatActivity {
                 datePickerDialog = new DatePickerDialog(CriarEvento.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        diaFim = dayOfMonth;
+                        mesFim = month;
+                        anoFim = year;
                         fim_evento_data.setText(String.format("%02d/%02d/%04d", dayOfMonth, month, year));
                     }
                 },ano, mes, dia);

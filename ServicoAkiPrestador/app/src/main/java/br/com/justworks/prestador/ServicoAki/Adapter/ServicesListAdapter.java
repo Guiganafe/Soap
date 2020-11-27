@@ -14,17 +14,18 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import java.util.ArrayList;
 import br.com.justworks.prestador.ServicoAki.Model.CategoriesServices;
+import br.com.justworks.prestador.ServicoAki.Model.ServiceUser;
 import br.com.justworks.prestador.ServicoAki.Model.Services;
 import br.com.justworks.prestador.ServicoAki.R;
 
 public class ServicesListAdapter extends RecyclerView.Adapter<ServicesListAdapter.ServicesListViewHolder> {
 
-    ArrayList<Services> servicesList;
+    ArrayList<ServiceUser> servicesList;
     Context context;
     private RequestBuilder<PictureDrawable> requestBuilder;
     private onServiceListenner mOnServiceListenner;
 
-    public ServicesListAdapter(ArrayList<Services> servicesList, Context context, onServiceListenner onServiceListenner){
+    public ServicesListAdapter(ArrayList<ServiceUser> servicesList, Context context, onServiceListenner onServiceListenner){
         this.servicesList = servicesList;
         this.context = context;
         this.mOnServiceListenner = onServiceListenner;
@@ -44,13 +45,13 @@ public class ServicesListAdapter extends RecyclerView.Adapter<ServicesListAdapte
 
         requestBuilder = Glide.with(context).as(PictureDrawable.class).listener(new SvgSoftwareLayerSetter());
 
-        Uri uri = Uri.parse(cat.get(position).getImageIconUrl().getSvg());
+        Uri uri = Uri.parse(cat.get(0).getImageIconUrl().getSvg());
         requestBuilder
                 .load(uri)
                 .into(holder.imagem_service);
 
         holder.textView_service_titulo.setText(servicesList.get(position).getName().getPtbr());
-        holder.textView_categoria_service.setText(cat.get(position).getName().getPtbr());
+        holder.textView_categoria_service.setText(cat.get(0).getName().getPtbr());
     }
 
     @Override
