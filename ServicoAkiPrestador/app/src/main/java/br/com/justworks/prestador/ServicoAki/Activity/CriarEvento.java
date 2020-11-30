@@ -160,8 +160,8 @@ public class CriarEvento extends AppCompatActivity {
 
         Map<String, Object> scheduleItems = new HashMap<>();
         scheduleItems.put("title", tituloEvento);
-        scheduleItems.put("hourBegin", dataInicioFinal);
-        scheduleItems.put("hourEnd", dataFimFinal);
+        scheduleItems.put("hourBegin", dataInicio.getTime());
+        scheduleItems.put("hourEnd", dataFim.getTime());
         scheduleItems.put("price", valorEvento);
         scheduleItems.put("address", address);
         scheduleItems.put("professional", professional);

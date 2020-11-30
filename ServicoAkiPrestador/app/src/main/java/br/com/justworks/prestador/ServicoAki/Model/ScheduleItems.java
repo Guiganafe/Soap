@@ -1,13 +1,15 @@
 package br.com.justworks.prestador.ServicoAki.Model;
 
-import java.sql.Timestamp;
+import com.google.firebase.Timestamp;
+
+import org.joda.time.DateTime;
 
 public class ScheduleItems {
 
-    private String scheduleId;
+    private String scheduleId, title;
     private Boolean active;
     private Timestamp dateService;
-    private String hourBegin, hourEnd, title;
+    private Timestamp hourBegin, hourEnd;
     private String price;
     private Address address;
     private User user;
@@ -15,7 +17,7 @@ public class ScheduleItems {
     public ScheduleItems() {
     }
 
-    public ScheduleItems(String scheduleId, Boolean active, Timestamp dateService, String hourBegin, String hourEnd, String title, String price, Address address, User user) {
+    public ScheduleItems(String scheduleId, Boolean active, Timestamp dateService, Timestamp hourBegin, Timestamp hourEnd, String title, String price, Address address, User user) {
         this.scheduleId = scheduleId;
         this.active = active;
         this.dateService = dateService;
@@ -51,19 +53,19 @@ public class ScheduleItems {
         this.dateService = dateService;
     }
 
-    public String getHourBegin() {
+    public Timestamp getHourBegin() {
         return hourBegin;
     }
 
-    public void setHourBegin(String hourBegin) {
+    public void setHourBegin(Timestamp hourBegin) {
         this.hourBegin = hourBegin;
     }
 
-    public String getHourEnd() {
+    public Timestamp getHourEnd() {
         return hourEnd;
     }
 
-    public void setHourEnd(String hourEnd) {
+    public void setHourEnd(Timestamp hourEnd) {
         this.hourEnd = hourEnd;
     }
 

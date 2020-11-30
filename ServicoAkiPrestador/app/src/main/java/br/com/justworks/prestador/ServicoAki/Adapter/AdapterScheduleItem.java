@@ -1,6 +1,8 @@
 package br.com.justworks.prestador.ServicoAki.Adapter;
 
 import android.content.Context;
+import android.graphics.drawable.PictureDrawable;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,30 +13,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.bumptech.glide.RequestBuilder;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import br.com.justworks.prestador.ServicoAki.Model.ScheduleItems;
 import br.com.justworks.prestador.ServicoAki.R;
 
-public class SchedulesItemAdapter extends FirestoreRecyclerAdapter<ScheduleItems, SchedulesItemAdapter.SchedulesItemHolder> {
-    private Context context;
+public class AdapterScheduleItem extends RecyclerView.Adapter<AdapterScheduleItem.SchedulesItemHolder>{
 
-    public SchedulesItemAdapter(@NonNull FirestoreRecyclerOptions<ScheduleItems> options, Context context) {
-        super(options);
-        this.context = context;
-    }
+    ArrayList<ScheduleItems> schedulesList;
+    private RequestBuilder<PictureDrawable> requestBuilder;
 
-    @Override
-    protected void onBindViewHolder(@NonNull SchedulesItemHolder holder, int position, @NonNull ScheduleItems model) {
-        //Glide.with(context).load(model.getImageUrl()).into(holder.imgShops);
-        String horaInicio = model.getHourBegin().toString();
-        String horaFim = model.getHourEnd().toString();
-        //holder.textView_servico_hora.setText("Das: " + horaInicio[3] + " as " + horaFim[3]);
-        holder.textView_servico_titulo.setText(model.getTitle());
+    public AdapterScheduleItem(ArrayList<ScheduleItems> servicesList){
+        this.schedulesList = servicesList;
     }
 
     @NonNull
@@ -43,6 +35,20 @@ public class SchedulesItemAdapter extends FirestoreRecyclerAdapter<ScheduleItems
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.agenda_item,
                 parent, false);
         return new SchedulesItemHolder(v);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull SchedulesItemHolder holder, int position) {
+        //Glide.with(context).load(model.getImageUrl()).into(holder.imgShops);
+        String horaInicio = schedulesList.get(position).getHourBegin().toString();
+        String horaFim = schedulesList.get(position).getHourEnd().toString();
+        //holder.textView_servico_hora.setText("Das: " + horaInicio[3] + " as " + horaFim[3]);
+        holder.textView_servico_titulo.setText(schedulesList.get(position).getTitle());
+    }
+
+    @Override
+    public int getItemCount() {
+        return schedulesList.size();
     }
 
     class SchedulesItemHolder extends RecyclerView.ViewHolder{
