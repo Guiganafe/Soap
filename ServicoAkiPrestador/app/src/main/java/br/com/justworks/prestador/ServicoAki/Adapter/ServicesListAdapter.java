@@ -15,7 +15,6 @@ import com.bumptech.glide.RequestBuilder;
 import java.util.ArrayList;
 import br.com.justworks.prestador.ServicoAki.Model.CategoriesServices;
 import br.com.justworks.prestador.ServicoAki.Model.ServiceUser;
-import br.com.justworks.prestador.ServicoAki.Model.Services;
 import br.com.justworks.prestador.ServicoAki.R;
 
 public class ServicesListAdapter extends RecyclerView.Adapter<ServicesListAdapter.ServicesListViewHolder> {

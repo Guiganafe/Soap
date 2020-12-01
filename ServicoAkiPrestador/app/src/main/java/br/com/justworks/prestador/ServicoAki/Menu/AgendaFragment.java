@@ -55,9 +55,11 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
     private ImageView criar_evento, imgAgenda;
     private TextView tv_titulo, tv_descricao, tv_agendaCheia;
     private AdapterScheduleItem adapter;
+    private HorizontalPicker picker;
     //private SchedulesItemAdapter adapter;
     private RecyclerView recyclerView;
     private ArrayList<ScheduleItems> scheduleItemsList = new ArrayList<>();
+    private ArrayList<ScheduleItems> scheduleItemsListByDay = new ArrayList<>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference servicesReference = db.collection("scheduleItems");
     private String userID = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
@@ -75,11 +77,7 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
 
         inicializarComponentes(view);
 
-        pickerControl(view);
-
-        carregarAgendaDoDia();
-
-        //setUpReciclerView();
+        pickerControl();
 
         criar_evento.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,33 +86,6 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
                 startActivity(criarEvento);
             }
         });
-    }
-
-    private void setUpReciclerView(int ano, int mes, int dia) {
-        Calendar dataInicio = Calendar.getInstance(Locale.getDefault()), dataMax = Calendar.getInstance(Locale.getDefault());
-        dataInicio.set(ano, mes, dia, 0, 0, 0);
-
-        dataMax.set(ano, mes, dia+1, 0, 0, 0);
-        //Toast.makeText(requireActivity(), ": " + dataInicio.getTime(), Toast.LENGTH_SHORT).show();
-
-        Query query = servicesReference.whereEqualTo("scheduleId", userID).whereGreaterThan("hourBegin", dataInicio.getTime()).whereLessThan("hourEnd", dataMax);
-
-        FirestoreRecyclerOptions<ScheduleItems> options = new FirestoreRecyclerOptions.Builder<ScheduleItems>()
-                .setQuery(query, ScheduleItems.class)
-                .build();
-
-        if(!options.getSnapshots().isEmpty()){
-            imgAgenda.setVisibility(View.GONE);
-            tv_titulo.setVisibility(View.GONE);
-            tv_descricao.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
-            tv_agendaCheia.setVisibility(View.VISIBLE);
-        }
-
-//        adapter = new SchedulesItemAdapter(options, getContext());
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -127,36 +98,62 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
         super.onStop();
     }
 
-    public void carregarAgendaDoDia(){
+    public void carregarAgendaDoDia(int dia, int mes, int ano){
+
+        final Calendar dataDoDia = Calendar.getInstance(Locale.getDefault()), dataDiaSeguinte = Calendar.getInstance(Locale.getDefault());
+        dataDoDia.set(ano, mes-1, dia, 0, 0);
+        dataDiaSeguinte.set(ano, mes-1, dia, 23 ,59, 59);
+
+        scheduleItemsList.clear();
+        scheduleItemsListByDay.clear();
+
         db.collection("scheduleItems").whereEqualTo("scheduleId", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        scheduleItemsList.add(document.toObject(ScheduleItems.class));
-                        Toast.makeText(requireActivity(), document.getId() + " => " + document.getData(), Toast.LENGTH_SHORT).show();
-                    }
-                    Toast.makeText(requireActivity(), "size: " + scheduleItemsList.size(), Toast.LENGTH_SHORT).show();
-                    if(scheduleItemsList.size() > 0){
-                        imgAgenda.setVisibility(View.GONE);
-                        tv_titulo.setVisibility(View.GONE);
-                        tv_descricao.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.VISIBLE);
-                        tv_agendaCheia.setVisibility(View.VISIBLE);
-                    }
-                    adapter = new AdapterScheduleItem(scheduleItemsList);
-                    recyclerView.setHasFixedSize(false);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-                    recyclerView.setAdapter(adapter);
-                } else {
-                    Toast.makeText(requireActivity(), "erro", Toast.LENGTH_SHORT).show();
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    scheduleItemsList.add(document.toObject(ScheduleItems.class));
                 }
+
+                for(ScheduleItems scheduleItemsByDay: scheduleItemsList){
+                    if (scheduleItemsByDay.getHourBegin().toDate().after(dataDoDia.getTime())) {
+                        if(scheduleItemsByDay.getHourEnd().toDate().before(dataDiaSeguinte.getTime())){
+                            scheduleItemsListByDay.add(scheduleItemsByDay);
+                        }
+                    }
+                }
+
+                if(scheduleItemsListByDay.size() > 0){
+                    imgAgenda.setVisibility(View.GONE);
+                    tv_titulo.setVisibility(View.GONE);
+                    tv_descricao.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    tv_agendaCheia.setVisibility(View.VISIBLE);
+                } else {
+                    imgAgenda.setVisibility(View.VISIBLE);
+                    tv_titulo.setVisibility(View.VISIBLE);
+                    tv_descricao.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                    tv_agendaCheia.setVisibility(View.GONE);
+                }
+
+                adapter = new AdapterScheduleItem(scheduleItemsListByDay);
+                recyclerView.setHasFixedSize(false);
+                recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+                recyclerView.setAdapter(adapter);
+            } else {
+                Toast.makeText(requireActivity(), "erro", Toast.LENGTH_SHORT).show();
+                imgAgenda.setVisibility(View.VISIBLE);
+                tv_titulo.setVisibility(View.VISIBLE);
+                tv_descricao.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+                tv_agendaCheia.setVisibility(View.GONE);
+            }
             }
         });
     }
 
-    private void pickerControl(@NonNull View view) {
-        HorizontalPicker picker = (HorizontalPicker) view.findViewById(R.id.datePicker);
+    private void pickerControl() {
         picker.setListener(this)
                 .setDays(30)
                 .setOffset(4)
@@ -176,14 +173,11 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
 
     @Override
     public void onDateSelected(DateTime dateSelected) {
-        Log.i("HorizontalPicker","Fecha seleccionada = " + dateSelected.toString());
-//        int ano = dateSelected.year().get();
-//        int mes = dateSelected.monthOfYear().get();
-//        int dia = dateSelected.dayOfMonth().get();
-//        setUpReciclerView(ano, mes, dia);
+        carregarAgendaDoDia(dateSelected.dayOfMonth().get(), dateSelected.monthOfYear().get(), dateSelected.year().get());
     }
 
     private void inicializarComponentes(View view) {
+        picker = (HorizontalPicker) view.findViewById(R.id.datePicker);
         criar_evento = (ImageView) view.findViewById(R.id.img_criar_evento);
         recyclerView = view.findViewById(R.id.reciclerView_servicoItem);
         imgAgenda = (ImageView) view.findViewById(R.id.imagemAgenda);

@@ -3,14 +3,18 @@ package br.com.justworks.prestador.ServicoAki.Activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -43,6 +48,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -51,14 +57,19 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import br.com.justworks.prestador.ServicoAki.Adapter.ServiceListEventoAdapter;
+import br.com.justworks.prestador.ServicoAki.Adapter.ServicesListAdapter;
 import br.com.justworks.prestador.ServicoAki.BuildConfig;
 import br.com.justworks.prestador.ServicoAki.Enum.userEnum;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Model.Address;
+import br.com.justworks.prestador.ServicoAki.Model.ServiceUser;
+import br.com.justworks.prestador.ServicoAki.Model.ServicesDocument;
 import br.com.justworks.prestador.ServicoAki.Model.User;
 import br.com.justworks.prestador.ServicoAki.R;
+import br.com.justworks.prestador.ServicoAki.ViewModel.ServicoViewModel;
 
-public class CriarEvento extends AppCompatActivity {
+public class CriarEvento extends AppCompatActivity implements ServiceListEventoAdapter.onServiceListenner{
 
     private static final String TAG = "CriarEvento";
 
@@ -72,11 +83,18 @@ public class CriarEvento extends AppCompatActivity {
     private int dia,mes, ano, hora, minuto;
     private TimePickerDialog timePickerDialog;
     private DatePickerDialog datePickerDialog;
-    private RecyclerView recyclerView;
     private EditText titulo_evento, inicio_evento_hora, inicio_evento_data, fim_evento_hora, fim_evento_data, tipo_evento, valor_evento, local_evento, servicos_evento;
     private TextView tv_local, tv_local_op, tv_valor, tv_valor_op, tv_servicos, tv_servicos_op;
+
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView.Adapter adapter;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference servicesReference = db.collection("scheduleItems");
+    private ServicoViewModel servicoViewModel;
+    private ArrayList<ServiceUser> servicesUser = new ArrayList<>();
+    private Context context = this;
+    private ImageView addServico;
+    private ServiceListEventoAdapter.onServiceListenner serviceListenner = (ServiceListEventoAdapter.onServiceListenner) this.context;
 
     private int horaInicio, minutoInicio, diaInicio, mesInicio, anoInicio, horaFim, minutoFim, diaFim, mesFim, anoFim;
 
@@ -86,6 +104,8 @@ public class CriarEvento extends AppCompatActivity {
         setContentView(R.layout.activity_criar_evento);
 
         inicializarComponentes();
+
+        setUpReciclerView();
 
         carregarUsuario();
 
@@ -97,18 +117,67 @@ public class CriarEvento extends AppCompatActivity {
 
         clickControl();
 
-        reciclerViewControl();
+        textWatcherController();
     }
 
-    private void reciclerViewControl() {
+    private void textWatcherController() {
+        servicos_evento.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
+            }
+        });
+    }
+
+    private void filter(String text) {
+        ArrayList<ServiceUser> serviceUsersFiltered = new ArrayList<>();
+
+        for(ServiceUser item: servicesUser){
+            if(item.getName().getPtbr().toLowerCase().contains(text.toLowerCase())){
+                serviceUsersFiltered.add(item);
+            }
+        }
+
+        adapter = new ServiceListEventoAdapter(serviceUsersFiltered, context, serviceListenner);
+        recyclerView.setHasFixedSize(false);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void setUpReciclerView() {
+        db.collection("users").document(FirebaseService.getFirebaseAuth().getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot.exists()){
+                    servicesUser = documentSnapshot.toObject(ServicesDocument.class).services;
+                    adapter = new ServiceListEventoAdapter(servicesUser, context, serviceListenner);
+                    recyclerView.setHasFixedSize(false);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    recyclerView.setAdapter(adapter);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onServiceClick(int position) {
+        Toast.makeText(context, "a: " + servicesUser.get(position).getName().getPtbr(), Toast.LENGTH_SHORT).show();
     }
 
     private void clickControl() {
         btn_avancar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 salvarEvento();
             }
         });
@@ -337,7 +406,7 @@ public class CriarEvento extends AppCompatActivity {
 
     private void inicializarComponentes() {
         calendar = Calendar.getInstance();
-        RecyclerView recyclerView = findViewById(R.id.reciclerView_servicos);
+        recyclerView = findViewById(R.id.reciclerView_servicoEvento);
         spinner = (Spinner) findViewById(R.id.spinner_tipo_evento);
         btn_avancar = (Button) findViewById(R.id.btn_avancar_etapa_2);
         local_evento = (EditText) findViewById(R.id.local_evento);

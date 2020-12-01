@@ -193,7 +193,9 @@ public class ConfigurarServicos extends Fragment {
         serviceUser.setDescription(description);
         serviceUser.setId(servicoViewModel.getServiceId().getValue());
         serviceUser.setMoveToClient(desloca);
-        serviceUser.setMovementCost(Double.parseDouble(custoDeslocamento));
+        if(desloca){
+            serviceUser.setMovementCost(Double.parseDouble(custoDeslocamento));
+        }
         serviceUser.setName(service.getName());
         serviceUser.setPrice(Double.parseDouble(valor));
 

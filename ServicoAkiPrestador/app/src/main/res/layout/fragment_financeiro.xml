@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.3"
+        app:layout_constraintGuide_percent="0.25"
         app:layout_constraintGuide_begin="20dp" />
 
     <androidx.cardview.widget.CardView
@@ -70,11 +70,35 @@
                 app:layout_constraintGuide_begin="20dp" />
 
             <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelinfe4v"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.67"
+                app:layout_constraintGuide_begin="20dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelifne5v"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.33"
+                app:layout_constraintGuide_begin="20dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelinef5s"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.05"
+                app:layout_constraintGuide_begin="20dp" />
+
+            <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline5s"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.4"
+                app:layout_constraintGuide_percent="0.3"
                 app:layout_constraintGuide_begin="20dp" />
 
             <androidx.constraintlayout.widget.Guideline
@@ -82,7 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.53"
+                app:layout_constraintGuide_percent="0.43"
                 app:layout_constraintGuide_begin="20dp" />
 
             <androidx.constraintlayout.widget.Guideline
@@ -90,21 +114,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.8"
+                app:layout_constraintGuide_percent="0.67"
+                app:layout_constraintGuide_begin="20dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelinfe8f"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.72"
+                app:layout_constraintGuide_begin="20dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline8f"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.9"
                 app:layout_constraintGuide_begin="20dp" />
 
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="16dp"
                 android:src="@drawable/ic_logo_menu"
                 app:layout_constraintBottom_toTopOf="@+id/guideline5s"
-                app:layout_constraintEnd_toStartOf="@+id/guideline4"
-                app:layout_constraintStart_toStartOf="@+id/guideline5"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toStartOf="@+id/guideline4v"
+                app:layout_constraintStart_toStartOf="@+id/guideline5v"
+                app:layout_constraintTop_toTopOf="@+id/guidelinef5s" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -120,6 +157,7 @@
                 app:layout_constraintTop_toTopOf="@+id/guideline5s" />
 
             <TextView
+                android:id="@+id/textView11"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:autoSizeTextType="uniform"
@@ -135,20 +173,16 @@
             <Button
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:padding="4sp"
-                android:autoSizeTextType="uniform"
                 android:autoSizeMinTextSize="12sp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
+                android:autoSizeTextType="uniform"
                 android:background="@drawable/button_orange"
+                android:padding="4sp"
                 android:text="Solicitar retirada"
                 android:textColor="@color/colorBlack"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/guideline4v"
-                app:layout_constraintStart_toStartOf="@+id/guideline5v"
-                app:layout_constraintTop_toTopOf="@+id/guideline8" />
+                app:layout_constraintBottom_toTopOf="@+id/guideline8f"
+                app:layout_constraintEnd_toStartOf="@+id/guidelinfe4v"
+                app:layout_constraintStart_toStartOf="@+id/guidelifne5v"
+                app:layout_constraintTop_toTopOf="@+id/guidelinfe8f" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
