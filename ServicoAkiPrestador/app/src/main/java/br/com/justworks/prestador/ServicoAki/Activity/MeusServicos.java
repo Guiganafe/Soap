@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -23,18 +24,16 @@ import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Model.ServiceUser;
 import br.com.justworks.prestador.ServicoAki.Model.ServicesDocument;
 import br.com.justworks.prestador.ServicoAki.R;
-import br.com.justworks.prestador.ServicoAki.ViewModel.ServicoViewModel;
 
 public class MeusServicos extends AppCompatActivity implements ServicesListAdapter.onServiceListenner {
 
     private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private ServicoViewModel servicoViewModel;
     private ArrayList<ServiceUser> servicesUser;
     private Context context = this;
-    private ImageView addServico;
+    private FloatingActionButton floatButton;
+    private int posicaoSelected;
     private ServicesListAdapter.onServiceListenner serviceListenner = (ServicesListAdapter.onServiceListenner) this.context;
 
     @Override
@@ -64,10 +63,12 @@ public class MeusServicos extends AppCompatActivity implements ServicesListAdapt
     }
 
     private void onClickController() {
-        addServico.setOnClickListener(new View.OnClickListener() {
+        floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent addServicoIntent = new Intent(MeusServicos.this, AdicionarServico.class);
+//                addServicoIntent.putExtra("serviceLis", servicesUser);
+//                addServicoIntent.putExtra("posicao", posicaoSelected);
                 startActivity(addServicoIntent);
             }
         });
@@ -75,6 +76,7 @@ public class MeusServicos extends AppCompatActivity implements ServicesListAdapt
 
     @Override
     public void onServiceClick(int position) {
+        posicaoSelected = position;
         Toast.makeText(context, "a: " + servicesUser.get(position).getName().getPtbr(), Toast.LENGTH_SHORT).show();
         Intent addServicoIntent = new Intent(MeusServicos.this, EditarServico.class);
         startActivity(addServicoIntent);
@@ -94,7 +96,6 @@ public class MeusServicos extends AppCompatActivity implements ServicesListAdapt
 
     private void inicializarComponentes() {
         recyclerView = findViewById(R.id.reciclerView_UserServices);
-        servicoViewModel = new ViewModelProvider(this).get(ServicoViewModel.class);
-        addServico = (ImageView) findViewById(R.id.img_add_servico);
+        floatButton = (FloatingActionButton) findViewById(R.id.btn_add_servico);
     }
 }

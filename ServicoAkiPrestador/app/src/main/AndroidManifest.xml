@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.EditarServico"></activity>
+        <activity android:name=".Activity.EditarServico"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".Activity.AdicionarServico"
             android:theme="@style/AppTheme.NoActionBar" />

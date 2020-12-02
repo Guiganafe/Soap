@@ -6,4 +6,239 @@
     android:layout_height="match_parent"
     tools:context=".Activity.EditarServico">
 
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline11"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginEnd="10sp"
+                android:layout_marginBottom="10sp"
+                android:paddingTop="5dp"
+                android:text="Editar serviço"
+                android:textColor="@color/colorBlack"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageEditedService"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="10sp"
+                    android:layout_marginEnd="10sp"
+                    android:background="@drawable/back_yellow"
+                    android:padding="10dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tx_nome_editedCategorie"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nome categoria"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tx_nome_editedService"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nome serviço"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginTop="5sp"
+                android:layout_marginEnd="10sp"
+                android:paddingTop="10sp"
+                android:paddingBottom="5sp"
+                android:text="Valor do serviço"
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edt_valor_servico_editado"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="10sp"
+                android:layout_marginEnd="10sp"
+                android:background="@drawable/edit_text_gray"
+                android:hint="00.00"
+                android:inputType="number"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:singleLine="true" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginTop="5sp"
+                android:layout_marginEnd="10sp"
+                android:paddingTop="10sp"
+                android:paddingBottom="5sp"
+                android:text="Duração média do serviço"
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edt_duracao_servico_editado"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="10sp"
+                android:layout_marginEnd="10sp"
+                android:background="@drawable/edit_text_gray"
+                android:hint="00:00"
+                android:inputType="number"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:singleLine="true" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginTop="5sp"
+                android:layout_marginEnd="10sp"
+                android:paddingTop="10sp"
+                android:paddingBottom="5sp"
+                android:text="Fornece material?"
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/spinner_material_servico_editado"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="10sp"
+                android:layout_marginEnd="10sp"
+                android:background="@drawable/edit_text_gray" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginTop="5sp"
+                android:layout_marginEnd="10sp"
+                android:paddingTop="10sp"
+                android:paddingBottom="5sp"
+                android:text="Desloca até o cliente?"
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/spinner_deslocamento_servico_editado"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="10sp"
+                android:layout_marginEnd="10sp"
+                android:background="@drawable/edit_text_gray" />
+
+            <TextView
+                android:id="@+id/tv_custo_deslocamento_servico_editado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginTop="5sp"
+                android:layout_marginEnd="10sp"
+                android:paddingTop="10sp"
+                android:paddingBottom="5sp"
+                android:text="Custo do deslocamento"
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edt_custo_deslocamento_servico_editado"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="10sp"
+                android:layout_marginEnd="10sp"
+                android:background="@drawable/edit_text_gray"
+                android:hint="00.00"
+                android:inputType="number"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:singleLine="true" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginTop="5sp"
+                android:layout_marginEnd="10sp"
+                android:paddingTop="10sp"
+                android:paddingBottom="5sp"
+                android:text="Descrição personalizada"
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/edt_descricao_personalizada_servico_editado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10sp"
+                android:layout_marginEnd="10sp"
+                android:background="@drawable/edit_text_gray"
+                android:lines="3"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_salvar_servico_editado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginEnd="70dp"
+        android:layout_weight="1"
+        android:background="@drawable/button_orange"
+        android:text="Concluir e adicionar"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline11" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.88"
+        app:layout_constraintGuide_begin="20dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
