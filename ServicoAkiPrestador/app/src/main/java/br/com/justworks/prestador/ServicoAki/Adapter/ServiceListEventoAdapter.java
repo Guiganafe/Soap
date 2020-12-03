@@ -1,12 +1,15 @@
 package br.com.justworks.prestador.ServicoAki.Adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,17 +55,23 @@ public class ServiceListEventoAdapter extends RecyclerView.Adapter<ServiceListEv
 
     public class ServicesListEventoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView textView_service_titulo_evento, textView_duracao_service_evento;
-        CheckBox cb_selected_service;
+        ImageView img_selected_service;
         onServiceListenner onServiceListenner;
 
         public ServicesListEventoViewHolder(@NonNull View itemView, onServiceListenner onServiceListenner) {
             super(itemView);
             textView_service_titulo_evento = itemView.findViewById(R.id.textView_servico_titulo_evento);
             textView_duracao_service_evento = itemView.findViewById(R.id.textView_duracao_servico_evento);
-            cb_selected_service = itemView.findViewById(R.id.cb_servico_evento);
+            img_selected_service = itemView.findViewById(R.id.img_servico_evento);
             this.onServiceListenner = onServiceListenner;
 
-            itemView.setOnClickListener(this);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Drawable drawable = v.getResources().getDrawable(R.drawable.ic_check);
+                    img_selected_service.setImageDrawable(drawable);
+                }
+            });
         }
 
         @Override

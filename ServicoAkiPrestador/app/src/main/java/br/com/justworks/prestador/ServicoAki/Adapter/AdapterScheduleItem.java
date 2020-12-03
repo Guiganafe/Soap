@@ -15,7 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import br.com.justworks.prestador.ServicoAki.Model.ScheduleItems;
 import br.com.justworks.prestador.ServicoAki.R;
@@ -40,10 +44,23 @@ public class AdapterScheduleItem extends RecyclerView.Adapter<AdapterScheduleIte
     @Override
     public void onBindViewHolder(@NonNull SchedulesItemHolder holder, int position) {
         //Glide.with(context).load(model.getImageUrl()).into(holder.imgShops);
-        String horaInicio = schedulesList.get(position).getHourBegin().toString();
-        String horaFim = schedulesList.get(position).getHourEnd().toString();
-        //holder.textView_servico_hora.setText("Das: " + horaInicio[3] + " as " + horaFim[3]);
+
+        int horaInicio = schedulesList.get(position).getHourBegin().toDate().getHours();
+        int minInicio = schedulesList.get(position).getHourBegin().toDate().getMinutes();
+
+        int horaFim = schedulesList.get(position).getHourEnd().toDate().getHours();
+        int minFim = schedulesList.get(position).getHourEnd().toDate().getHours();
+
+        int qtdServico = schedulesList.get(position).getServices().size();
+
         holder.textView_servico_titulo.setText(schedulesList.get(position).getTitle());
+        holder.textView_servico_hora.setText(String.format(Locale.getDefault(),"%d:%dh às %d:%dh", horaInicio, minInicio, horaFim, minFim));
+
+        if(qtdServico > 1){
+            holder.textView_servico_quantidade.setText(String.format(Locale.getDefault(),"%ds serviços", qtdServico));
+        } else {
+            holder.textView_servico_quantidade.setText(String.format(Locale.getDefault(),"%d serviço", qtdServico));
+        }
     }
 
     @Override

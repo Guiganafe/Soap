@@ -22,6 +22,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -52,7 +53,8 @@ import br.com.justworks.prestador.ServicoAki.R;
 
 public class AgendaFragment extends Fragment implements DatePickerListener {
 
-    private ImageView criar_evento, imgAgenda;
+    private ImageView imgAgenda;
+    private FloatingActionButton criar_evento;
     private TextView tv_titulo, tv_descricao, tv_agendaCheia;
     private AdapterScheduleItem adapter;
     private HorizontalPicker picker;
@@ -178,7 +180,7 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
 
     private void inicializarComponentes(View view) {
         picker = (HorizontalPicker) view.findViewById(R.id.datePicker);
-        criar_evento = (ImageView) view.findViewById(R.id.img_criar_evento);
+        criar_evento = (FloatingActionButton) view.findViewById(R.id.fb_criar_evento);
         recyclerView = view.findViewById(R.id.reciclerView_servicoItem);
         imgAgenda = (ImageView) view.findViewById(R.id.imagemAgenda);
         tv_titulo = (TextView) view.findViewById(R.id.tv_semCompromisso);

@@ -417,6 +417,7 @@
             app:layout_constraintTop_toTopOf="@+id/guideline3">
 
             <Button
+                android:id="@+id/btn_cancelar_criar_evento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10sp"
@@ -427,7 +428,7 @@
                 android:text="Cancelar" />
 
             <Button
-                android:id="@+id/btn_avancar_etapa_2"
+                android:id="@+id/btn_concluir_criar_evento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"

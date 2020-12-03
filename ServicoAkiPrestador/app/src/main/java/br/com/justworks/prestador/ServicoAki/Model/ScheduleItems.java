@@ -4,29 +4,31 @@ import com.google.firebase.Timestamp;
 
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
+
 public class ScheduleItems {
 
     private String scheduleId, title;
     private Boolean active;
-    private Timestamp dateService;
     private Timestamp hourBegin, hourEnd;
     private String price;
     private Address address;
-    private User user;
+    private String professionalId;
+    private ArrayList<ServiceUser> services;
 
     public ScheduleItems() {
     }
 
-    public ScheduleItems(String scheduleId, Boolean active, Timestamp dateService, Timestamp hourBegin, Timestamp hourEnd, String title, String price, Address address, User user) {
+    public ScheduleItems(String scheduleId, Boolean active, Timestamp hourBegin, Timestamp hourEnd, String title, String price, Address address, String professionalId, ArrayList<ServiceUser> services) {
         this.scheduleId = scheduleId;
         this.active = active;
-        this.dateService = dateService;
         this.hourBegin = hourBegin;
         this.hourEnd = hourEnd;
         this.title = title;
         this.price = price;
         this.address = address;
-        this.user = user;
+        this.professionalId = professionalId;
+        this.services = services;
     }
 
     public String getScheduleId() {
@@ -43,14 +45,6 @@ public class ScheduleItems {
 
     public void setActive(Boolean active) {
         this.active = active;
-    }
-
-    public Timestamp getDateService() {
-        return dateService;
-    }
-
-    public void setDateService(Timestamp dateService) {
-        this.dateService = dateService;
     }
 
     public Timestamp getHourBegin() {
@@ -93,11 +87,19 @@ public class ScheduleItems {
         this.address = address;
     }
 
-    public User getUser() {
-        return user;
+    public String getProfessionalId() {
+        return professionalId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setProfessionalId(String professionalId) {
+        this.professionalId = professionalId;
+    }
+
+    public ArrayList<ServiceUser> getServices() {
+        return services;
+    }
+
+    public void setServices(ArrayList<ServiceUser> services) {
+        this.services = services;
     }
 }

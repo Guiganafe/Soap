@@ -66,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.13"
+                app:layout_constraintGuide_percent="0.05"
                 app:layout_constraintGuide_begin="20dp" />
 
             <androidx.constraintlayout.widget.Guideline
@@ -90,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.62"
+                app:layout_constraintGuide_percent="0.6"
                 app:layout_constraintGuide_begin="20dp" />
 
             <androidx.constraintlayout.widget.Guideline
@@ -103,8 +103,12 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
-                android:layout_width="90dp"
-                android:layout_height="90dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="4dp"
                 android:src="@drawable/ic_perfil"
                 app:layout_constraintBottom_toTopOf="@+id/guideline6"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
@@ -124,7 +128,22 @@
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintStart_toStartOf="@+id/guideline5"
                 app:layout_constraintTop_toTopOf="@+id/guideline6" />
-            
+
+            <TextView
+                android:id="@+id/tv_user_perfil"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:padding="2sp"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMaxTextSize="18sp"
+                android:autoSizeMinTextSize="12sp"
+                android:text="Ver meu perfil"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintStart_toStartOf="@+id/guideline5"
+                app:layout_constraintTop_toTopOf="@+id/guideline7" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

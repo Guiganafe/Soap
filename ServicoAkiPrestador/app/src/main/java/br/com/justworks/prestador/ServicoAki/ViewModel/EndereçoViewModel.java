@@ -113,4 +113,6 @@ public class EndereçoViewModel extends ViewModel {
     public void setRegionId(String regionId) {
         this.regionId.setValue(regionId);
     }
+
+
 }

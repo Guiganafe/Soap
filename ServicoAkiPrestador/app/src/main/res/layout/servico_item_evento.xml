@@ -50,9 +50,10 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <CheckBox
-                    android:id="@+id/cb_servico_evento"
+                <ImageView
+                    android:id="@+id/img_servico_evento"
                     android:layout_width="wrap_content"
+                    android:src="@drawable/ic_add_black"
                     android:layout_height="wrap_content"/>
 
             </LinearLayout>

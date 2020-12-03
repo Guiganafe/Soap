@@ -1,7 +1,7 @@
 package br.com.justworks.prestador.ServicoAki.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,7 +24,7 @@ import br.com.justworks.prestador.ServicoAki.Model.ServiceUser;
 import br.com.justworks.prestador.ServicoAki.Model.ServicesDocument;
 import br.com.justworks.prestador.ServicoAki.R;
 
-public class MeusServicos extends AppCompatActivity implements ServicesListAdapter.onServiceListenner {
+public class MeusServicos extends AppCompatActivity implements ServicesListAdapter.onServiceListenner{
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -40,6 +39,7 @@ public class MeusServicos extends AppCompatActivity implements ServicesListAdapt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meus_servicos);
+
         inicializarComponentes();
 
         setUpReciclerView();
@@ -66,9 +66,7 @@ public class MeusServicos extends AppCompatActivity implements ServicesListAdapt
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent addServicoIntent = new Intent(MeusServicos.this, AdicionarServico.class);
-//                addServicoIntent.putExtra("serviceLis", servicesUser);
-//                addServicoIntent.putExtra("posicao", posicaoSelected);
+                Intent addServicoIntent = new Intent(context, AdicionarServico.class);
                 startActivity(addServicoIntent);
             }
         });
@@ -78,8 +76,6 @@ public class MeusServicos extends AppCompatActivity implements ServicesListAdapt
     public void onServiceClick(int position) {
         posicaoSelected = position;
         Toast.makeText(context, "a: " + servicesUser.get(position).getName().getPtbr(), Toast.LENGTH_SHORT).show();
-        Intent addServicoIntent = new Intent(MeusServicos.this, EditarServico.class);
-        startActivity(addServicoIntent);
     }
 
     @Override

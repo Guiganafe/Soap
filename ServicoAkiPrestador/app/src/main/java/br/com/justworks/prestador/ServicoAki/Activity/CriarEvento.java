@@ -3,6 +3,7 @@ package br.com.justworks.prestador.ServicoAki.Activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +33,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AddressComponent;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
@@ -67,22 +69,20 @@ import br.com.justworks.prestador.ServicoAki.Model.ServiceUser;
 import br.com.justworks.prestador.ServicoAki.Model.ServicesDocument;
 import br.com.justworks.prestador.ServicoAki.Model.User;
 import br.com.justworks.prestador.ServicoAki.R;
+import br.com.justworks.prestador.ServicoAki.ViewModel.EndereçoViewModel;
 import br.com.justworks.prestador.ServicoAki.ViewModel.ServicoViewModel;
 
 public class CriarEvento extends AppCompatActivity implements ServiceListEventoAdapter.onServiceListenner{
 
     private static final String TAG = "CriarEvento";
 
-    private String name, imageUrl, phoneNumber, email;
-    private Boolean isAuthenticated, isProfessional;
-    private User professional = new User();
-    private Address address = new Address();
     private Spinner spinner;
-    private Button btn_avancar;
+    private Button btn_avancar, btn_cancelar;
     private Calendar calendar;
     private int dia,mes, ano, hora, minuto;
     private TimePickerDialog timePickerDialog;
     private DatePickerDialog datePickerDialog;
+    private EndereçoViewModel endereçoViewModel;
     private EditText titulo_evento, inicio_evento_hora, inicio_evento_data, fim_evento_hora, fim_evento_data, tipo_evento, valor_evento, local_evento, servicos_evento;
     private TextView tv_local, tv_local_op, tv_valor, tv_valor_op, tv_servicos, tv_servicos_op;
 
@@ -92,6 +92,7 @@ public class CriarEvento extends AppCompatActivity implements ServiceListEventoA
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ServicoViewModel servicoViewModel;
     private ArrayList<ServiceUser> servicesUser = new ArrayList<>();
+    private ArrayList<ServiceUser> servicesEvent = new ArrayList<>();
     private Context context = this;
     private ImageView addServico;
     private ServiceListEventoAdapter.onServiceListenner serviceListenner = (ServiceListEventoAdapter.onServiceListenner) this.context;
@@ -106,8 +107,6 @@ public class CriarEvento extends AppCompatActivity implements ServiceListEventoA
         inicializarComponentes();
 
         setUpReciclerView();
-
-        carregarUsuario();
 
         spinnerControl();
 
@@ -171,7 +170,8 @@ public class CriarEvento extends AppCompatActivity implements ServiceListEventoA
 
     @Override
     public void onServiceClick(int position) {
-        Toast.makeText(context, "a: " + servicesUser.get(position).getName().getPtbr(), Toast.LENGTH_SHORT).show();
+        servicesEvent.add(servicesUser.get(position));
+        Toast.makeText(context, "Serviço adicionado ao evento", Toast.LENGTH_SHORT).show();
     }
 
     private void clickControl() {
@@ -179,6 +179,12 @@ public class CriarEvento extends AppCompatActivity implements ServiceListEventoA
             @Override
             public void onClick(View v) {
                 salvarEvento();
+            }
+        });
+        btn_cancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
@@ -227,15 +233,36 @@ public class CriarEvento extends AppCompatActivity implements ServiceListEventoA
         dataFim.set(anoFim, mesFim, diaFim, horaFim, minutoFim);
         String dataFimFinal = df.format(dataFim.getTime());
 
+        Boolean addres_active, default_address;
+        String addressName, addressType, city, country, neighborhood, number, state, street, userId, zipCode;
+        double latitude, longitude;
+
+        addres_active = true;
+        addressName = "Endereço";
+        addressType = "Event";
+        city = endereçoViewModel.getCidade().getValue();
+        country = endereçoViewModel.getPais().getValue();
+        neighborhood = endereçoViewModel.getBairro().getValue();
+        number = endereçoViewModel.getNumero().getValue();
+        state = endereçoViewModel.getEstado().getValue();
+        userId = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
+        street = endereçoViewModel.getRua().getValue();
+        zipCode = endereçoViewModel.getCep().getValue();
+        longitude = endereçoViewModel.getLongitude().getValue();
+        latitude = endereçoViewModel.getLatitude().getValue();
+
+        final Address address = new Address(addres_active, addressName, addressType, city, country, neighborhood, number, state, street, userId , zipCode, latitude, longitude);
+
         Map<String, Object> scheduleItems = new HashMap<>();
         scheduleItems.put("title", tituloEvento);
         scheduleItems.put("hourBegin", dataInicio.getTime());
         scheduleItems.put("hourEnd", dataFim.getTime());
         scheduleItems.put("price", valorEvento);
         scheduleItems.put("address", address);
-        scheduleItems.put("professional", professional);
+        scheduleItems.put("professionalId", userId);
         scheduleItems.put("scheduleId", FirebaseService.getFirebaseAuth().getCurrentUser().getUid());
         scheduleItems.put("active", active);
+        scheduleItems.put("services", servicesEvent);
 
         // Add a new document with a generated ID
         db.collection("scheduleItems")
@@ -387,17 +414,34 @@ public class CriarEvento extends AppCompatActivity implements ServiceListEventoA
         if (requestCode == 100 && resultCode == Activity.RESULT_OK){
             Place place = Autocomplete.getPlaceFromIntent(data);
             local_evento.setText(place.getAddress());
-//            List<String> atributtions = place.getAttributions();
-//            address.setActive(true);
-//            address.setCity();
-//            address.setCountry();
-//            address.setLatitude();
-//            address.setLongitude();
-//            address.setNeighborhood();
-//            address.setNumber();
-//            address.setState();
-//            address.setStreet();
-//            address.setZipCode();
+
+             /*
+                Salva a latitude e longitude do endereço na ViewModel
+             */
+            endereçoViewModel.setLatitude(place.getLatLng().latitude);
+            endereçoViewModel.setLongitude(place.getLatLng().longitude);
+
+            for (AddressComponent list_components: place.getAddressComponents().asList()) {
+
+                String type = list_components.getTypes().get(0);
+
+                if(TextUtils.equals(type, "route")){
+                    endereçoViewModel.setRua(list_components.getName());
+                } else if(TextUtils.equals(type, "country")){
+                    endereçoViewModel.setPais(list_components.getName());
+                } else if(TextUtils.equals(type, "street_number")){
+                    endereçoViewModel.setNumero(list_components.getName());
+                } else if(TextUtils.equals(type, "postal_code") || TextUtils.equals(type, "postal_code_prefix")){
+                    endereçoViewModel.setCep(list_components.getName());
+                } else if(TextUtils.equals(type, "sublocality") || TextUtils.equals(type, "sublocality_level_1")){
+                    endereçoViewModel.setBairro(list_components.getName());
+                } else if(TextUtils.equals(type, "administrative_area_level_2") || TextUtils.equals(type, "locality")){
+                    endereçoViewModel.setCidade(list_components.getName());
+                } else if(TextUtils.equals(type, "administrative_area_level_1")){
+                    endereçoViewModel.setEstado(list_components.getShortName());
+                }
+            }
+
         }else if(resultCode == AutocompleteActivity.RESULT_ERROR){
             Status status = Autocomplete.getStatusFromIntent(data);
             Toast.makeText(CriarEvento.this, status.getStatusMessage(), Toast.LENGTH_SHORT).show();
@@ -405,10 +449,12 @@ public class CriarEvento extends AppCompatActivity implements ServiceListEventoA
     }
 
     private void inicializarComponentes() {
+        endereçoViewModel = new ViewModelProvider(this).get(EndereçoViewModel.class);
         calendar = Calendar.getInstance();
         recyclerView = findViewById(R.id.reciclerView_servicoEvento);
         spinner = (Spinner) findViewById(R.id.spinner_tipo_evento);
-        btn_avancar = (Button) findViewById(R.id.btn_avancar_etapa_2);
+        btn_avancar = (Button) findViewById(R.id.btn_concluir_criar_evento);
+        btn_cancelar = (Button) findViewById(R.id.btn_cancelar_criar_evento);
         local_evento = (EditText) findViewById(R.id.local_evento);
         valor_evento = (EditText) findViewById(R.id.valor_evento);
         titulo_evento = (EditText) findViewById(R.id.titulo_evento);
@@ -423,28 +469,5 @@ public class CriarEvento extends AppCompatActivity implements ServiceListEventoA
         tv_valor_op = (TextView) findViewById(R.id.tv_valor_op);
         tv_servicos = (TextView) findViewById(R.id.tv_servicos);
         tv_servicos_op = (TextView) findViewById(R.id.tv_servicos_op);
-    }
-
-    private void carregarUsuario() {
-        db.collection("users").document(FirebaseService.getFirebaseAuth().getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists()){
-                    name = documentSnapshot.getString(userEnum.USER_NAME.getDisplayName());
-                    imageUrl = documentSnapshot.getString(userEnum.USER_IMAGE_URL.getDisplayName());
-                    email = documentSnapshot.getString(userEnum.USER_EMAIL.getDisplayName());
-                    phoneNumber = documentSnapshot.getString(userEnum.USER_PHONE.getDisplayName());
-                    isAuthenticated = documentSnapshot.getBoolean(userEnum.USER_IS_AUTHENTICATED.getDisplayName());
-                    isProfessional = documentSnapshot.getBoolean(userEnum.USER_IS_PROFESSIONAL.getDisplayName());
-
-                    professional.setName(name);
-                    professional.setImageUrl(imageUrl);
-                    professional.setEmail(email);
-                    professional.setPhoneNumber(phoneNumber);
-                    professional.setProfessional(isProfessional);
-                    professional.setAuthenticated(isAuthenticated);
-                }
-            }
-        });
     }
 }
