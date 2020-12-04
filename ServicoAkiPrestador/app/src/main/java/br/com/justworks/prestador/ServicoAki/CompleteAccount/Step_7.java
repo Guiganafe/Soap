@@ -177,6 +177,8 @@ public class Step_7 extends Fragment {
             e.printStackTrace();
         }
 
+        Timestamp birthDateT = new Timestamp(data);
+
         String sexoPt;
         sexoPt = sexoViewModel.getSexoPtbr().getValue();
 
@@ -215,13 +217,13 @@ public class Step_7 extends Fragment {
 
         user.setCreatedEnv("Android");
         user.setActive(true);
-        user.setNew(true);
-        user.setProfessional(true);
-        user.setAuthenticated(false);
+        user.setIsNew(true);
+        user.setIsProfessional(true);
+        user.setIsAuthenticated(false);
         user.setName(name);
         user.setEmail(email);
         user.setBirthDate(birthDate);
-        user.setBirthDateTimestamp(data.toString());
+        user.setBirthDateTimestamp(birthDateT);
         user.setCivilState(civilState);
         user.setImageUrl(imageUrl);
         user.setMotherName(motherName);
@@ -229,7 +231,7 @@ public class Step_7 extends Fragment {
         user.setSex(sexoPt);
         user.setDispatchingAgency(dispatchingAgency);
         user.setEmissionDate(emissionDate);
-        user.setGovernamentId(governmentId);
+        user.setGovernmentId(governmentId);
         user.setIdentifyDocument(identifyDocument);
         user.setDocumentSelfie(selfieUrl);
         user.setIdFrontImage(frontUrl);

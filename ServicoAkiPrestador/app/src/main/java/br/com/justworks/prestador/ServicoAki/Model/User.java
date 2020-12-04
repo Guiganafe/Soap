@@ -1,6 +1,7 @@
 package br.com.justworks.prestador.ServicoAki.Model;
 
-import java.sql.Timestamp;
+import com.google.firebase.Timestamp;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,12 +14,12 @@ public class User {
     private String createdEnv;
     private String name;
     private String birthDate;
-    private String birthDateTimestamp;
+    private Timestamp birthDateTimestamp;
     private CivilState civilState;
     private String dispatchingAgency;
     private String email;
     private String emissionDate;
-    private String governamentId;
+    private String governmentId;
     private String proofOfAddressImage;
     private String documentSelfie;
     private String idBackImage;
@@ -41,27 +42,27 @@ public class User {
         this.active = active;
     }
 
-    public Boolean getAuthenticated() {
+    public Boolean getIsAuthenticated() {
         return isAuthenticated;
     }
 
-    public void setAuthenticated(Boolean isAuthenticated) {
+    public void setIsAuthenticated(Boolean isAuthenticated) {
         this.isAuthenticated = isAuthenticated;
     }
 
-    public Boolean getNew() {
+    public Boolean getIsNew() {
         return isNew;
     }
 
-    public void setNew(Boolean aNew) {
+    public void setIsNew(Boolean aNew) {
         isNew = aNew;
     }
 
-    public Boolean getProfessional() {
+    public Boolean getIsProfessional() {
         return isProfessional;
     }
 
-    public void setProfessional(Boolean professional) {
+    public void setIsProfessional(Boolean professional) {
         isProfessional = professional;
     }
 
@@ -89,11 +90,11 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    public String getBirthDateTimestamp() {
+    public Timestamp getBirthDateTimestamp() {
         return birthDateTimestamp;
     }
 
-    public void setBirthDateTimestamp(String birthDateTimestamp) {
+    public void setBirthDateTimestamp(Timestamp birthDateTimestamp) {
         this.birthDateTimestamp = birthDateTimestamp;
     }
 
@@ -129,12 +130,12 @@ public class User {
         this.emissionDate = emissionDate;
     }
 
-    public String getGovernamentId() {
-        return governamentId;
+    public String getGovernmentId() {
+        return governmentId;
     }
 
-    public void setGovernamentId(String governamentId) {
-        this.governamentId = governamentId;
+    public void setGovernmentId(String governamentId) {
+        this.governmentId = governamentId;
     }
 
     public String getProofOfAddressImage() {
@@ -236,7 +237,7 @@ public class User {
         data.put("sex", sex);
         data.put("dispatchingAgency", dispatchingAgency);
         data.put("emissionDate", emissionDate);
-        data.put("governmentId", governamentId);
+        data.put("governmentId", governmentId);
         data.put("identifyDocument", identifyDocument);
         data.put("documentSelfie", documentSelfie);
         data.put("idBackImage", idBackImage);

@@ -80,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
                     user.setImageUrl(imageUrl);
                     user.setEmail(email);
                     user.setPhoneNumber(phoneNumber);
-                    user.setProfessional(isProfessional);
-                    user.setAuthenticated(isAuthenticated);
+                    user.setIsProfessional(isProfessional);
+                    user.setIsAuthenticated(isAuthenticated);
                 }
             }
         });

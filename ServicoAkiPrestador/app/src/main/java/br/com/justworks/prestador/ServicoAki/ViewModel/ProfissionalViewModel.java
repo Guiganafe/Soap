@@ -115,7 +115,7 @@ public class ProfissionalViewModel extends ViewModel {
     }
 
     public void setData_emissao(String data_emissao) {
-        this.rg.setValue(data_emissao);
+        this.data_emissao.setValue(data_emissao);
     }
 
     public LiveData<Bitmap> getFoto_selfie_doc() {

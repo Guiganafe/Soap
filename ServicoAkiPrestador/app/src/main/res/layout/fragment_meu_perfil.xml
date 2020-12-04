@@ -130,7 +130,7 @@
                 app:layout_constraintTop_toTopOf="@+id/guideline6" />
 
             <TextView
-                android:id="@+id/tv_user_perfil"
+                android:id="@+id/tv_editar_perfil"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:gravity="center"

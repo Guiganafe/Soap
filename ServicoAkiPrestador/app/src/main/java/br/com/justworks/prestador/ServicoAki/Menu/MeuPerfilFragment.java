@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import com.bumptech.glide.Glide;
 
+import br.com.justworks.prestador.ServicoAki.Activity.EditarPerfil;
 import br.com.justworks.prestador.ServicoAki.Activity.MeusServicos;
 import br.com.justworks.prestador.ServicoAki.Enum.userEnum;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
@@ -31,13 +33,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MeuPerfilFragment extends Fragment {
 
-    private TextView tv_logout, tv_name, tv_email, tv_authenticated, tv_phone, tv_meusServicos;
+    private TextView tv_logout, tv_name, tv_email, tv_authenticated, tv_phone, tv_meusServicos, tv_editar_perfil;
     private CircleImageView imageView;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private User user = new User();
+    private static User user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,6 +63,23 @@ public class MeuPerfilFragment extends Fragment {
 
         carregarInfoUsuarios();
 
+        onClickController();
+    }
+
+    private void carregarDadosUsuario() {
+        tv_name.setText(user.getName());
+        tv_email.setText(user.getEmail());
+        tv_phone.setText(user.getPhoneNumber());
+        Glide.with(getContext()).load(user.getImageUrl()).into(imageView);
+        if(user.getIsAuthenticated()){
+            tv_authenticated.setText("Usuário autenticado");
+        }else{
+            tv_authenticated.setText("Usuário não autenticado");
+            tv_authenticated.setTextColor(Color.RED);
+        }
+    }
+
+    private void onClickController() {
         tv_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,6 +97,14 @@ public class MeuPerfilFragment extends Fragment {
                 startActivity(meusServicos);
             }
         });
+
+        tv_editar_perfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent editarPerfil = new Intent(requireActivity(), EditarPerfil.class);
+                startActivity(editarPerfil);
+            }
+        });
     }
 
     @Override
@@ -90,22 +117,8 @@ public class MeuPerfilFragment extends Fragment {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if(documentSnapshot.exists()){
-                    String name = documentSnapshot.getString(userEnum.USER_NAME.getDisplayName());
-                    String imageUrl = documentSnapshot.getString(userEnum.USER_IMAGE_URL.getDisplayName());
-                    String email = documentSnapshot.getString(userEnum.USER_EMAIL.getDisplayName());
-                    String phoneNumber = documentSnapshot.getString(userEnum.USER_PHONE.getDisplayName());
-                    Boolean isAuthenticated = documentSnapshot.getBoolean(userEnum.USER_IS_AUTHENTICATED.getDisplayName());
-
-                    tv_name.setText(name);
-                    tv_email.setText(email);
-                    tv_phone.setText(phoneNumber);
-                    Glide.with(getContext()).load(imageUrl).into(imageView);
-                    if(isAuthenticated){
-                        tv_authenticated.setText("Usuário autenticado");
-                    }else{
-                        tv_authenticated.setText("Usuário não autenticado");
-                        tv_authenticated.setTextColor(Color.RED);
-                    }
+                    user = documentSnapshot.toObject(User.class);
+                    carregarDadosUsuario();
                 }
             }
         });
@@ -119,6 +132,7 @@ public class MeuPerfilFragment extends Fragment {
         tv_phone = (TextView) view.findViewById(R.id.tv_user_phone);
         imageView = (CircleImageView) view.findViewById(R.id.profile_image);
         tv_meusServicos = (TextView) view.findViewById(R.id.tv_meusServicos);
+        tv_editar_perfil = (TextView) view.findViewById(R.id.tv_editar_perfil);
     }
 
 
