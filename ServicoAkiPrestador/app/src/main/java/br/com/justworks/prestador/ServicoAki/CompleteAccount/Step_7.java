@@ -237,7 +237,7 @@ public class Step_7 extends Fragment {
         user.setIdFrontImage(frontUrl);
         user.setIdBackImage(backUrl);
         user.setProofOfAddressImage(comprovanteUrl);
-        user.setServiceUser(serviceUser);
+        user.setServices(serviceUser);
 
         db.collection("users").document(userID).set(user.toMap(), SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

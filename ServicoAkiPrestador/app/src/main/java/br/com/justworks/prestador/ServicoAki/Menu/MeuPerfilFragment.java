@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 
 import br.com.justworks.prestador.ServicoAki.Activity.EditarPerfil;
 import br.com.justworks.prestador.ServicoAki.Activity.MeusServicos;
+import br.com.justworks.prestador.ServicoAki.Base.UserBase;
 import br.com.justworks.prestador.ServicoAki.Enum.userEnum;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Activity.LoginActivity;
@@ -113,15 +114,8 @@ public class MeuPerfilFragment extends Fragment {
     }
 
     private void carregarInfoUsuarios() {
-        db.collection("users").document(FirebaseService.getFirebaseAuth().getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists()){
-                    user = documentSnapshot.toObject(User.class);
-                    carregarDadosUsuario();
-                }
-            }
-        });
+        user = UserBase.getInstance().getUser();
+        carregarDadosUsuario();
     }
 
     private void inicializarComponentes(View view) {

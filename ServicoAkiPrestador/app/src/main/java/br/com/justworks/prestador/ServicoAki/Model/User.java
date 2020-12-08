@@ -29,7 +29,7 @@ public class User {
     private String motherName;
     private String phoneNumber;
     private String sex;
-    private ArrayList<ServiceUser> serviceUser;
+    private ArrayList<ServiceUser> services;
 
     public User() {
     }
@@ -210,12 +210,12 @@ public class User {
         this.sex = sex;
     }
 
-    public ArrayList<ServiceUser> getServiceUser() {
-        return serviceUser;
+    public ArrayList<ServiceUser> getServices() {
+        return services;
     }
 
-    public void setServiceUser(ArrayList<ServiceUser> serviceUser) {
-        this.serviceUser = serviceUser;
+    public void setServices(ArrayList<ServiceUser> services) {
+        this.services = services;
     }
 
     public Map<String, Object> toMap(){
@@ -243,7 +243,7 @@ public class User {
         data.put("idBackImage", idBackImage);
         data.put("idFrontImage", idFrontImage);
         data.put("proofOfAddressImage", proofOfAddressImage);
-        data.put("services", serviceUser);
+        data.put("services", services);
 
         return data;
     }

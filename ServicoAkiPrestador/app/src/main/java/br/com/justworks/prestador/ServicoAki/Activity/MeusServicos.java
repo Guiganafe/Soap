@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 
 import br.com.justworks.prestador.ServicoAki.Adapter.ServicesListAdapter;
+import br.com.justworks.prestador.ServicoAki.Base.UserBase;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Model.ServiceUser;
 import br.com.justworks.prestador.ServicoAki.Model.ServicesDocument;
@@ -48,18 +49,15 @@ public class MeusServicos extends AppCompatActivity implements ServicesListAdapt
     }
 
     private void setUpReciclerView() {
-        db.collection("users").document(FirebaseService.getFirebaseAuth().getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists()){
-                    servicesUser = documentSnapshot.toObject(ServicesDocument.class).services;
-                    adapter = new ServicesListAdapter(servicesUser, context, serviceListenner);
-                    recyclerView.setHasFixedSize(false);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                    recyclerView.setAdapter(adapter);
-                }
-            }
-        });
+        servicesUser = UserBase.getInstance().getServicesUserList();
+        if(servicesUser != null){
+            adapter = new ServicesListAdapter(servicesUser, context, serviceListenner);
+            recyclerView.setHasFixedSize(false);
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setAdapter(adapter);
+        } else {
+            Toast.makeText(context, "Adicione um serviço!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void onClickController() {
