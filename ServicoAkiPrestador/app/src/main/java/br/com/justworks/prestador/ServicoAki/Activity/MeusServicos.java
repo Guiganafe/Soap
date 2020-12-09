@@ -72,8 +72,9 @@ public class MeusServicos extends AppCompatActivity implements ServicesListAdapt
 
     @Override
     public void onServiceClick(int position) {
-        posicaoSelected = position;
-        Toast.makeText(context, "a: " + servicesUser.get(position).getName().getPtbr(), Toast.LENGTH_SHORT).show();
+        Intent editarServico = new Intent(this, EditarServico.class);
+        editarServico.putExtra("position", position);
+        startActivity(editarServico);
     }
 
     @Override

@@ -1,8 +1,12 @@
 package br.com.justworks.prestador.ServicoAki.Base;
 
+import androidx.annotation.Nullable;
+
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
 
@@ -29,6 +33,15 @@ public class UserBase {
                 }
             }
         });
+
+        db.collection("users").document(userID).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException e) {
+                if (value != null && value.exists()) {
+                    user = value.toObject(User.class);
+                }
+            }
+        });
     }
 
     public static UserBase getInstance(){
@@ -48,5 +61,13 @@ public class UserBase {
 
     public ServiceUser getServiceUser(int position){
         return user.getServices().get(position);
+    }
+
+    public void addServiceUser(ServiceUser serviceUser){
+        user.getServices().add(serviceUser);
+    }
+
+    public void removeService(int position){
+        user.getServices().remove(position);
     }
 }

@@ -38,6 +38,7 @@ import java.util.Map;
 
 import br.com.justworks.prestador.ServicoAki.Activity.MainActivity;
 import br.com.justworks.prestador.ServicoAki.Adapter.SvgSoftwareLayerSetter;
+import br.com.justworks.prestador.ServicoAki.Base.UserBase;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Model.CategoriesServices;
 import br.com.justworks.prestador.ServicoAki.Model.Description;
@@ -187,7 +188,7 @@ public class ConfigurarServicos extends Fragment {
 
         Services service = servicoViewModel.getServices().getValue();
 
-        ServiceUser serviceUser = new ServiceUser();
+        final ServiceUser serviceUser = new ServiceUser();
         serviceUser.setAvgExecutionTime(duracao);
         serviceUser.setCategory(service.getCategory());
         serviceUser.setDescription(description);
@@ -205,6 +206,7 @@ public class ConfigurarServicos extends Fragment {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(requireActivity(), "Serviço adicionado com sucesso!", Toast.LENGTH_SHORT).show();
+                UserBase.getInstance().addServiceUser(serviceUser);
                 requireActivity().finish();
             }
         }).addOnFailureListener(new OnFailureListener() {

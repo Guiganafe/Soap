@@ -191,6 +191,7 @@ public class Step_9 extends Fragment {
         serviceUser.setId(servicoViewModel.getServiceId().getValue());
         serviceUser.setMoveToClient(desloca);
         serviceUser.setMovementCost(Double.parseDouble(custoDeslocamento));
+        serviceUser.setOffersMeterial(material);
         serviceUser.setName(service.getName());
         serviceUser.setPrice(Double.parseDouble(valor));
 
