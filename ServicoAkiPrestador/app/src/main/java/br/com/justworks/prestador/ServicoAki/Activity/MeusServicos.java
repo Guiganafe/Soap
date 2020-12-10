@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,6 +29,8 @@ import br.com.justworks.prestador.ServicoAki.R;
 
 public class MeusServicos extends AppCompatActivity implements ServicesListAdapter.onServiceListenner{
 
+    private ImageView semServicoImg;
+    private TextView semServicoTitulo, semServicoDesc;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -50,13 +54,20 @@ public class MeusServicos extends AppCompatActivity implements ServicesListAdapt
 
     private void setUpReciclerView() {
         servicesUser = UserBase.getInstance().getServicesUserList();
-        if(servicesUser != null){
+        if(servicesUser != null && servicesUser.size() >= 1){
+            recyclerView.setVisibility(View.VISIBLE);
+            semServicoImg.setVisibility(View.GONE);
+            semServicoTitulo.setVisibility(View.GONE);
+            semServicoDesc.setVisibility(View.GONE);
             adapter = new ServicesListAdapter(servicesUser, context, serviceListenner);
             recyclerView.setHasFixedSize(false);
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(adapter);
         } else {
-            Toast.makeText(context, "Adicione um serviço!", Toast.LENGTH_SHORT).show();
+            recyclerView.setVisibility(View.GONE);
+            semServicoImg.setVisibility(View.VISIBLE);
+            semServicoTitulo.setVisibility(View.VISIBLE);
+            semServicoDesc.setVisibility(View.VISIBLE);
         }
     }
 
@@ -92,5 +103,8 @@ public class MeusServicos extends AppCompatActivity implements ServicesListAdapt
     private void inicializarComponentes() {
         recyclerView = findViewById(R.id.reciclerView_UserServices);
         floatButton = (FloatingActionButton) findViewById(R.id.btn_add_servico);
+        semServicoImg = (ImageView) findViewById(R.id.img_sem_servico);
+        semServicoTitulo = (TextView) findViewById(R.id.tv_sem_servico_titulo);
+        semServicoDesc = (TextView) findViewById(R.id.tv_sem_servico_desc);
     }
 }

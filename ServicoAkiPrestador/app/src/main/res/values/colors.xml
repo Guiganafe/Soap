@@ -15,7 +15,7 @@
     <color name="darkBlue">#262f40</color>
     <color name="grayMenu">#f9f9f9</color>
     <color name="grayButtonBackground">#fafafa</color>
-
+    <color name="color_red">#ff3b30</color>
     <color name="today_border">#e4e4e4</color>
     <color name="today_background">#85f7f7f7</color>
     <color name="secundaryTextColor">#757575</color>

@@ -29,6 +29,7 @@ import br.com.justworks.prestador.ServicoAki.Adapter.SvgSoftwareLayerSetter;
 import br.com.justworks.prestador.ServicoAki.Base.UserBase;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Model.CategoriesServices;
+import br.com.justworks.prestador.ServicoAki.Model.Description;
 import br.com.justworks.prestador.ServicoAki.Model.ServiceUser;
 import br.com.justworks.prestador.ServicoAki.Model.Services;
 import br.com.justworks.prestador.ServicoAki.Model.User;
@@ -45,7 +46,7 @@ public class EditarServico extends AppCompatActivity {
     private TextView tv_custo_deslocamento_edicao;
     private EditText valor_servico_edicao, duracao_servico_edicao, custo_deslocamento_edicao, descricao_servico_edicao;
     private Spinner fornece_material_edicao, desloca_cliente_edicao;
-    private Button salvar_Servico_edicao;
+    private Button salvar_Servico_edicao, excluir_servico_edicao;
     private RequestBuilder<PictureDrawable> requestBuilder;
     boolean material, desloca;
     private int position;
@@ -73,8 +74,6 @@ public class EditarServico extends AppCompatActivity {
 
         spinnerController();
 
-        textWatcherController();
-
         onClickController();
     }
 
@@ -86,13 +85,18 @@ public class EditarServico extends AppCompatActivity {
                 serviceUser.setPrice(Double.parseDouble(valor_servico_edicao.getText().toString()));
                 if(desloca){
                     serviceUser.setMovementCost(Double.parseDouble(custo_deslocamento_edicao.getText().toString()));
+                } else {
+                    serviceUser.setMovementCost(0.0);
                 }
 
                 String duracao_txt = duracao_servico_edicao.getText().toString();
                 int duracao;
-                duracao = (Integer.parseInt(duracao_txt.substring(0,1)) * 60) + Integer.parseInt(duracao_txt.substring(3,4));
+                duracao = (Integer.parseInt(duracao_txt.substring(0,2)) * 60) + Integer.parseInt(duracao_txt.substring(3,5));
 
-                serviceUser.setAvgExecutionTime((int) minutos);
+                serviceUser.setAvgExecutionTime(duracao);
+                Description description = new Description();
+                description.setPtbr(descricao_servico_edicao.getText().toString());
+                serviceUser.setDescription(description);
 
                 UserBase.getInstance().removeService(position);
                 UserBase.getInstance().addServiceUser(serviceUser);
@@ -107,29 +111,25 @@ public class EditarServico extends AppCompatActivity {
                 });
             }
         });
+
+        excluir_servico_edicao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserBase.getInstance().removeService(position);
+                User user = UserBase.getInstance().getUser();
+                db.collection("users").document(userID).update(user.toMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(EditarServico.this, "Serviço removido com sucesso!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                });
+            }
+        });
     }
 
     private void maskController() {
         duracao_servico_edicao.addTextChangedListener(MaskEditUtil.mask(duracao_servico_edicao, MaskEditUtil.FORMAT_HORA_MINUTOS));
-    }
-
-    private void textWatcherController() {
-        descricao_servico_edicao.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                descricao_servico_edicao.setText(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
     }
 
     private void spinnerController() {
@@ -278,5 +278,6 @@ public class EditarServico extends AppCompatActivity {
         fornece_material_edicao = (Spinner) findViewById(R.id.spinner_material_servico_edicao);
         desloca_cliente_edicao = (Spinner) findViewById(R.id.spinner_deslocamento_servico_edicao);
         salvar_Servico_edicao = (Button) findViewById(R.id.btn_salvar_servico_edicao);
+        excluir_servico_edicao = (Button) findViewById(R.id.btn_excluir_servico_edicao);
     }
 }
