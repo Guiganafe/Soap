@@ -200,13 +200,13 @@ public class ConfigurarServicos extends Fragment {
         serviceUser.setName(service.getName());
         serviceUser.setPrice(Double.parseDouble(valor));
 
-        servicoViewModel.addService(serviceUser);
+        //servicoViewModel.addService(serviceUser);
 
         db.collection("users").document(userID).update("services", FieldValue.arrayUnion(serviceUser)).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(requireActivity(), "Serviço adicionado com sucesso!", Toast.LENGTH_SHORT).show();
-                UserBase.getInstance().addServiceUser(serviceUser);
+                //UserBase.getInstance().addServiceUser(serviceUser);
                 requireActivity().finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
