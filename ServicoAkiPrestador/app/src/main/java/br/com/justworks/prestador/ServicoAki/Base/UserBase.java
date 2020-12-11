@@ -34,6 +34,10 @@ public class UserBase {
             }
         });
 
+        firebaseListenner();
+    }
+
+    private void firebaseListenner() {
         db.collection("users").document(userID).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException e) {

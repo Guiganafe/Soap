@@ -9,8 +9,12 @@ import android.os.Handler;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
+
+import br.com.justworks.prestador.ServicoAki.Base.AgendaBase;
 import br.com.justworks.prestador.ServicoAki.Base.UserBase;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
+import br.com.justworks.prestador.ServicoAki.Model.ScheduleItems;
 import br.com.justworks.prestador.ServicoAki.Model.User;
 import br.com.justworks.prestador.ServicoAki.R;
 
@@ -19,6 +23,7 @@ public class SplashActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     private User user = new User();
+    private ArrayList<ScheduleItems> scheduleItemsList = new ArrayList<>();
 
     @Override
     protected void onStart() {
@@ -31,7 +36,10 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
         user = UserBase.getInstance().getUser();
+        scheduleItemsList = AgendaBase.getInstance().getScheduleItemsList();
+
         Handler hander = new Handler();
         hander.postDelayed(new Runnable() {
             @Override

@@ -257,7 +257,7 @@ public class CriarEvento extends AppCompatActivity implements ServiceListEventoA
         scheduleItems.put("title", tituloEvento);
         scheduleItems.put("hourBegin", dataInicio.getTime());
         scheduleItems.put("hourEnd", dataFim.getTime());
-        scheduleItems.put("price", valorEvento);
+        scheduleItems.put("price", Double.parseDouble(valorEvento));
         scheduleItems.put("address", address);
         scheduleItems.put("professionalId", userId);
         scheduleItems.put("scheduleId", FirebaseService.getFirebaseAuth().getCurrentUser().getUid());

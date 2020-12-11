@@ -178,7 +178,7 @@ public class ConfigurarServicos extends Fragment {
         String descricao, valor, custoDeslocamento;
         String duracao_txt = duracao_servico.getText().toString();
         int duracao;
-        duracao = (Integer.parseInt(duracao_txt.substring(0,1)) * 60) + Integer.parseInt(duracao_txt.substring(3,4));
+        duracao = (Integer.parseInt(duracao_txt.substring(0,2)) * 60) + Integer.parseInt(duracao_txt.substring(3,5));
 
         valor = valor_servico.getText().toString();
         custoDeslocamento = custo_deslocamento.getText().toString();

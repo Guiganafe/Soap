@@ -11,7 +11,7 @@ public class ScheduleItems {
     private String scheduleId, title;
     private Boolean active;
     private Timestamp hourBegin, hourEnd;
-    private String price;
+    private Double price;
     private Address address;
     private String professionalId;
     private ArrayList<ServiceUser> services;
@@ -19,7 +19,7 @@ public class ScheduleItems {
     public ScheduleItems() {
     }
 
-    public ScheduleItems(String scheduleId, Boolean active, Timestamp hourBegin, Timestamp hourEnd, String title, String price, Address address, String professionalId, ArrayList<ServiceUser> services) {
+    public ScheduleItems(String scheduleId, Boolean active, Timestamp hourBegin, Timestamp hourEnd, String title, Double price, Address address, String professionalId, ArrayList<ServiceUser> services) {
         this.scheduleId = scheduleId;
         this.active = active;
         this.hourBegin = hourBegin;
@@ -71,11 +71,11 @@ public class ScheduleItems {
         this.title = title;
     }
 
-    public String getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

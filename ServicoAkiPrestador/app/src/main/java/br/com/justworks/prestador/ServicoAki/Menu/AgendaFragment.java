@@ -44,6 +44,7 @@ import br.com.justworks.prestador.ServicoAki.Activity.CriarEvento;
 import br.com.justworks.prestador.ServicoAki.Adapter.AdapterScheduleItem;
 import br.com.justworks.prestador.ServicoAki.Adapter.SchedulesItemAdapter;
 import br.com.justworks.prestador.ServicoAki.Adapter.ServicesListAdapter;
+import br.com.justworks.prestador.ServicoAki.Base.AgendaBase;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.HorizontalPicker.DatePickerListener;
 import br.com.justworks.prestador.ServicoAki.HorizontalPicker.HorizontalPicker;
@@ -109,13 +110,9 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
         scheduleItemsList.clear();
         scheduleItemsListByDay.clear();
 
-        db.collection("scheduleItems").whereEqualTo("scheduleId", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    scheduleItemsList.add(document.toObject(ScheduleItems.class));
-                }
+        scheduleItemsList = AgendaBase.getInstance().getScheduleItemsList();
+
+            if (scheduleItemsList.size() > 0) {
 
                 for(ScheduleItems scheduleItemsByDay: scheduleItemsList){
                     if (scheduleItemsByDay.getHourBegin().toDate().after(dataDoDia.getTime())) {
@@ -151,8 +148,6 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
                 recyclerView.setVisibility(View.GONE);
                 tv_agendaCheia.setVisibility(View.GONE);
             }
-            }
-        });
     }
 
     private void pickerControl() {
