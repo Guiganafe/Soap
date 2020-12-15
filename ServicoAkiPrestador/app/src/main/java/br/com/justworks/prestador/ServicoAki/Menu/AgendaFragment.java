@@ -61,8 +61,8 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
     private HorizontalPicker picker;
     //private SchedulesItemAdapter adapter;
     private RecyclerView recyclerView;
-    private ArrayList<ScheduleItems> scheduleItemsList = new ArrayList<>();
-    private ArrayList<ScheduleItems> scheduleItemsListByDay = new ArrayList<>();
+    private ArrayList<ScheduleItems> scheduleItemsList;
+    private ArrayList<ScheduleItems> scheduleItemsListByDay;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference servicesReference = db.collection("scheduleItems");
     private String userID = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
@@ -107,12 +107,13 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
         dataDoDia.set(ano, mes-1, dia, 0, 0);
         dataDiaSeguinte.set(ano, mes-1, dia, 23 ,59, 59);
 
-        scheduleItemsList.clear();
-        scheduleItemsListByDay.clear();
+        scheduleItemsList = new ArrayList<>();
 
         scheduleItemsList = AgendaBase.getInstance().getScheduleItemsList();
 
             if (scheduleItemsList.size() > 0) {
+
+                scheduleItemsListByDay = new ArrayList<>();
 
                 for(ScheduleItems scheduleItemsByDay: scheduleItemsList){
                     if (scheduleItemsByDay.getHourBegin().toDate().after(dataDoDia.getTime())) {

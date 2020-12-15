@@ -22,8 +22,6 @@ public class SplashActivity extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
-    private User user = new User();
-    private ArrayList<ScheduleItems> scheduleItemsList = new ArrayList<>();
 
     @Override
     protected void onStart() {
@@ -37,8 +35,8 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        user = UserBase.getInstance().getUser();
-        scheduleItemsList = AgendaBase.getInstance().getScheduleItemsList();
+        UserBase.getInstance();
+        AgendaBase.getInstance();
 
         Handler hander = new Handler();
         hander.postDelayed(new Runnable() {
@@ -46,7 +44,7 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 mostrarMainActivity();
             }
-        }, 3000);
+        }, 4000);
     }
 
     private void mostrarMainActivity() {
