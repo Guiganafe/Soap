@@ -1,25 +1,14 @@
 package br.com.justworks.prestador.ServicoAki.Base;
 
-import android.view.View;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
-
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Model.ScheduleItems;
-import br.com.justworks.prestador.ServicoAki.Model.User;
 
 public class AgendaBase {
 
@@ -31,19 +20,6 @@ public class AgendaBase {
     private static AgendaBase mAgendaBase;
 
     private AgendaBase (){
-        scheduleItemsList = new ArrayList<>();
-
-        db.collection("scheduleItems").whereEqualTo("professionalId", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        scheduleItemsList.add(document.toObject(ScheduleItems.class));
-                    }
-                }
-            }
-        });
-
         firebaseListenner();
     }
 
@@ -52,6 +28,8 @@ public class AgendaBase {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (value != null) {
+                    scheduleItemsList = null;
+                    scheduleItemsList = new ArrayList<>();
                     for (DocumentSnapshot document: value.getDocuments()) {
                         scheduleItemsList.add(document.toObject(ScheduleItems.class));
                     }

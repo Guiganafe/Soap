@@ -3,6 +3,7 @@ package br.com.justworks.prestador.ServicoAki.Activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -117,6 +118,9 @@ public class CriarEvento extends AppCompatActivity implements ServiceListEventoA
         clickControl();
 
         textWatcherController();
+
+        //FragmentManager fm = getSupportFragmentManager();
+
     }
 
     private void textWatcherController() {
@@ -353,7 +357,7 @@ public class CriarEvento extends AppCompatActivity implements ServiceListEventoA
                         diaInicio = dayOfMonth;
                         mesInicio = month;
                         anoInicio = year;
-                        inicio_evento_data.setText(String.format("%02d/%02d/%04d", dayOfMonth, month, year));
+                        inicio_evento_data.setText(String.format("%02d/%02d/%04d", dayOfMonth, month+1, year));
                     }
                 },ano, mes, dia);
                 datePickerDialog.show();
@@ -385,7 +389,7 @@ public class CriarEvento extends AppCompatActivity implements ServiceListEventoA
                         diaFim = dayOfMonth;
                         mesFim = month;
                         anoFim = year;
-                        fim_evento_data.setText(String.format("%02d/%02d/%04d", dayOfMonth, month, year));
+                        fim_evento_data.setText(String.format("%02d/%02d/%04d", dayOfMonth, month+1, year));
                     }
                 },ano, mes, dia);
                 datePickerDialog.show();

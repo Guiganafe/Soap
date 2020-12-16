@@ -68,8 +68,14 @@ public class ServiceListEventoAdapter extends RecyclerView.Adapter<ServiceListEv
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Drawable drawable = v.getResources().getDrawable(R.drawable.ic_check);
-                    img_selected_service.setImageDrawable(drawable);
+                    Drawable drawableCheck = v.getResources().getDrawable(R.drawable.ic_check);
+                    Drawable drawableAdd = v.getResources().getDrawable(R.drawable.ic_add_black);
+
+                    if(img_selected_service.getDrawable().equals(drawableCheck)){
+                        img_selected_service.setImageDrawable(drawableAdd);
+                    } else if(img_selected_service.getDrawable().equals(drawableAdd)){
+                        img_selected_service.setImageDrawable(drawableCheck);
+                    }
                 }
             });
         }

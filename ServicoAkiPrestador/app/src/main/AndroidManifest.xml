@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Activity.EditarServico"
-            android:theme="@style/AppTheme.NoActionBar"/>'
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".Activity.EditarPerfil"
             android:theme="@style/AppTheme.NoActionBar" />

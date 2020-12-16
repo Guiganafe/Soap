@@ -59,13 +59,10 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
     private TextView tv_titulo, tv_descricao, tv_agendaCheia;
     private AdapterScheduleItem adapter;
     private HorizontalPicker picker;
-    //private SchedulesItemAdapter adapter;
     private RecyclerView recyclerView;
     private ArrayList<ScheduleItems> scheduleItemsList;
     private ArrayList<ScheduleItems> scheduleItemsListByDay;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference servicesReference = db.collection("scheduleItems");
-    private String userID = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
+    private DateTime dateTimeSelected;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,6 +91,9 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
     @Override
     public void onStart() {
         super.onStart();
+        if(dateTimeSelected != null){
+            onDateSelected(dateTimeSelected);
+        }
     }
 
     @Override
@@ -172,6 +172,7 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
     @Override
     public void onDateSelected(DateTime dateSelected) {
         carregarAgendaDoDia(dateSelected.dayOfMonth().get(), dateSelected.monthOfYear().get(), dateSelected.year().get());
+        dateTimeSelected = dateSelected;
     }
 
     private void inicializarComponentes(View view) {
