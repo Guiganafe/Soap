@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_evento"
+    app:startDestination="@id/addEvento">
+
+    <fragment
+        android:id="@+id/addEvento"
+        android:name="br.com.justworks.prestador.ServicoAki.Fragments.addEvento"
+        android:label="fragment_add_evento"
+        tools:layout="@layout/fragment_add_evento" >
+        <action
+            android:id="@+id/action_addEvento_to_addServico"
+            app:destination="@id/addServico" />
+    </fragment>
+    <fragment
+        android:id="@+id/addServico"
+        android:name="br.com.justworks.prestador.ServicoAki.Fragments.AddServico"
+        android:label="fragment_add_servico"
+        tools:layout="@layout/fragment_add_servico" />
+</navigation>

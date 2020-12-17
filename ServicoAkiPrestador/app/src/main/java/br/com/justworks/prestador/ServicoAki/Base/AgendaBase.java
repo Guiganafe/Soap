@@ -48,4 +48,8 @@ public class AgendaBase {
     public ArrayList<ScheduleItems> getScheduleItemsList(){
         return scheduleItemsList;
     }
+
+    public void limparAgenda() {
+        mAgendaBase = null;
+    }
 }

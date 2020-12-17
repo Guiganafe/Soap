@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 
 import br.com.justworks.prestador.ServicoAki.Activity.EditarPerfil;
 import br.com.justworks.prestador.ServicoAki.Activity.MeusServicos;
+import br.com.justworks.prestador.ServicoAki.Base.AgendaBase;
 import br.com.justworks.prestador.ServicoAki.Base.UserBase;
 import br.com.justworks.prestador.ServicoAki.Enum.userEnum;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
@@ -85,6 +86,8 @@ public class MeuPerfilFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FirebaseService.logOut();
+                UserBase.getInstance().limparUser();
+                AgendaBase.getInstance().limparAgenda();
                 Intent intent = new Intent(getContext(), LoginActivity.class);
                 startActivity(intent);
                 getActivity().finish();

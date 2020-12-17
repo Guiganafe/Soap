@@ -74,4 +74,8 @@ public class UserBase {
     public void removeService(int position){
         user.getServices().remove(position);
     }
+
+    public void limparUser(){
+        mUserBase = null;
+    }
 }

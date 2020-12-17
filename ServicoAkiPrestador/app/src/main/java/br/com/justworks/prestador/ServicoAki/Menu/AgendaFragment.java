@@ -111,7 +111,7 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
 
         scheduleItemsList = AgendaBase.getInstance().getScheduleItemsList();
 
-            if (scheduleItemsList.size() > 0) {
+            if (scheduleItemsList != null && scheduleItemsList.size() > 0) {
 
                 scheduleItemsListByDay = new ArrayList<>();
 
@@ -142,7 +142,6 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
                 recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
                 recyclerView.setAdapter(adapter);
             } else {
-                Toast.makeText(requireActivity(), "erro", Toast.LENGTH_SHORT).show();
                 imgAgenda.setVisibility(View.VISIBLE);
                 tv_titulo.setVisibility(View.VISIBLE);
                 tv_descricao.setVisibility(View.VISIBLE);

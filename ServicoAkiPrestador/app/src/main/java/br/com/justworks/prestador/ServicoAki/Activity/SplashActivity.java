@@ -35,8 +35,10 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        UserBase.getInstance();
-        AgendaBase.getInstance();
+        if(firebaseUser != null){
+            UserBase.getInstance();
+            AgendaBase.getInstance();
+        }
 
         Handler hander = new Handler();
         hander.postDelayed(new Runnable() {
@@ -44,7 +46,7 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 mostrarMainActivity();
             }
-        }, 4000);
+        }, 3000);
     }
 
     private void mostrarMainActivity() {
