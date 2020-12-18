@@ -21,14 +21,14 @@ import br.com.justworks.prestador.ServicoAki.Model.CategoriesServices;
 import br.com.justworks.prestador.ServicoAki.Model.ServiceUser;
 import br.com.justworks.prestador.ServicoAki.R;
 
-public class ServiceListEventoAdapter extends RecyclerView.Adapter<ServiceListEventoAdapter.ServicesListEventoViewHolder>{
+public class ServiceSelectedAdapter extends RecyclerView.Adapter<ServiceSelectedAdapter.ServiceSelectedViewHolder> {
 
     ArrayList<ServiceUser> servicesList;
     Context context;
-    private onServiceEventoListenner mOnServiceListenner;
+    private onServiceSelectedListenner mOnServiceListenner;
     private RequestBuilder<PictureDrawable> requestBuilder;
 
-    public ServiceListEventoAdapter(ArrayList<ServiceUser> servicesList, Context context, onServiceEventoListenner onServiceListenner){
+    public ServiceSelectedAdapter(ArrayList<ServiceUser> servicesList, Context context, onServiceSelectedListenner onServiceListenner) {
         this.servicesList = servicesList;
         this.context = context;
         this.mOnServiceListenner = onServiceListenner;
@@ -36,14 +36,14 @@ public class ServiceListEventoAdapter extends RecyclerView.Adapter<ServiceListEv
 
     @NonNull
     @Override
-    public ServicesListEventoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.servico_item_evento,
+    public ServiceSelectedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.servico_item_evento_selecionado,
                 parent, false);
-        return new ServicesListEventoViewHolder(v, mOnServiceListenner);
+        return new ServiceSelectedViewHolder(v, mOnServiceListenner);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ServicesListEventoViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ServiceSelectedViewHolder holder, int position) {
         ArrayList<CategoriesServices> cat = servicesList.get(position).getCategory();
 
         requestBuilder = Glide.with(context).as(PictureDrawable.class).listener(new SvgSoftwareLayerSetter());
@@ -62,17 +62,18 @@ public class ServiceListEventoAdapter extends RecyclerView.Adapter<ServiceListEv
         return servicesList.size();
     }
 
-    public static class ServicesListEventoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ServiceSelectedViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView textView_service_titulo_evento, textView_duracao_service_evento, textView_preco_servico_evento;
-        ImageView img_selected_service_cat;
-        onServiceEventoListenner onServiceEventoListenner;
+        ImageView img_selected_service, img_selected_service_cat;
+        onServiceSelectedListenner onServiceEventoListenner;
 
-        public ServicesListEventoViewHolder(@NonNull View itemView, onServiceEventoListenner onServiceListenner) {
+        public ServiceSelectedViewHolder(@NonNull View itemView, onServiceSelectedListenner onServiceListenner) {
             super(itemView);
-            textView_service_titulo_evento = itemView.findViewById(R.id.textView_servico_titulo_evento);
-            textView_duracao_service_evento = itemView.findViewById(R.id.textView_duracao_servico_evento);
-            img_selected_service_cat = itemView.findViewById(R.id.imagem_servico_evento);
-            textView_preco_servico_evento = itemView.findViewById(R.id.textView_preco_servico_evento);
+            textView_service_titulo_evento = itemView.findViewById(R.id.textView_servico_titulo_evento_selecionado);
+            textView_duracao_service_evento = itemView.findViewById(R.id.textView_duracao_servico_evento_selecionado);
+            img_selected_service = itemView.findViewById(R.id.img_servico_evento_selecionado);
+            img_selected_service_cat = itemView.findViewById(R.id.imagem_servico_evento_selecionado);
+            textView_preco_servico_evento = itemView.findViewById(R.id.textView_preco_servico_evento_selecionado);
             this.onServiceEventoListenner = onServiceListenner;
 
             itemView.setOnClickListener(this);
@@ -84,7 +85,7 @@ public class ServiceListEventoAdapter extends RecyclerView.Adapter<ServiceListEv
         }
     }
 
-    public interface onServiceEventoListenner {
+    public interface onServiceSelectedListenner {
         void onServiceClick(int position);
     }
 }

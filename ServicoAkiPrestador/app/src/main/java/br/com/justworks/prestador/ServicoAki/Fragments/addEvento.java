@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -65,7 +66,8 @@ import br.com.justworks.prestador.ServicoAki.ViewModel.EndereçoViewModel;
 import br.com.justworks.prestador.ServicoAki.ViewModel.ServiceEventListViewModel;
 import br.com.justworks.prestador.ServicoAki.ViewModel.ServicoViewModel;
 
-public class addEvento extends Fragment implements ServiceListEventoAdapter.onServiceListenner{
+public class addEvento extends Fragment implements ServiceListEventoAdapter.onServiceEventoListenner{
+
     private Spinner spinner;
     private Button btn_avancar, btn_cancelar;
     private Calendar calendar;
@@ -78,15 +80,12 @@ public class addEvento extends Fragment implements ServiceListEventoAdapter.onSe
     private TextView tv_local, tv_local_op, tv_valor, tv_valor_op, tv_servicos, tv_servicos_op, tv_add_servico;
 
     private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private ServicoViewModel servicoViewModel;
     private ArrayList<ServiceUser> servicesUser = new ArrayList<>();
     private ArrayList<ServiceUser> servicesEvent = new ArrayList<>();
     private Context context = getContext();
-    private ImageView addServico;
-    private ServiceListEventoAdapter.onServiceListenner serviceListenner = (ServiceListEventoAdapter.onServiceListenner) this.context;
+    private ServiceListEventoAdapter.onServiceEventoListenner serviceListenner = (ServiceListEventoAdapter.onServiceEventoListenner) this.context;
 
     private int horaInicio, minutoInicio, diaInicio, mesInicio, anoInicio, horaFim, minutoFim, diaFim, mesFim, anoFim;
 
@@ -111,7 +110,7 @@ public class addEvento extends Fragment implements ServiceListEventoAdapter.onSe
 
         inicializarComponentes(view);
 
-        //setUpReciclerView();
+        setUpReciclerView();
 
         spinnerControl();
 
@@ -122,7 +121,19 @@ public class addEvento extends Fragment implements ServiceListEventoAdapter.onSe
         clickControl();
     }
 
-//    private void filter(String text) {
+    @Override
+    public void onStart() {
+        super.onStart();
+            setUpReciclerView();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        setUpReciclerView();
+    }
+
+    //    private void filter(String text) {
 //        ArrayList<ServiceUser> serviceUsersFiltered = new ArrayList<>();
 //
 //        for(ServiceUser item: servicesUser){
@@ -152,7 +163,7 @@ public class addEvento extends Fragment implements ServiceListEventoAdapter.onSe
 //        });
 
         servicesUser = serviceEventListViewModel.getServices_selected_list().getValue();
-        if(servicesUser.size() > 0){
+        if(servicesUser != null && servicesUser.size() > 0){
             recyclerView.setVisibility(View.VISIBLE);
             adapter = new ServiceListEventoAdapter(servicesUser, context, serviceListenner);
             recyclerView.setHasFixedSize(false);

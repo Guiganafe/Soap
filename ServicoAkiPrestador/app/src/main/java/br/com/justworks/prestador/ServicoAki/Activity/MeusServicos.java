@@ -1,7 +1,6 @@
 package br.com.justworks.prestador.ServicoAki.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,20 +10,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.ArrayList;
 
 import br.com.justworks.prestador.ServicoAki.Adapter.ServicesListAdapter;
 import br.com.justworks.prestador.ServicoAki.Base.UserBase;
-import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Model.ServiceUser;
-import br.com.justworks.prestador.ServicoAki.Model.ServicesDocument;
 import br.com.justworks.prestador.ServicoAki.R;
 
 public class MeusServicos extends AppCompatActivity implements ServicesListAdapter.onServiceListenner{
@@ -33,11 +25,9 @@ public class MeusServicos extends AppCompatActivity implements ServicesListAdapt
     private TextView semServicoTitulo, semServicoDesc;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ArrayList<ServiceUser> servicesUser;
     private Context context = this;
     private FloatingActionButton floatButton;
-    private int posicaoSelected;
     private ServicesListAdapter.onServiceListenner serviceListenner = (ServicesListAdapter.onServiceListenner) this.context;
 
     @Override

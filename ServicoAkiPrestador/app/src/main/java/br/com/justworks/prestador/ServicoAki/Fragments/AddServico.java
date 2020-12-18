@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,17 +33,16 @@ import br.com.justworks.prestador.ServicoAki.R;
 import br.com.justworks.prestador.ServicoAki.ViewModel.ServiceEventListViewModel;
 import br.com.justworks.prestador.ServicoAki.ViewModel.ServicoViewModel;
 
-public class AddServico extends Fragment implements ServiceListEventoAdapter.onServiceListenner {
+public class AddServico extends Fragment implements ServicesListAdapter.onServiceListenner{
 
     private ImageView semServicoImg;
     private TextView semServicoTitulo, semServicoDesc;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private ServiceListEventoAdapter adapter;
     private ArrayList<ServiceUser> servicesUser;
-    private ServiceUser serviceUserSelected;
-    private Context context = getContext();
+    private Context context = getActivity();
     private ServiceEventListViewModel serviceEventListViewModel;
-    private ServiceListEventoAdapter.onServiceListenner serviceEventoListenner = (ServiceListEventoAdapter.onServiceListenner) this.context;
+    private ServiceListEventoAdapter.onServiceEventoListenner serviceEventoListenner = (ServiceListEventoAdapter.onServiceEventoListenner) this.context;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,6 +74,7 @@ public class AddServico extends Fragment implements ServiceListEventoAdapter.onS
             semServicoImg.setVisibility(View.GONE);
             semServicoTitulo.setVisibility(View.GONE);
             semServicoDesc.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
             adapter = new ServiceListEventoAdapter(servicesUser, context, serviceEventoListenner);
             recyclerView.setHasFixedSize(false);
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -88,19 +89,7 @@ public class AddServico extends Fragment implements ServiceListEventoAdapter.onS
 
     @Override
     public void onServiceClick(int position) {
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        setUpReciclerView();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        setUpReciclerView();
+        Toast.makeText(context, "Serviço: " + servicesUser.get(position).getName().getPtbr(), Toast.LENGTH_SHORT).show();
     }
 
     private void inicializarComponentes(View view) {
