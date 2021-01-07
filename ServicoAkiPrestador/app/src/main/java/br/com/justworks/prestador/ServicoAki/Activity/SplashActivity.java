@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 
 import br.com.justworks.prestador.ServicoAki.Base.AgendaBase;
+import br.com.justworks.prestador.ServicoAki.Base.EnderecoBase;
 import br.com.justworks.prestador.ServicoAki.Base.UserBase;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Model.ScheduleItems;
@@ -38,6 +39,7 @@ public class SplashActivity extends AppCompatActivity {
         if(firebaseUser != null){
             UserBase.getInstance();
             AgendaBase.getInstance();
+            EnderecoBase.getInstance();
         }
 
         Handler hander = new Handler();

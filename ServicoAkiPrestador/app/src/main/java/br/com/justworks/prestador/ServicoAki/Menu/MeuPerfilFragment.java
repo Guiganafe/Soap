@@ -23,8 +23,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.bumptech.glide.Glide;
 
 import br.com.justworks.prestador.ServicoAki.Activity.EditarPerfil;
+import br.com.justworks.prestador.ServicoAki.Activity.MeusEnderecos;
 import br.com.justworks.prestador.ServicoAki.Activity.MeusServicos;
 import br.com.justworks.prestador.ServicoAki.Base.AgendaBase;
+import br.com.justworks.prestador.ServicoAki.Base.EnderecoBase;
 import br.com.justworks.prestador.ServicoAki.Base.UserBase;
 import br.com.justworks.prestador.ServicoAki.Enum.userEnum;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
@@ -35,7 +37,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MeuPerfilFragment extends Fragment {
 
-    private TextView tv_logout, tv_name, tv_email, tv_authenticated, tv_phone, tv_meusServicos, tv_meus_dados;
+    private TextView tv_logout, tv_name, tv_email, tv_authenticated, tv_phone, tv_meusServicos, tv_meus_dados, tv_meusEnderecos;
     private CircleImageView imageView;
 
     private FirebaseAuth firebaseAuth;
@@ -88,6 +90,7 @@ public class MeuPerfilFragment extends Fragment {
                 FirebaseService.logOut();
                 UserBase.getInstance().limparUser();
                 AgendaBase.getInstance().limparAgenda();
+                EnderecoBase.getInstance().limparEndereco();
                 Intent intent = new Intent(getContext(), LoginActivity.class);
                 startActivity(intent);
                 getActivity().finish();
@@ -107,6 +110,14 @@ public class MeuPerfilFragment extends Fragment {
             public void onClick(View v) {
                 Intent editarPerfil = new Intent(requireActivity(), EditarPerfil.class);
                 startActivity(editarPerfil);
+            }
+        });
+
+        tv_meusEnderecos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent meusEnderecos = new Intent(requireActivity(), MeusEnderecos.class);
+                startActivity(meusEnderecos);
             }
         });
     }
@@ -130,6 +141,7 @@ public class MeuPerfilFragment extends Fragment {
         imageView = (CircleImageView) view.findViewById(R.id.profile_image);
         tv_meusServicos = (TextView) view.findViewById(R.id.tv_meusServicos);
         tv_meus_dados = (TextView) view.findViewById(R.id.tv_dados_pessoais);
+        tv_meusEnderecos = (TextView) view.findViewById(R.id.tv_meusEnderecos);
     }
 
 
