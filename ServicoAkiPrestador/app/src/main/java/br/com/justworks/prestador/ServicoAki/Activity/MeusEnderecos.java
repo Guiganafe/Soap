@@ -71,7 +71,9 @@ public class MeusEnderecos extends AppCompatActivity implements AddressItemAdapt
 
     @Override
     public void onAddressClick(int position) {
-        Toast.makeText(context, "position: " + position, Toast.LENGTH_SHORT).show();
+        Intent editarEndereco = new Intent(context, EditarEndereco.class);
+        editarEndereco.putExtra("position", position);
+        startActivity(editarEndereco);
     }
 
     @Override
