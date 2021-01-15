@@ -32,6 +32,7 @@ import com.google.firebase.functions.HttpsCallableResult;
 import java.util.Arrays;
 import java.util.List;
 
+import br.com.justworks.prestador.ServicoAki.Base.EnderecoBase;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Model.Address;
 import br.com.justworks.prestador.ServicoAki.R;
@@ -153,6 +154,7 @@ public class AdicionarEndereco extends AppCompatActivity {
         final Address address = new Address(active, addressName, addressType, city, country, neighborhood, number, state, street, userId , zipCode, latitude, longitude);
 
         sendAddress(address);
+        EnderecoBase.getInstance().adicionarEndereco(address);
 
         finish();
     }
