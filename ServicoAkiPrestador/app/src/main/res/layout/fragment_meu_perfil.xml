@@ -299,6 +299,20 @@
                 <View style="@style/Divider"/>
 
                 <TextView
+                    android:id="@+id/tv_config_agenda"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Configurar agenda"
+                    android:textColor="@color/colorBlack"
+                    android:paddingTop="14sp"
+                    android:paddingStart="20sp"
+                    android:paddingBottom="14sp"/>
+
+                <View style="@style/Divider"/>
+
+                <TextView
                     android:id="@+id/tv_logout"
                     android:clickable="true"
                     android:focusable="true"

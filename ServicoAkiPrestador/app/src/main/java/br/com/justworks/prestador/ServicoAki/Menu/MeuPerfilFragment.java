@@ -22,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import com.bumptech.glide.Glide;
 
+import br.com.justworks.prestador.ServicoAki.Activity.ConfigurarAgenda;
 import br.com.justworks.prestador.ServicoAki.Activity.EditarPerfil;
 import br.com.justworks.prestador.ServicoAki.Activity.MeusEnderecos;
 import br.com.justworks.prestador.ServicoAki.Activity.MeusServicos;
@@ -37,7 +38,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MeuPerfilFragment extends Fragment {
 
-    private TextView tv_logout, tv_name, tv_email, tv_authenticated, tv_phone, tv_meusServicos, tv_meus_dados, tv_meusEnderecos;
+    private TextView tv_logout, tv_config_agenda, tv_name, tv_email, tv_authenticated, tv_phone, tv_meusServicos, tv_meus_dados, tv_meusEnderecos;
     private CircleImageView imageView;
 
     private FirebaseAuth firebaseAuth;
@@ -120,6 +121,14 @@ public class MeuPerfilFragment extends Fragment {
                 startActivity(meusEnderecos);
             }
         });
+
+        tv_config_agenda.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent configAgenda = new Intent(requireActivity(), ConfigurarAgenda.class);
+                startActivity(configAgenda);
+            }
+        });
     }
 
     @Override
@@ -142,6 +151,7 @@ public class MeuPerfilFragment extends Fragment {
         tv_meusServicos = (TextView) view.findViewById(R.id.tv_meusServicos);
         tv_meus_dados = (TextView) view.findViewById(R.id.tv_dados_pessoais);
         tv_meusEnderecos = (TextView) view.findViewById(R.id.tv_meusEnderecos);
+        tv_config_agenda = (TextView) view.findViewById(R.id.tv_config_agenda);
     }
 
 
