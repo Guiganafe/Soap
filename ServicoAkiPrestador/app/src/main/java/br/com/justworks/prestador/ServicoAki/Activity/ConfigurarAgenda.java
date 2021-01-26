@@ -67,12 +67,15 @@ public class ConfigurarAgenda extends AppCompatActivity {
         if(agendaConfigurada != null){
             for (ServiceDays serviceDays: agendaConfigurada.getServiceDays()) {
 
-                Toast.makeText(this, "Day =" + serviceDays.getDay().toString() , Toast.LENGTH_SHORT).show();
-
                 if(serviceDays.day.equals("Sunday")){
                     dom.setBackground(drawable);
                     cardDom.setVisibility(View.VISIBLE);
                     dom_selected = true;
+
+                    hora_inicio_dom.setText(configurarHora(serviceDays.startTime));
+                    hora_termino_dom.setText(configurarHora(serviceDays.endTime));
+                    inicio_intervalo_dom.setText(configurarHora(serviceDays.lunchStartTime));
+                    fim_intervalo_dom.setText(configurarHora(serviceDays.lunchEndTime));
                 }
 
                 if(serviceDays.day.equals("Monday")){
@@ -84,6 +87,61 @@ public class ConfigurarAgenda extends AppCompatActivity {
                     hora_termino_seg.setText(configurarHora(serviceDays.endTime));
                     inicio_intervalo_seg.setText(configurarHora(serviceDays.lunchStartTime));
                     fim_intervalo_seg.setText(configurarHora(serviceDays.lunchEndTime));
+                }
+
+                if(serviceDays.day.equals("Tuesday")){
+                    ter.setBackground(drawable);
+                    cardTer.setVisibility(View.VISIBLE);
+                    ter_selected = true;
+
+                    hora_inicio_ter.setText(configurarHora(serviceDays.startTime));
+                    hora_termino_ter.setText(configurarHora(serviceDays.endTime));
+                    inicio_intervalo_ter.setText(configurarHora(serviceDays.lunchStartTime));
+                    fim_intervalo_ter.setText(configurarHora(serviceDays.lunchEndTime));
+                }
+
+                if(serviceDays.day.equals("Wednesday")){
+                    qua.setBackground(drawable);
+                    cardQua.setVisibility(View.VISIBLE);
+                    qua_selected = true;
+
+                    hora_inicio_qua.setText(configurarHora(serviceDays.startTime));
+                    hora_termino_qua.setText(configurarHora(serviceDays.endTime));
+                    inicio_intervalo_qua.setText(configurarHora(serviceDays.lunchStartTime));
+                    fim_intervalo_qua.setText(configurarHora(serviceDays.lunchEndTime));
+                }
+
+                if(serviceDays.day.equals("Thursday")){
+                    qui.setBackground(drawable);
+                    cardQui.setVisibility(View.VISIBLE);
+                    qui_selected = true;
+
+                    hora_inicio_qui.setText(configurarHora(serviceDays.startTime));
+                    hora_termino_qui.setText(configurarHora(serviceDays.endTime));
+                    inicio_intervalo_qui.setText(configurarHora(serviceDays.lunchStartTime));
+                    fim_intervalo_qui.setText(configurarHora(serviceDays.lunchEndTime));
+                }
+
+                if(serviceDays.day.equals("Friday")){
+                    sex.setBackground(drawable);
+                    cardSex.setVisibility(View.VISIBLE);
+                    sex_selected = true;
+
+                    hora_inicio_sex.setText(configurarHora(serviceDays.startTime));
+                    hora_termino_sex.setText(configurarHora(serviceDays.endTime));
+                    inicio_intervalo_sex.setText(configurarHora(serviceDays.lunchStartTime));
+                    fim_intervalo_sex.setText(configurarHora(serviceDays.lunchEndTime));
+                }
+
+                if(serviceDays.day.equals("Saturday")){
+                    sab.setBackground(drawable);
+                    cardSab.setVisibility(View.VISIBLE);
+                    sab_selected = true;
+
+                    hora_inicio_sab.setText(configurarHora(serviceDays.startTime));
+                    hora_termino_sab.setText(configurarHora(serviceDays.endTime));
+                    inicio_intervalo_sab.setText(configurarHora(serviceDays.lunchStartTime));
+                    fim_intervalo_sab.setText(configurarHora(serviceDays.lunchEndTime));
                 }
             }
         }
@@ -231,7 +289,7 @@ public class ConfigurarAgenda extends AppCompatActivity {
             lunchStartTime_txt = inicio_intervalo_sab.getText().toString();
             lunchEndTime_txt = fim_intervalo_sab.getText().toString();
 
-            if(startTime_txt != "" || endTime_txt != "" || lunchStartTime_txt != "" || lunchEndTime_txt != "") {
+            if(!startTime_txt.equals("") || !endTime_txt.equals("") || !lunchStartTime_txt.equals("") || !lunchEndTime_txt.equals("")) {
                 startTime = (Integer.parseInt(startTime_txt.substring(0, 2)) * 60) + Integer.parseInt(startTime_txt.substring(3, 5));
                 endTime = (Integer.parseInt(endTime_txt.substring(0, 2)) * 60) + Integer.parseInt(endTime_txt.substring(3, 5));
                 lunchStartTime = (Integer.parseInt(lunchStartTime_txt.substring(0, 2)) * 60) + Integer.parseInt(lunchStartTime_txt.substring(3, 5));
@@ -254,12 +312,25 @@ public class ConfigurarAgenda extends AppCompatActivity {
         data.put("professionalId", userID);
         data.put("serviceDays", serviceDays);
 
-        db.collection("schedules").add(data).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                finish();
-            }
-        });
+        String idAgenda = ConfigAgendaBase.getInstance().getScheduleId();
+        if(idAgenda.equals("")){
+            db.collection("schedules").add(data).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                    Toast.makeText(ConfigurarAgenda.this, "Agenda criada", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            });
+        } else {
+            db.collection("schedules").document(idAgenda).update(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    ConfigAgendaBase.getInstance().setServiceDays(serviceDays);
+                    Toast.makeText(ConfigurarAgenda.this, "Agenda atualizada", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            });
+        }
     }
 
     private void maskController() {
@@ -310,12 +381,10 @@ public class ConfigurarAgenda extends AppCompatActivity {
                     dom.setBackground(drawableOriginal);
                     cardDom.setVisibility(View.GONE);
                     dom_selected = false;
-                    Toast.makeText(ConfigurarAgenda.this, "Domingo = " + dom_selected, Toast.LENGTH_SHORT).show();
                 }else {
                     dom.setBackground(drawable);
                     cardDom.setVisibility(View.VISIBLE);
                     dom_selected = true;
-                    Toast.makeText(ConfigurarAgenda.this, "Domingo = " + dom_selected, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -386,11 +455,11 @@ public class ConfigurarAgenda extends AppCompatActivity {
                 if(sex.getBackground() == drawable){
                     sex.setBackground(drawableOriginal);
                     cardSex.setVisibility(View.GONE);
-                    qui_selected = false;
+                    sex_selected = false;
                 }else {
                     sex.setBackground(drawable);
                     cardSex.setVisibility(View.VISIBLE);
-                    qui_selected = true;
+                    sex_selected = true;
                 }
             }
         });

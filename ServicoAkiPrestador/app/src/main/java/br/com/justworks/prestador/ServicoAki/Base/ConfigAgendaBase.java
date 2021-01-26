@@ -8,8 +8,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Model.Schedules;
+import br.com.justworks.prestador.ServicoAki.Model.ServiceDays;
 
 public class ConfigAgendaBase {
 
@@ -18,7 +21,7 @@ public class ConfigAgendaBase {
 
     private Schedules schedule;
 
-    private String scheduleId;
+    private String scheduleId = "";
 
     private static ConfigAgendaBase configAgendaBase;
 
@@ -46,7 +49,15 @@ public class ConfigAgendaBase {
         return configAgendaBase;
     }
 
+    public String getScheduleId(){
+        return scheduleId;
+    }
+
     public Schedules getSchedule(){
         return schedule;
+    }
+
+    public void setServiceDays(ArrayList<ServiceDays> sd){
+        this.schedule.setServiceDays(sd);
     }
 }
