@@ -22,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
 
 import br.com.justworks.prestador.ServicoAki.Base.AgendaBase;
+import br.com.justworks.prestador.ServicoAki.Base.ConfigAgendaBase;
 import br.com.justworks.prestador.ServicoAki.Base.EnderecoBase;
 import br.com.justworks.prestador.ServicoAki.Base.UserBase;
 import br.com.justworks.prestador.ServicoAki.Enum.userEnum;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         UserBase.getInstance();
         AgendaBase.getInstance();
         EnderecoBase.getInstance();
+        ConfigAgendaBase.getInstance();
         inicializarComponentes();
         validarUsuario();
         inicializarUsuario();
