@@ -9,6 +9,8 @@ import androidx.core.content.FileProvider;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -25,9 +27,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -47,6 +51,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import br.com.justworks.prestador.ServicoAki.Base.UserBase;
@@ -64,8 +69,13 @@ public class EditarPerfil extends AppCompatActivity {
 
     private ImageView fotoPerfil, removerImage;
     private Button alterarImagem, cancelarEdicao, salvarEdicao;
-    private EditText nome, email, telefone, cpf, nomeMae, rg;
+    private EditText nome, email, telefone, cpf, nomeMae, rg, dataNascimento;
     private Spinner sexo, estadoCivil;
+
+    //Data de nascimento
+    private Calendar calendar;
+    private int dia, mes, ano;
+    private DatePickerDialog datePickerDialog;
 
     //Camera
     public static final int CAMERA_PERM_CODE = 101;
@@ -88,6 +98,9 @@ public class EditarPerfil extends AppCompatActivity {
         textWatcherController();
 
         storageRef = FirebaseStorage.getInstance().getReference();
+        
+        timeController();
+
     }
 
     private void textWatcherController() {
@@ -445,7 +458,7 @@ public class EditarPerfil extends AppCompatActivity {
         nome.setText(user.getName());
         email.setText(user.getEmail());
         telefone.setText(user.getPhoneNumber());
-        if(!user.getImageUrl().equals("")){
+        if(!user.getImageUrl().equals("") || user.getImageUrl() != null){
             Glide.with(this).load(user.getImageUrl()).into(fotoPerfil);
         } else {
             fotoPerfil.setImageBitmap(null);
@@ -456,9 +469,31 @@ public class EditarPerfil extends AppCompatActivity {
         cpf.setText(user.getGovernmentId());
         nomeMae.setText(user.getMotherName());
         rg.setText(user.getIdentifyDocument());
+        dataNascimento.setText(user.getBirthDate());
+    }
+
+    private void timeController() {
+        dia = Integer.parseInt(user.getBirthDate().substring(0,2));
+        mes = Integer.parseInt(user.getBirthDate().substring(3,5)) -1;
+        ano = Integer.parseInt(user.getBirthDate().substring(6,10));
+
+        dataNascimento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datePickerDialog = new DatePickerDialog(EditarPerfil.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        dataNascimento.setText(String.format("%02d/%02d/%04d", dayOfMonth, month+1, year));
+                        user.setBirthDate(dayOfMonth + "/" + month+1 + "/" + year);
+                    }
+                },ano, mes, dia);
+                datePickerDialog.show();
+            }
+        });
     }
 
     public void inicializarComponentes(){
+        calendar = Calendar.getInstance();
         fotoPerfil = (ImageView) findViewById(R.id.img_perfil_edicao);
         alterarImagem = (Button) findViewById(R.id.btn_editar_foto);
         removerImage = (ImageView) findViewById(R.id.btn_remover_foto_atual);
@@ -472,5 +507,6 @@ public class EditarPerfil extends AppCompatActivity {
         rg = (EditText) findViewById(R.id.edt_rg_edicao);
         sexo = (Spinner) findViewById(R.id.spinner_sexo_edicao);
         estadoCivil = (Spinner) findViewById(R.id.spinner_estado_civil_edicao);
+        dataNascimento = (EditText) findViewById(R.id.edt_data_nasc_edicao);
     }
 }

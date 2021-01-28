@@ -1,220 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Menu.AgendaFragment"
-    android:background="@color/colorWhite">
+    android:background="@color/colorWhite"
+    android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.0"
-        app:layout_constraintGuide_begin="20dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.25"
-        app:layout_constraintGuide_begin="20dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.3"
-        app:layout_constraintGuide_begin="20dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelined6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.63"
-        app:layout_constraintGuide_begin="20dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelinded6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.73"
-        app:layout_constraintGuide_begin="20dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelindded6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.83"
-        app:layout_constraintGuide_begin="20dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05"
-        app:layout_constraintGuide_begin="20dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.65"
-        app:layout_constraintGuide_begin="20dp" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView3"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:cardCornerRadius="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView3"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:layout_height="200dp"
+            app:cardCornerRadius="0dp">
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="150dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_logo_menu" />
-
-            <br.com.justworks.prestador.ServicoAki.HorizontalPicker.HorizontalPicker
-                android:id="@+id/datePicker"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="120dp" />
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
 
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="150dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_logo_menu" />
 
-    </androidx.cardview.widget.CardView>
+                <br.com.justworks.prestador.ServicoAki.HorizontalPicker.HorizontalPicker
+                    android:id="@+id/datePicker"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp" />
 
-    <TextView
-        android:id="@+id/tv_proxAtendimentos"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:autoSizeMaxTextSize="18sp"
-        android:autoSizeMinTextSize="12sp"
-        android:autoSizeTextType="uniform"
-        android:gravity="center_vertical"
-        android:text="Compromissos do dia"
-        android:visibility="gone"
-        android:textColor="@color/colorBlack"
-        app:layout_constraintBottom_toTopOf="@+id/guideline6"
-        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/cardView3" />
+            </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/reciclerView_servicoItem"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_proxAtendimentos" />
+        </androidx.cardview.widget.CardView>
 
-    <ImageView
-        android:id="@+id/imagemAgenda"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/agenta_vazia"
-        app:layout_constraintBottom_toTopOf="@+id/guidelined6"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline6" />
+        <TextView
+            android:id="@+id/tv_proxAtendimentos"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:paddingStart="5dp"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:autoSizeMaxTextSize="20sp"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center_vertical"
+            android:text="Compromissos do dia"
+            android:textColor="@color/colorBlack"
+            android:visibility="gone"/>
 
-    <TextView
-        android:id="@+id/tv_semCompromisso"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:autoSizeMaxTextSize="20sp"
-        android:autoSizeMinTextSize="12sp"
-        android:autoSizeStepGranularity="2sp"
-        android:autoSizeTextType="uniform"
-        android:gravity="center"
-        android:text="Nenhum compromisso"
-        android:textColor="@color/colorBlack"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/guidelinded6"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guidelined6" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reciclerView_servicoItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
 
-    <TextView
-        android:id="@+id/tv_agendaVazia"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="64dp"
-        android:autoSizeMaxTextSize="18sp"
-        android:autoSizeMinTextSize="12sp"
-        android:autoSizeStepGranularity="2sp"
-        android:autoSizeTextType="uniform"
-        android:gravity="center"
-        android:text="Sua agenda de serviços esta vazia neste dia"
-        android:textAlignment="center"
-        android:textColor="@color/colorBlack"
-        app:layout_constraintBottom_toTopOf="@+id/guidelindded6"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guidelinded6" />
+        <ImageView
+            android:id="@+id/imagemAgenda"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_margin="20dp"
+            android:layout_gravity="center"
+            android:src="@drawable/agenta_vazia" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline111"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="20dp"
-        app:layout_constraintGuide_percent="0.99" />
+        <TextView
+            android:id="@+id/tv_semCompromisso"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:autoSizeMaxTextSize="26sp"
+            android:autoSizeMinTextSize="14sp"
+            android:autoSizeStepGranularity="2sp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center"
+            android:text="Nenhum compromisso"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline222"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="20dp"
-        app:layout_constraintGuide_percent="0.89" />
+        <TextView
+            android:id="@+id/tv_agendaVazia"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:autoSizeMaxTextSize="24sp"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeStepGranularity="2sp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center"
+            android:text="Sua agenda de serviços esta vazia neste dia"
+            android:textAlignment="center"
+            android:textColor="@color/colorBlack" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline333"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp"
-        app:layout_constraintGuide_percent="0.98" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline444"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp"
-        app:layout_constraintGuide_percent="0.78" />
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fb_criar_evento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
         android:backgroundTint="@color/colorPrimary"
         android:src="@drawable/ic_add_white"
-        app:borderWidth="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline111"
-        app:layout_constraintEnd_toStartOf="@+id/guideline333"
-        app:layout_constraintStart_toStartOf="@+id/guideline444"
-        app:layout_constraintTop_toTopOf="@+id/guideline222" />
+        app:borderWidth="0dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

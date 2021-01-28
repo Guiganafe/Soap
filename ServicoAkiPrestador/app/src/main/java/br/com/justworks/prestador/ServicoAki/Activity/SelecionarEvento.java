@@ -34,8 +34,6 @@ public class SelecionarEvento extends AppCompatActivity implements ServiceListEv
     private Context context = this;
     private ServiceListEventoAdapter.onServiceEventoListenner serviceEventoListenner = (ServiceListEventoAdapter.onServiceEventoListenner) this.context;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

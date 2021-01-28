@@ -19,8 +19,8 @@
 
             <ImageView
                 android:id="@+id/imagem_servico_evento_selecionado"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="2dp"
                 android:background="@drawable/back_yellow"
@@ -38,7 +38,11 @@
                 <TextView
                     android:id="@+id/textView_servico_titulo_evento_selecionado"
                     android:layout_width="match_parent"
-                    android:layout_height="26dp"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:autoSizeMaxTextSize="20sp"
+                    android:autoSizeMinTextSize="12sp"
+                    android:autoSizeStepGranularity="2sp"
                     android:autoSizeTextType="uniform"
                     android:text="Serviço"
                     android:textColor="@color/colorBlack"
@@ -52,7 +56,7 @@
                     <TextView
                         android:id="@+id/textView_duracao_servico_evento_selecionado"
                         android:layout_width="match_parent"
-                        android:layout_height="16dp"
+                        android:layout_height="20dp"
                         android:layout_weight="1"
                         android:autoSizeTextType="uniform"
                         android:text="Duração: 45 min" />
@@ -60,8 +64,9 @@
                     <TextView
                         android:id="@+id/textView_preco_servico_evento_selecionado"
                         android:layout_width="match_parent"
-                        android:layout_height="16dp"
+                        android:layout_height="20dp"
                         android:layout_weight="1"
+                        android:gravity="end"
                         android:autoSizeTextType="uniform"
                         android:text="Preço: R$ 150" />
 
@@ -78,9 +83,9 @@
 
                 <ImageView
                     android:id="@+id/img_servico_evento_selecionado"
-                    android:layout_width="wrap_content"
+                    android:layout_width="35dp"
                     android:src="@drawable/ic_remove_x"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="35dp"/>
 
             </LinearLayout>
 

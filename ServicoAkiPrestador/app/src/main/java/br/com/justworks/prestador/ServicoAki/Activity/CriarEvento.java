@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -51,6 +52,8 @@ import java.util.Map;
 
 import br.com.justworks.prestador.ServicoAki.Adapter.ServiceListEventoAdapter;
 import br.com.justworks.prestador.ServicoAki.Adapter.ServiceSelectedAdapter;
+import br.com.justworks.prestador.ServicoAki.Base.AgendaBase;
+import br.com.justworks.prestador.ServicoAki.Base.ConfigAgendaBase;
 import br.com.justworks.prestador.ServicoAki.Base.ServicosBase;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Model.Address;
@@ -70,8 +73,10 @@ public class CriarEvento extends AppCompatActivity implements ServiceSelectedAda
     private DatePickerDialog datePickerDialog;
     private EndereçoViewModel endereçoViewModel;
     private ServiceEventListViewModel serviceEventListViewModel;
-    private EditText titulo_evento, inicio_evento_hora, inicio_evento_data, fim_evento_hora, fim_evento_data, tipo_evento, valor_evento, local_evento, servicos_evento;
+    private EditText titulo_evento, inicio_evento_hora, inicio_evento_data, fim_evento_hora, fim_evento_data, tipo_evento, valor_evento, local_evento;
     private TextView tv_local, tv_valor, tv_servicos, tv_servicos_op, tv_add_servico;
+    private LinearLayout lista_servicos_vazia;
+    public boolean atendimento = true;
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -175,9 +180,6 @@ public class CriarEvento extends AppCompatActivity implements ServiceSelectedAda
         inicioEventoHora = inicio_evento_hora.getText().toString();
         fimEventoData = fim_evento_data.getText().toString();
         fimEventoHora = fim_evento_hora.getText().toString();
-        valorEvento = valor_evento.getText().toString();
-        localEvento = local_evento.getText().toString();
-        Boolean active = true;
 
         if (TextUtils.isEmpty(tituloEvento)) {
             titulo_evento.setError("Insira um título para o evento");
@@ -194,13 +196,6 @@ public class CriarEvento extends AppCompatActivity implements ServiceSelectedAda
         } else if (TextUtils.isEmpty(fimEventoHora)) {
             fim_evento_hora.setError("Insira uma hora válida");
             return;
-        } else if (TextUtils.isEmpty(valorEvento)) {
-            valor_evento.setError("Insira um valor válido");
-            return;
-        }
-        if (TextUtils.isEmpty(localEvento)) {
-            local_evento.setError("Insira uma localização válida");
-            return;
         }
 
         Calendar dataInicio = Calendar.getInstance(Locale.getDefault()), dataFim = Calendar.getInstance(Locale.getDefault());
@@ -210,52 +205,93 @@ public class CriarEvento extends AppCompatActivity implements ServiceSelectedAda
 
         dataFim.set(anoFim, mesFim, diaFim, horaFim, minutoFim);
         String dataFimFinal = df.format(dataFim.getTime());
+        String userId = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
 
-        Boolean addres_active, default_address;
-        String addressName, addressType, city, country, neighborhood, number, state, street, userId, zipCode;
-        double latitude, longitude;
+        if(atendimento){
+            valorEvento = valor_evento.getText().toString();
+            localEvento = local_evento.getText().toString();
 
-        addres_active = true;
-        addressName = "Endereço";
-        addressType = "Event";
-        city = endereçoViewModel.getCidade().getValue();
-        country = endereçoViewModel.getPais().getValue();
-        neighborhood = endereçoViewModel.getBairro().getValue();
-        number = endereçoViewModel.getNumero().getValue();
-        state = endereçoViewModel.getEstado().getValue();
-        userId = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
-        street = endereçoViewModel.getRua().getValue();
-        zipCode = endereçoViewModel.getCep().getValue();
-        longitude = endereçoViewModel.getLongitude().getValue();
-        latitude = endereçoViewModel.getLatitude().getValue();
+            if (TextUtils.isEmpty(valorEvento)) {
+                valor_evento.setError("Insira um valor válido");
+                return;
+            }
+            if (TextUtils.isEmpty(localEvento)) {
+                local_evento.setError("Insira uma localização válida");
+                return;
+            }
 
-        final Address address = new Address(addres_active, addressName, addressType, city, country, neighborhood, number, state, street, userId , zipCode, latitude, longitude);
+            Boolean active = true;
+            Boolean addres_active, default_address;
+            String addressName, addressType, city, country, neighborhood, number, state, street, zipCode;
+            double latitude, longitude;
 
-        Map<String, Object> scheduleItems = new HashMap<>();
-        scheduleItems.put("title", tituloEvento);
-        scheduleItems.put("hourBegin", dataInicio.getTime());
-        scheduleItems.put("hourEnd", dataFim.getTime());
-        scheduleItems.put("price", Double.parseDouble(valorEvento));
-        scheduleItems.put("address", address);
-        scheduleItems.put("professionalId", userId);
-        scheduleItems.put("scheduleId", FirebaseService.getFirebaseAuth().getCurrentUser().getUid());
-        scheduleItems.put("active", active);
-        scheduleItems.put("services", servicesEvent);
+            addres_active = true;
+            addressName = "Endereço";
+            addressType = "Event";
+            city = endereçoViewModel.getCidade().getValue();
+            country = endereçoViewModel.getPais().getValue();
+            neighborhood = endereçoViewModel.getBairro().getValue();
+            number = endereçoViewModel.getNumero().getValue();
+            state = endereçoViewModel.getEstado().getValue();
+            street = endereçoViewModel.getRua().getValue();
+            zipCode = endereçoViewModel.getCep().getValue();
+            longitude = endereçoViewModel.getLongitude().getValue();
+            latitude = endereçoViewModel.getLatitude().getValue();
 
-        // Add a new document with a generated ID
-        db.collection("scheduleItems")
-                .add(scheduleItems)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        finish();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                    }
-                });
+            servicesEvent = ServicosBase.getInstance().getServicos_selecionados();
+
+            final Address address = new Address(addres_active, addressName, addressType, city, country, neighborhood, number, state, street, userId , zipCode, latitude, longitude);
+
+            Map<String, Object> scheduleItems = new HashMap<>();
+            scheduleItems.put("title", tituloEvento);
+            scheduleItems.put("hourBegin", dataInicio.getTime());
+            scheduleItems.put("hourEnd", dataFim.getTime());
+            scheduleItems.put("price", Double.parseDouble(valorEvento));
+            scheduleItems.put("address", address);
+            scheduleItems.put("professionalId", userId);
+            scheduleItems.put("scheduleId", FirebaseService.getFirebaseAuth().getCurrentUser().getUid());
+            scheduleItems.put("active", active);
+            scheduleItems.put("services", servicesEvent);
+
+            // Add a new document with a generated ID
+            db.collection("scheduleItems")
+                    .add(scheduleItems)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            finish();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                        }
+                    });
+        } else {
+            Map<String, Object> scheduleItems = new HashMap<>();
+            scheduleItems.put("title", tituloEvento);
+            scheduleItems.put("hourBegin", dataInicio.getTime());
+            scheduleItems.put("hourEnd", dataFim.getTime());
+            scheduleItems.put("type", "blocked time");
+            scheduleItems.put("professionalId", userId);
+            scheduleItems.put("scheduleId", ConfigAgendaBase.getInstance().getScheduleId());
+
+            // Add a new document with a generated ID
+            db.collection("scheduleItems")
+                    .add(scheduleItems)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            finish();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                        }
+                    });
+        }
+
     }
 
     private void spinnerControl() {
@@ -268,17 +304,23 @@ public class CriarEvento extends AppCompatActivity implements ServiceSelectedAda
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 if(position == 1){
+                    atendimento = false;
                     valor_evento.setVisibility(View.INVISIBLE);
                     local_evento.setVisibility(View.INVISIBLE);
-                    //servicos_evento.setVisibility(View.INVISIBLE);
+                    tv_servicos.setVisibility(View.INVISIBLE);
+                    tv_servicos_op.setVisibility(View.INVISIBLE);
+                    lista_servicos_vazia.setVisibility(View.INVISIBLE);
                     tv_local.setVisibility(View.INVISIBLE);
                     tv_valor.setVisibility(View.INVISIBLE);
                     tv_servicos.setVisibility(View.INVISIBLE);
                     tv_servicos_op.setVisibility(View.INVISIBLE);
                 }else if(position == 0){
+                    atendimento = true;
                     valor_evento.setVisibility(View.VISIBLE);
                     local_evento.setVisibility(View.VISIBLE);
-                    //servicos_evento.setVisibility(View.VISIBLE);
+                    tv_servicos.setVisibility(View.VISIBLE);
+                    tv_servicos_op.setVisibility(View.VISIBLE);
+                    lista_servicos_vazia.setVisibility(View.VISIBLE);
                     tv_local.setVisibility(View.VISIBLE);
                     tv_valor.setVisibility(View.VISIBLE);
                     tv_servicos.setVisibility(View.VISIBLE);
@@ -438,5 +480,6 @@ public class CriarEvento extends AppCompatActivity implements ServiceSelectedAda
         tv_servicos = (TextView) findViewById(R.id.tv_servicos);
         tv_servicos_op = (TextView) findViewById(R.id.tv_servicos_op);
         tv_add_servico = (TextView) findViewById(R.id.tv_add_setvico);
+        lista_servicos_vazia = (LinearLayout) findViewById(R.id.lista_servicos_vazia);
     }
 }

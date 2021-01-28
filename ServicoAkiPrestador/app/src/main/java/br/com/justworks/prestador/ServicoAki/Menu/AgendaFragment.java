@@ -152,7 +152,7 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
 
     private void pickerControl() {
         picker.setListener(this)
-                .setDays(30)
+                .setDays(15)
                 .setOffset(4)
                 .setDateSelectedColor(Color.DKGRAY)
                 .setDateSelectedTextColor(Color.DKGRAY)
@@ -163,6 +163,7 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
                 .setUnselectedDayTextColor(Color.DKGRAY)
                 .setDayOfWeekTextColor(Color.DKGRAY )
                 .setUnselectedDayTextColor(getResources().getColor(R.color.colorWhite))
+                .showTodayButton(false)
                 .init();
         picker.setBackgroundColor(Color.WHITE);
         picker.setDate(new DateTime());
