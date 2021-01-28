@@ -77,7 +77,7 @@ public class addEvento extends Fragment implements ServiceListEventoAdapter.onSe
     private EndereçoViewModel endereçoViewModel;
     private ServiceEventListViewModel serviceEventListViewModel;
     private EditText titulo_evento, inicio_evento_hora, inicio_evento_data, fim_evento_hora, fim_evento_data, tipo_evento, valor_evento, local_evento, servicos_evento;
-    private TextView tv_local, tv_local_op, tv_valor, tv_valor_op, tv_servicos, tv_servicos_op, tv_add_servico;
+    private TextView tv_local, tv_valor, tv_servicos, tv_servicos_op, tv_add_servico;
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -304,9 +304,7 @@ public class addEvento extends Fragment implements ServiceListEventoAdapter.onSe
                     local_evento.setVisibility(View.INVISIBLE);
                     //servicos_evento.setVisibility(View.INVISIBLE);
                     tv_local.setVisibility(View.INVISIBLE);
-                    tv_local_op.setVisibility(View.INVISIBLE);
                     tv_valor.setVisibility(View.INVISIBLE);
-                    tv_valor_op.setVisibility(View.INVISIBLE);
                     tv_servicos.setVisibility(View.INVISIBLE);
                     tv_servicos_op.setVisibility(View.INVISIBLE);
                 }else if(position == 0){
@@ -314,9 +312,7 @@ public class addEvento extends Fragment implements ServiceListEventoAdapter.onSe
                     local_evento.setVisibility(View.VISIBLE);
                     //servicos_evento.setVisibility(View.VISIBLE);
                     tv_local.setVisibility(View.VISIBLE);
-                    tv_local_op.setVisibility(View.VISIBLE);
                     tv_valor.setVisibility(View.VISIBLE);
-                    tv_valor_op.setVisibility(View.VISIBLE);
                     tv_servicos.setVisibility(View.VISIBLE);
                     tv_servicos_op.setVisibility(View.VISIBLE);
                 }
@@ -470,9 +466,7 @@ public class addEvento extends Fragment implements ServiceListEventoAdapter.onSe
         fim_evento_data = (EditText) view.findViewById(R.id.fim_evento_data);
         fim_evento_hora = (EditText) view.findViewById(R.id.fim_evento_hora);
         tv_local = (TextView) view.findViewById(R.id.tv_local);
-        tv_local_op = (TextView) view.findViewById(R.id.tv_local_op);
         tv_valor = (TextView) view.findViewById(R.id.tv_valor);
-        tv_valor_op = (TextView) view.findViewById(R.id.tv_valor_op);
         tv_servicos = (TextView) view.findViewById(R.id.tv_servicos);
         tv_servicos_op = (TextView) view.findViewById(R.id.tv_servicos_op);
         tv_add_servico = (TextView) view.findViewById(R.id.tv_add_setvico);

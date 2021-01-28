@@ -49,12 +49,23 @@ public class AdapterScheduleItem extends RecyclerView.Adapter<AdapterScheduleIte
         int minInicio = schedulesList.get(position).getHourBegin().toDate().getMinutes();
 
         int horaFim = schedulesList.get(position).getHourEnd().toDate().getHours();
-        int minFim = schedulesList.get(position).getHourEnd().toDate().getHours();
+        int minFim = schedulesList.get(position).getHourEnd().toDate().getMinutes();
 
         int qtdServico = schedulesList.get(position).getServices().size();
 
         holder.textView_servico_titulo.setText(schedulesList.get(position).getTitle());
-        holder.textView_servico_hora.setText(String.format(Locale.getDefault(),"%d:%dh às %d:%dh", horaInicio, minInicio, horaFim, minFim));
+
+        if(minInicio < 9){
+            if(minFim < 9){
+                holder.textView_servico_hora.setText(String.format(Locale.getDefault(),"%d:0%dh às %d:0%dh", horaInicio, minInicio, horaFim, minFim));
+            } else {
+                holder.textView_servico_hora.setText(String.format(Locale.getDefault(),"%d:0%dh às %d:%dh", horaInicio, minInicio, horaFim, minFim));
+            }
+        } else if(minFim < 9){
+            holder.textView_servico_hora.setText(String.format(Locale.getDefault(),"%d:%dh às %d:0%dh", horaInicio, minInicio, horaFim, minFim));
+        } else {
+            holder.textView_servico_hora.setText(String.format(Locale.getDefault(),"%d:%dh às %d:%dh", horaInicio, minInicio, horaFim, minFim));
+        }
 
         if(qtdServico > 1){
             holder.textView_servico_quantidade.setText(String.format(Locale.getDefault(),"%ds serviços", qtdServico));
