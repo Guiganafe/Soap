@@ -16,6 +16,7 @@ public class AgendaBase {
     private String userID = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
 
     private ArrayList<ScheduleItems> scheduleItemsList;
+    private ArrayList<ScheduleItems> scheduleItemsListByDay;
 
     private static AgendaBase mAgendaBase;
 
@@ -47,6 +48,14 @@ public class AgendaBase {
 
     public ArrayList<ScheduleItems> getScheduleItemsList(){
         return scheduleItemsList;
+    }
+
+    public ArrayList<ScheduleItems> getScheduleItemsListByDay(){
+        return scheduleItemsListByDay;
+    }
+
+    public void setScheduleItemsListByDay(ArrayList<ScheduleItems> itemsByDay){
+        this.scheduleItemsListByDay = itemsByDay;
     }
 
     public void limparAgenda() {

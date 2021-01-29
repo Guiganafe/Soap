@@ -35,6 +35,7 @@ import br.com.justworks.prestador.ServicoAki.Model.Services;
 import br.com.justworks.prestador.ServicoAki.Model.User;
 import br.com.justworks.prestador.ServicoAki.R;
 import br.com.justworks.prestador.ServicoAki.Util.MaskEditUtil;
+import br.com.justworks.prestador.ServicoAki.Util.MoneyTextWatcher;
 import br.com.justworks.prestador.ServicoAki.ViewModel.ServicoViewModel;
 
 public class EditarServico extends AppCompatActivity {
@@ -82,9 +83,9 @@ public class EditarServico extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                serviceUser.setPrice(Double.parseDouble(valor_servico_edicao.getText().toString()));
+                serviceUser.setPrice(Double.parseDouble(valor_servico_edicao.getText().toString().replace(",", ".")));
                 if(desloca){
-                    serviceUser.setMovementCost(Double.parseDouble(custo_deslocamento_edicao.getText().toString()));
+                    serviceUser.setMovementCost(Double.parseDouble(custo_deslocamento_edicao.getText().toString().replace(",", ".")));
                 } else {
                     serviceUser.setMovementCost(0.0);
                 }
@@ -130,6 +131,8 @@ public class EditarServico extends AppCompatActivity {
 
     private void maskController() {
         duracao_servico_edicao.addTextChangedListener(MaskEditUtil.mask(duracao_servico_edicao, MaskEditUtil.FORMAT_HORA_MINUTOS));
+        valor_servico_edicao.addTextChangedListener(new MoneyTextWatcher(valor_servico_edicao));
+        custo_deslocamento_edicao.addTextChangedListener(new MoneyTextWatcher(custo_deslocamento_edicao));
     }
 
     private void spinnerController() {

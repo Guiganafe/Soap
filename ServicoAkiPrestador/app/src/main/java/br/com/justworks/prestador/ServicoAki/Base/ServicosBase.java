@@ -35,7 +35,6 @@ public class ServicosBase {
 
     public void addServico_selecionado(ServiceUser servicoSelecionado){
         this.servicos_selecionados.add(servicoSelecionado);
-        this.servicos_restantes = servicos;
         this.servicos_restantes.remove(servicoSelecionado);
     }
 
@@ -50,5 +49,6 @@ public class ServicosBase {
 
     public void clear() {
         mServicosBase = null;
+        ServicosBase.getInstance();
     }
 }

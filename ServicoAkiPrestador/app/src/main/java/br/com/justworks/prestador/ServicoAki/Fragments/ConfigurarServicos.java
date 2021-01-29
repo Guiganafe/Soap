@@ -46,6 +46,7 @@ import br.com.justworks.prestador.ServicoAki.Model.ServiceUser;
 import br.com.justworks.prestador.ServicoAki.Model.Services;
 import br.com.justworks.prestador.ServicoAki.R;
 import br.com.justworks.prestador.ServicoAki.Util.MaskEditUtil;
+import br.com.justworks.prestador.ServicoAki.Util.MoneyTextWatcher;
 import br.com.justworks.prestador.ServicoAki.ViewModel.ServicoViewModel;
 
 public class ConfigurarServicos extends Fragment {
@@ -94,6 +95,9 @@ public class ConfigurarServicos extends Fragment {
 
     private void maskController() {
         duracao_servico.addTextChangedListener(MaskEditUtil.mask(duracao_servico, MaskEditUtil.FORMAT_HORA_MINUTOS));
+        valor_servico.addTextChangedListener(new MoneyTextWatcher(valor_servico));
+        custo_deslocamento.addTextChangedListener(new MoneyTextWatcher(custo_deslocamento));
+
     }
 
     private void spinnerController() {
@@ -180,8 +184,8 @@ public class ConfigurarServicos extends Fragment {
         int duracao;
         duracao = (Integer.parseInt(duracao_txt.substring(0,2)) * 60) + Integer.parseInt(duracao_txt.substring(3,5));
 
-        valor = valor_servico.getText().toString();
-        custoDeslocamento = custo_deslocamento.getText().toString();
+        valor = valor_servico.getText().toString().replace(",", ".");
+        custoDeslocamento = custo_deslocamento.getText().toString().replace(",", ".");
         descricao = descricao_servico.getText().toString();
 
         Description description = new Description(descricao);

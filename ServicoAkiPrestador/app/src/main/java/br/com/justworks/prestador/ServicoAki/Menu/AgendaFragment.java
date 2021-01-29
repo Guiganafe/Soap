@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,6 +42,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import br.com.justworks.prestador.ServicoAki.Activity.CriarEvento;
+import br.com.justworks.prestador.ServicoAki.Activity.EditarEvento;
 import br.com.justworks.prestador.ServicoAki.Adapter.AdapterScheduleItem;
 import br.com.justworks.prestador.ServicoAki.Adapter.SchedulesItemAdapter;
 import br.com.justworks.prestador.ServicoAki.Adapter.ServicesListAdapter;
@@ -52,7 +54,7 @@ import br.com.justworks.prestador.ServicoAki.Model.ScheduleDocument;
 import br.com.justworks.prestador.ServicoAki.Model.ScheduleItems;
 import br.com.justworks.prestador.ServicoAki.R;
 
-public class AgendaFragment extends Fragment implements DatePickerListener {
+public class AgendaFragment extends Fragment implements DatePickerListener, AdapterScheduleItem.onScheduleItemListenner{
 
     private ImageView imgAgenda;
     private FloatingActionButton criar_evento;
@@ -137,7 +139,7 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
                     tv_agendaCheia.setVisibility(View.GONE);
                 }
 
-                adapter = new AdapterScheduleItem(scheduleItemsListByDay);
+                adapter = new AdapterScheduleItem(scheduleItemsListByDay, this);
                 recyclerView.setHasFixedSize(false);
                 recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
                 recyclerView.setAdapter(adapter);
@@ -184,5 +186,13 @@ public class AgendaFragment extends Fragment implements DatePickerListener {
         tv_descricao = (TextView) view.findViewById(R.id.tv_agendaVazia);
         tv_agendaCheia = (TextView) view.findViewById(R.id.tv_proxAtendimentos);
 
+    }
+
+    @Override
+    public void onScheduleItemClick(int position) {
+        AgendaBase.getInstance().setScheduleItemsListByDay(scheduleItemsListByDay);
+        Intent editarEvento = new Intent(requireActivity(), EditarEvento.class);
+        editarEvento.putExtra("position", position);
+        startActivity(editarEvento);
     }
 }

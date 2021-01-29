@@ -14,7 +14,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="160dp"
             app:cardCornerRadius="0dp">
 
             <LinearLayout
@@ -24,28 +24,32 @@
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="150dp"
-                    android:layout_height="40dp"
+                    android:layout_width="120dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
                     android:src="@drawable/ic_logo_menu" />
 
                 <TextView
                     android:id="@+id/textView2"
-                    android:layout_width="150dp"
-                    android:layout_height="30dp"
+                    android:layout_width="120dp"
+                    android:layout_height="25dp"
                     android:padding="3sp"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
+                    android:autoSizeMinTextSize="10sp"
+                    android:autoSizeMaxTextSize="20sp"
                     android:text="SEU SALDO"
                     android:autoSizeTextType="uniform" />
 
                 <TextView
                     android:id="@+id/textView11"
-                    android:layout_width="150dp"
-                    android:layout_height="50dp"
+                    android:layout_width="120dp"
+                    android:layout_height="40dp"
+                    android:autoSizeMinTextSize="10sp"
+                    android:autoSizeMaxTextSize="26sp"
                     android:autoSizeTextType="uniform"
                     android:gravity="center_horizontal"
                     android:layout_gravity="center"
@@ -55,11 +59,11 @@
                     android:textColor="@color/colorBlack" />
 
                 <Button
-                    android:layout_width="150dp"
-                    android:layout_height="40dp"
+                    android:layout_width="120dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="center"
-                    android:autoSizeMaxTextSize="20sp"
-                    android:autoSizeMinTextSize="12sp"
+                    android:autoSizeMaxTextSize="22sp"
+                    android:autoSizeMinTextSize="10sp"
                     android:autoSizeTextType="uniform"
                     android:background="@drawable/back_grey"
                     android:padding="4sp"
@@ -74,15 +78,15 @@
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_margin="20dp"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:layout_marginTop="100dp"
             android:layout_gravity="center"
             android:src="@drawable/financeiro_vazio" />
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="25dp"
             android:autoSizeMaxTextSize="26sp"
             android:autoSizeMinTextSize="14sp"
             android:autoSizeStepGranularity="2sp"
@@ -94,7 +98,7 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:layout_marginStart="64dp"
             android:layout_marginEnd="64dp"
             android:autoSizeMaxTextSize="24sp"

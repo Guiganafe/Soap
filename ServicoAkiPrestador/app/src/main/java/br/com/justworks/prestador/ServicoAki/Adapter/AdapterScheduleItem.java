@@ -28,9 +28,11 @@ public class AdapterScheduleItem extends RecyclerView.Adapter<AdapterScheduleIte
 
     ArrayList<ScheduleItems> schedulesList;
     private RequestBuilder<PictureDrawable> requestBuilder;
+    private onScheduleItemListenner onScheduleItemListenner;
 
-    public AdapterScheduleItem(ArrayList<ScheduleItems> servicesList){
+    public AdapterScheduleItem(ArrayList<ScheduleItems> servicesList, onScheduleItemListenner onScheduleItemListenner){
         this.schedulesList = servicesList;
+        this.onScheduleItemListenner = onScheduleItemListenner;
     }
 
     @NonNull
@@ -79,7 +81,7 @@ public class AdapterScheduleItem extends RecyclerView.Adapter<AdapterScheduleIte
         return schedulesList.size();
     }
 
-    class SchedulesItemHolder extends RecyclerView.ViewHolder{
+    class SchedulesItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         ImageView imagem_servico;
         TextView textView_servico_hora, textView_servico_titulo, textView_servico_quantidade;
 
@@ -90,6 +92,17 @@ public class AdapterScheduleItem extends RecyclerView.Adapter<AdapterScheduleIte
             textView_servico_hora = itemView.findViewById(R.id.textView_servico_hora);
             textView_servico_titulo = itemView.findViewById(R.id.textView_servico_titulo);
             textView_servico_quantidade = itemView.findViewById(R.id.textView_servico_quantidade);
+
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            onScheduleItemListenner.onScheduleItemClick(getAdapterPosition());
+        }
+    }
+
+    public interface onScheduleItemListenner {
+        void onScheduleItemClick(int position);
     }
 }

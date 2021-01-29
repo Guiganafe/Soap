@@ -16,7 +16,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView3"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="160dp"
             app:cardCornerRadius="0dp">
 
             <LinearLayout
@@ -27,7 +27,7 @@
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="150dp"
+                    android:layout_width="120dp"
                     android:layout_height="30dp"
                     android:src="@drawable/ic_logo_menu" />
 
@@ -63,16 +63,16 @@
 
         <ImageView
             android:id="@+id/imagemAgenda"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_margin="20dp"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:layout_marginTop="100dp"
             android:layout_gravity="center"
             android:src="@drawable/agenta_vazia" />
 
         <TextView
             android:id="@+id/tv_semCompromisso"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="25dp"
             android:autoSizeMaxTextSize="26sp"
             android:autoSizeMinTextSize="14sp"
             android:autoSizeStepGranularity="2sp"
@@ -85,7 +85,7 @@
         <TextView
             android:id="@+id/tv_agendaVazia"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:layout_marginStart="64dp"
             android:layout_marginEnd="64dp"
             android:autoSizeMaxTextSize="24sp"

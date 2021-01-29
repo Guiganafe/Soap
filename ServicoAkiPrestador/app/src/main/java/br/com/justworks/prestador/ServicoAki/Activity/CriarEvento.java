@@ -40,6 +40,7 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,6 +60,7 @@ import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Model.Address;
 import br.com.justworks.prestador.ServicoAki.Model.ServiceUser;
 import br.com.justworks.prestador.ServicoAki.R;
+import br.com.justworks.prestador.ServicoAki.Util.MoneyTextWatcher;
 import br.com.justworks.prestador.ServicoAki.ViewModel.EndereçoViewModel;
 import br.com.justworks.prestador.ServicoAki.ViewModel.ServiceEventListViewModel;
 
@@ -88,6 +90,8 @@ public class CriarEvento extends AppCompatActivity implements ServiceSelectedAda
 
     private int horaInicio, minutoInicio, diaInicio, mesInicio, anoInicio, horaFim, minutoFim, diaFim, mesFim, anoFim;
 
+    Map<String, Object> scheduleItems = new HashMap<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +112,12 @@ public class CriarEvento extends AppCompatActivity implements ServiceSelectedAda
         timeControl();
 
         clickControl();
+
+        maskController();
+    }
+
+    private void maskController() {
+        valor_evento.addTextChangedListener(new MoneyTextWatcher(valor_evento));
     }
 
     private void setUpReciclerView() {
@@ -211,47 +221,63 @@ public class CriarEvento extends AppCompatActivity implements ServiceSelectedAda
             valorEvento = valor_evento.getText().toString();
             localEvento = local_evento.getText().toString();
 
-            if (TextUtils.isEmpty(valorEvento)) {
-                valor_evento.setError("Insira um valor válido");
-                return;
-            }
-            if (TextUtils.isEmpty(localEvento)) {
-                local_evento.setError("Insira uma localização válida");
-                return;
+//            if (TextUtils.isEmpty(valorEvento)) {
+//                valor_evento.setError("Insira um valor válido");
+//                return;
+//            }
+//            if (TextUtils.isEmpty(localEvento)) {
+//                local_evento.setError("Insira uma localização válida");
+//                return;
+//            }
+
+            /*
+             * Valor do evento é opcional, caso
+             * seja preenchido, é adicionado ao Map
+             */
+            if (!TextUtils.isEmpty(valorEvento)) {
+                String valorDoEvento = valorEvento.replace(",", ".");
+                scheduleItems.put("price", Double.parseDouble(valorDoEvento));
             }
 
-            Boolean active = true;
-            Boolean addres_active, default_address;
-            String addressName, addressType, city, country, neighborhood, number, state, street, zipCode;
-            double latitude, longitude;
+            /*
+             * Endereço do evento é opcional, caso
+             * seja preenchido, é adicionado ao Map
+             */
+            if (!TextUtils.isEmpty(localEvento)) {
+                Boolean addres_active, default_address;
+                String addressName, addressType, city, country, neighborhood, number, state, street, zipCode;
+                double latitude, longitude;
 
-            addres_active = true;
-            addressName = "Endereço";
-            addressType = "Event";
-            city = endereçoViewModel.getCidade().getValue();
-            country = endereçoViewModel.getPais().getValue();
-            neighborhood = endereçoViewModel.getBairro().getValue();
-            number = endereçoViewModel.getNumero().getValue();
-            state = endereçoViewModel.getEstado().getValue();
-            street = endereçoViewModel.getRua().getValue();
-            zipCode = endereçoViewModel.getCep().getValue();
-            longitude = endereçoViewModel.getLongitude().getValue();
-            latitude = endereçoViewModel.getLatitude().getValue();
+                addres_active = true;
+                addressName = "Endereço";
+                addressType = "Event";
+                city = endereçoViewModel.getCidade().getValue();
+                country = endereçoViewModel.getPais().getValue();
+                neighborhood = endereçoViewModel.getBairro().getValue();
+                number = endereçoViewModel.getNumero().getValue();
+                state = endereçoViewModel.getEstado().getValue();
+                street = endereçoViewModel.getRua().getValue();
+                zipCode = endereçoViewModel.getCep().getValue();
+                longitude = endereçoViewModel.getLongitude().getValue();
+                latitude = endereçoViewModel.getLatitude().getValue();
+
+                final Address address = new Address(addres_active, addressName, addressType,
+                        city, country, neighborhood, number, state, street, userId , zipCode, latitude, longitude);
+
+                scheduleItems.put("address", address);
+            }
 
             servicesEvent = ServicosBase.getInstance().getServicos_selecionados();
+            if(servicesEvent != null && !servicesEvent.isEmpty()){
+                scheduleItems.put("services", servicesEvent);
+            }
 
-            final Address address = new Address(addres_active, addressName, addressType, city, country, neighborhood, number, state, street, userId , zipCode, latitude, longitude);
-
-            Map<String, Object> scheduleItems = new HashMap<>();
+            scheduleItems.put("active", true);
             scheduleItems.put("title", tituloEvento);
             scheduleItems.put("hourBegin", dataInicio.getTime());
             scheduleItems.put("hourEnd", dataFim.getTime());
-            scheduleItems.put("price", Double.parseDouble(valorEvento));
-            scheduleItems.put("address", address);
             scheduleItems.put("professionalId", userId);
             scheduleItems.put("scheduleId", FirebaseService.getFirebaseAuth().getCurrentUser().getUid());
-            scheduleItems.put("active", active);
-            scheduleItems.put("services", servicesEvent);
 
             // Add a new document with a generated ID
             db.collection("scheduleItems")
@@ -260,6 +286,7 @@ public class CriarEvento extends AppCompatActivity implements ServiceSelectedAda
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
                             finish();
+                            ServicosBase.getInstance().clear();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
