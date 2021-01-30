@@ -52,6 +52,7 @@ import br.com.justworks.prestador.ServicoAki.HorizontalPicker.DatePickerListener
 import br.com.justworks.prestador.ServicoAki.HorizontalPicker.HorizontalPicker;
 import br.com.justworks.prestador.ServicoAki.Model.ScheduleDocument;
 import br.com.justworks.prestador.ServicoAki.Model.ScheduleItems;
+import br.com.justworks.prestador.ServicoAki.Model.Schedules;
 import br.com.justworks.prestador.ServicoAki.R;
 
 public class AgendaFragment extends Fragment implements DatePickerListener, AdapterScheduleItem.onScheduleItemListenner{
@@ -64,6 +65,8 @@ public class AgendaFragment extends Fragment implements DatePickerListener, Adap
     private RecyclerView recyclerView;
     private ArrayList<ScheduleItems> scheduleItemsList;
     private ArrayList<ScheduleItems> scheduleItemsListByDay;
+    private ArrayList<String> scheduleItemsIdList;
+    private ArrayList<String> scheduleItemsIdListByDay;
     private DateTime dateTimeSelected;
 
     @Override
@@ -112,18 +115,24 @@ public class AgendaFragment extends Fragment implements DatePickerListener, Adap
         scheduleItemsList = new ArrayList<>();
 
         scheduleItemsList = AgendaBase.getInstance().getScheduleItemsList();
+        scheduleItemsIdList = AgendaBase.getInstance().getScheduleItemsId();
 
             if (scheduleItemsList != null && scheduleItemsList.size() > 0) {
 
                 scheduleItemsListByDay = new ArrayList<>();
+                scheduleItemsIdListByDay = new ArrayList<>();
 
-                for(ScheduleItems scheduleItemsByDay: scheduleItemsList){
-                    if (scheduleItemsByDay.getHourBegin().toDate().after(dataDoDia.getTime())) {
-                        if(scheduleItemsByDay.getHourEnd().toDate().before(dataDiaSeguinte.getTime())){
-                            scheduleItemsListByDay.add(scheduleItemsByDay);
+                for(int i = 0; i < scheduleItemsList.size(); i++){
+                    if(scheduleItemsList.get(i).getHourBegin().toDate().after(dataDoDia.getTime())){
+                        if(scheduleItemsList.get(i).getHourEnd().toDate().before(dataDiaSeguinte.getTime())){
+                            scheduleItemsListByDay.add(scheduleItemsList.get(i));
+                            scheduleItemsIdListByDay.add(scheduleItemsIdList.get(i));
                         }
                     }
                 }
+
+                AgendaBase.getInstance().setScheduleItemsListByDay(scheduleItemsListByDay);
+                AgendaBase.getInstance().setScheduleItemsIdByDay(scheduleItemsIdListByDay);
 
                 if(scheduleItemsListByDay.size() > 0){
                     imgAgenda.setVisibility(View.GONE);
@@ -141,7 +150,9 @@ public class AgendaFragment extends Fragment implements DatePickerListener, Adap
                     tv_agendaCheia.setVisibility(View.GONE);
                 }
 
-                adapter = new AdapterScheduleItem(scheduleItemsListByDay, this);
+                ArrayList<ScheduleItems> scheduleListByDay = AgendaBase.getInstance().getScheduleItemsListByDay();
+
+                adapter = new AdapterScheduleItem(scheduleListByDay, this);
                 recyclerView.setHasFixedSize(false);
                 recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
                 recyclerView.setAdapter(adapter);

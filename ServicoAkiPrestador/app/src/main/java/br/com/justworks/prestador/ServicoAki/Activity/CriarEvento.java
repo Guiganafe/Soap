@@ -42,6 +42,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -163,7 +165,11 @@ public class CriarEvento extends AppCompatActivity implements ServiceSelectedAda
         btn_avancar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                salvarEvento();
+                try {
+                    salvarEvento();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
         btn_cancelar.setOnClickListener(new View.OnClickListener() {
@@ -182,7 +188,7 @@ public class CriarEvento extends AppCompatActivity implements ServiceSelectedAda
         });
     }
 
-    private void salvarEvento() {
+    private void salvarEvento() throws ParseException {
 
         String tituloEvento, inicioEventoHora, fimEventoHora, inicioEventoData, fimEventoData, valorEvento, localEvento;
         tituloEvento = titulo_evento.getText().toString();
@@ -236,7 +242,9 @@ public class CriarEvento extends AppCompatActivity implements ServiceSelectedAda
              */
             if (!TextUtils.isEmpty(valorEvento)) {
                 String valorDoEvento = valorEvento.replace(",", ".");
-                scheduleItems.put("price", Double.parseDouble(valorDoEvento));
+                NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
+                double valor = nf.parse (valorDoEvento).doubleValue();
+                scheduleItems.put("price", valor);
             }
 
             /*

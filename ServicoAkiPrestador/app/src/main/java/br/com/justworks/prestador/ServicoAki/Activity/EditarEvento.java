@@ -60,11 +60,10 @@ public class EditarEvento extends AppCompatActivity implements ServiceSelectedAd
 
     private Button btn_salvar, btn_cancelar;
     private Calendar calendar;
-    private int dia,mes, ano, hora, minuto;
     private TimePickerDialog timePickerDialog;
     private DatePickerDialog datePickerDialog;
     private EditText titulo_evento, inicio_evento_hora, inicio_evento_data, fim_evento_hora, fim_evento_data, valor_evento, local_evento;
-    private TextView tv_local, tv_local_op, tv_valor, tv_valor_op, tv_servicos, tv_servicos_op, tv_add_servico;
+    private TextView tv_add_servico;
     private LinearLayout lista_servicos_vazia;
     private ServiceSelectedAdapter.onServiceSelectedListenner serviceListenner = (ServiceSelectedAdapter.onServiceSelectedListenner) this;
 
@@ -78,6 +77,7 @@ public class EditarEvento extends AppCompatActivity implements ServiceSelectedAd
     private int horaInicio, minutoInicio, diaInicio, mesInicio, anoInicio, horaFim, minutoFim, diaFim, mesFim, anoFim;
     private ScheduleItems scheduleItem;
     private int position;
+    private String scheduleItemId;
 
     Map<String, Object> scheduleItems = new HashMap<>();
 
@@ -291,11 +291,11 @@ public class EditarEvento extends AppCompatActivity implements ServiceSelectedAd
         }
 
         Calendar dataInicio = Calendar.getInstance(Locale.getDefault()), dataFim = Calendar.getInstance(Locale.getDefault());
-        dataInicio.set(anoInicio, mesInicio, diaInicio, horaInicio, minutoInicio);
+        dataInicio.set(anoInicio, mesInicio-1, diaInicio, horaInicio, minutoInicio);
         final DateFormat df = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss z");
         String dataInicioFinal = df.format(dataInicio.getTime());
 
-        dataFim.set(anoFim, mesFim, diaFim, horaFim, minutoFim);
+        dataFim.set(anoFim, mesFim-1, diaFim, horaFim, minutoFim);
         String dataFimFinal = df.format(dataFim.getTime());
         String userId = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
 
@@ -344,26 +344,23 @@ public class EditarEvento extends AppCompatActivity implements ServiceSelectedAd
         scheduleItems.put("scheduleId", FirebaseService.getFirebaseAuth().getCurrentUser().getUid());
 
         // Add a new document with a generated ID
-        db.collection("scheduleItems")
-                .add(scheduleItems)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        finish();
-                        ServicosBase.getInstance().clear();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                    }
-                });
+        db.collection("scheduleItems").document(scheduleItemId).update(scheduleItems).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(EditarEvento.this, "Evento atualizado", Toast.LENGTH_SHORT).show();
+//                AgendaBase.getInstance().removeScheduleItemByDay(position);
+//                AgendaBase.getInstance().addScheduleItem(scheduleItem);
+//                AgendaBase.getInstance().updateScheduleItem(scheduleItem, position);
+                finish();
+            }
+        });
     }
 
     private void carregarDadosController() {
         Intent intent = getIntent();
         position = intent.getIntExtra("position", 0);
         scheduleItem = AgendaBase.getInstance().getScheduleItemsListByDay().get(position);
+        scheduleItemId = AgendaBase.getInstance().getScheduleItemsIdByDay().get(position);
 
         //Recebe o título do evento
         titulo_evento.setText(scheduleItem.getTitle());
@@ -492,9 +489,12 @@ public class EditarEvento extends AppCompatActivity implements ServiceSelectedAd
 
     private void inicializarComponentes() {
         calendar = Calendar.getInstance();
+
         recyclerView = findViewById(R.id.reciclerView_servicoEvento_edicao);
+
         btn_salvar = (Button) findViewById(R.id.btn_concluir_criar_evento_edicao);
         btn_cancelar = (Button) findViewById(R.id.btn_cancelar_criar_evento_edicao);
+
         local_evento = (EditText) findViewById(R.id.local_evento_edicao);
         valor_evento = (EditText) findViewById(R.id.valor_evento_edicao);
         titulo_evento = (EditText) findViewById(R.id.titulo_evento_edicao);
@@ -502,13 +502,9 @@ public class EditarEvento extends AppCompatActivity implements ServiceSelectedAd
         inicio_evento_data = (EditText) findViewById(R.id.inicio_evento_data_edicao);
         fim_evento_data = (EditText) findViewById(R.id.fim_evento_data_edicao);
         fim_evento_hora = (EditText) findViewById(R.id.fim_evento_hora_edicao);
-        tv_local = (TextView) findViewById(R.id.tv_local_edicao);
-        tv_local_op = (TextView) findViewById(R.id.tv_local_op_edicao);
-        tv_valor = (TextView) findViewById(R.id.tv_valor_edicao);
-        tv_valor_op = (TextView) findViewById(R.id.tv_valor_op_edicao);
-        tv_servicos = (TextView) findViewById(R.id.tv_servicos_edicao);
-        tv_servicos_op = (TextView) findViewById(R.id.tv_servicos_op_edicao);
+
         tv_add_servico = (TextView) findViewById(R.id.tv_add_setvico_edicao);
+
         lista_servicos_vazia = (LinearLayout) findViewById(R.id.lista_servicos_vazia_edicao);
     }
 }

@@ -17,6 +17,9 @@ public class AgendaBase {
 
     private ArrayList<ScheduleItems> scheduleItemsList;
     private ArrayList<ScheduleItems> scheduleItemsListByDay;
+    private ArrayList<String> scheduleItemsId = new ArrayList<>();
+    private ArrayList<String> scheduleItemsIdByDay = new ArrayList<>();
+
 
     private static AgendaBase mAgendaBase;
 
@@ -33,6 +36,7 @@ public class AgendaBase {
                     scheduleItemsList = new ArrayList<>();
                     for (DocumentSnapshot document: value.getDocuments()) {
                         scheduleItemsList.add(document.toObject(ScheduleItems.class));
+                        scheduleItemsId.add(document.getId());
                     }
                 }
             }
@@ -62,7 +66,31 @@ public class AgendaBase {
         this.scheduleItemsListByDay = null;
     }
 
+    public ArrayList<String> getScheduleItemsId(){
+        return this.scheduleItemsId;
+    }
+
+    public ArrayList<String> getScheduleItemsIdByDay(){
+        return this.scheduleItemsIdByDay;
+    }
+
+    public void setScheduleItemsIdByDay(ArrayList<String> scheduleItemsIdByDayNew){
+        this.scheduleItemsIdByDay = scheduleItemsIdByDayNew;
+    }
+
     public void limparAgenda() {
         mAgendaBase = null;
+    }
+
+    public void removeScheduleItemByDay(int position) {
+        this.scheduleItemsListByDay.remove(position);
+    }
+
+    public void addScheduleItem(ScheduleItems item) {
+        this.scheduleItemsListByDay.add(item);
+    }
+
+    public void updateScheduleItem(ScheduleItems item, int position){
+        this.scheduleItemsListByDay.set(position, item);
     }
 }
