@@ -131,7 +131,9 @@ public class AgendaFragment extends Fragment implements DatePickerListener, Adap
                     tv_descricao.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
                     tv_agendaCheia.setVisibility(View.VISIBLE);
+                    AgendaBase.getInstance().setScheduleItemsListByDay(scheduleItemsListByDay);
                 } else {
+                    AgendaBase.getInstance().deleteScheduleItemsByDay();
                     imgAgenda.setVisibility(View.VISIBLE);
                     tv_titulo.setVisibility(View.VISIBLE);
                     tv_descricao.setVisibility(View.VISIBLE);
@@ -190,7 +192,6 @@ public class AgendaFragment extends Fragment implements DatePickerListener, Adap
 
     @Override
     public void onScheduleItemClick(int position) {
-        AgendaBase.getInstance().setScheduleItemsListByDay(scheduleItemsListByDay);
         Intent editarEvento = new Intent(requireActivity(), EditarEvento.class);
         editarEvento.putExtra("position", position);
         startActivity(editarEvento);

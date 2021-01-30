@@ -15,6 +15,7 @@ public class ServicosBase {
     private ServicosBase(){
         servicos = UserBase.getInstance().getServicesUserList();
         servicos_restantes = new ArrayList<>();
+        servicos_restantes.addAll(servicos);
         servicos_selecionados = new ArrayList<>();
     }
 
@@ -35,7 +36,11 @@ public class ServicosBase {
 
     public void addServico_selecionado(ServiceUser servicoSelecionado){
         this.servicos_selecionados.add(servicoSelecionado);
-        this.servicos_restantes.remove(servicoSelecionado);
+        for(int i = 0; i < servicos_restantes.size(); i++){
+            if(servicos_restantes.get(i).getId().equals(servicoSelecionado.getId())){
+                this.servicos_restantes.remove(servicos_restantes.get(i));
+            }
+        }
     }
 
     public void removeServico_selecionado(ServiceUser servicoRemovido){

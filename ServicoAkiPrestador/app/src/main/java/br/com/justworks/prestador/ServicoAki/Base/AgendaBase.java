@@ -58,6 +58,10 @@ public class AgendaBase {
         this.scheduleItemsListByDay = itemsByDay;
     }
 
+    public void deleteScheduleItemsByDay(){
+        this.scheduleItemsListByDay = null;
+    }
+
     public void limparAgenda() {
         mAgendaBase = null;
     }
