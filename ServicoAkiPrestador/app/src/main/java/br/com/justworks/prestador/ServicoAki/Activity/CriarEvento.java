@@ -10,9 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -38,6 +40,7 @@ import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.math.BigDecimal;
@@ -60,9 +63,13 @@ import br.com.justworks.prestador.ServicoAki.Base.ConfigAgendaBase;
 import br.com.justworks.prestador.ServicoAki.Base.ServicosBase;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Model.Address;
+import br.com.justworks.prestador.ServicoAki.Model.CustomLocks;
+import br.com.justworks.prestador.ServicoAki.Model.ScheduleItems;
+import br.com.justworks.prestador.ServicoAki.Model.ServiceDays;
 import br.com.justworks.prestador.ServicoAki.Model.ServiceUser;
 import br.com.justworks.prestador.ServicoAki.R;
 import br.com.justworks.prestador.ServicoAki.Util.MoneyTextWatcher;
+import br.com.justworks.prestador.ServicoAki.Util.ValidarData;
 import br.com.justworks.prestador.ServicoAki.ViewModel.EndereçoViewModel;
 import br.com.justworks.prestador.ServicoAki.ViewModel.ServiceEventListViewModel;
 
@@ -94,27 +101,21 @@ public class CriarEvento extends AppCompatActivity implements ServiceSelectedAda
 
     Map<String, Object> scheduleItems = new HashMap<>();
 
+    private AlertDialog.Builder builder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_criar_evento);
-
         endereçoViewModel = new ViewModelProvider(this).get(EndereçoViewModel.class);
-
+        builder = new AlertDialog.Builder(this);
         ServicosBase.getInstance();
-
         inicializarComponentes();
-
         setUpReciclerView();
-
         spinnerControl();
-
         placesAutocompleteControl();
-
         timeControl();
-
         clickControl();
-
         maskController();
     }
 
@@ -166,7 +167,7 @@ public class CriarEvento extends AppCompatActivity implements ServiceSelectedAda
             @Override
             public void onClick(View v) {
                 try {
-                    salvarEvento();
+                    salvarController();
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -188,7 +189,74 @@ public class CriarEvento extends AppCompatActivity implements ServiceSelectedAda
         });
     }
 
-    private void salvarEvento() throws ParseException {
+
+    public void salvarController() throws ParseException {
+        boolean diaDeTrabalho = true;
+        boolean horarioLivre = true;
+
+        final Calendar dataInicio = Calendar.getInstance(Locale.getDefault()), dataFim = Calendar.getInstance(Locale.getDefault());
+        dataInicio.set(anoInicio, mesInicio, diaInicio, horaInicio, minutoInicio);
+        dataFim.set(anoFim, mesFim, diaFim, horaFim, minutoFim);
+
+        if(atendimento){
+            diaDeTrabalho = ValidarData.isDiaDeTrabalho(ConfigAgendaBase.getInstance().getSchedule(), dataInicio);
+            horarioLivre = ValidarData.isHorarioBloqueado(ConfigAgendaBase.getInstance().getSchedule(), dataInicio, dataFim);
+        }
+
+        if(diaDeTrabalho && horarioLivre){
+            salvarEvento(dataInicio, dataFim);
+        } else {
+            if(!diaDeTrabalho){
+                builder.setTitle("Atenção!");
+                builder.setMessage("Você não trabalha no dia selecionado! Deseja salvar mesmo assim?");
+                builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            salvarEvento(dataInicio, dataFim);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+            } else {
+                builder.setTitle("Atenção!");
+                builder.setTitle("Horário bloqueado! Deseja salvar mesmo assim?");
+                builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            salvarEvento(dataInicio, dataFim);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        }
+    }
+
+    private void salvarEvento(Calendar dataInicio, Calendar dataFim) throws ParseException {
 
         String tituloEvento, inicioEventoHora, fimEventoHora, inicioEventoData, fimEventoData, valorEvento, localEvento;
         tituloEvento = titulo_evento.getText().toString();
@@ -214,27 +282,13 @@ public class CriarEvento extends AppCompatActivity implements ServiceSelectedAda
             return;
         }
 
-        Calendar dataInicio = Calendar.getInstance(Locale.getDefault()), dataFim = Calendar.getInstance(Locale.getDefault());
-        dataInicio.set(anoInicio, mesInicio, diaInicio, horaInicio, minutoInicio);
-        final DateFormat df = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss z");
-        String dataInicioFinal = df.format(dataInicio.getTime());
-
-        dataFim.set(anoFim, mesFim, diaFim, horaFim, minutoFim);
-        String dataFimFinal = df.format(dataFim.getTime());
         String userId = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
 
         if(atendimento){
+            //Pega o valor e local do evento
             valorEvento = valor_evento.getText().toString();
             localEvento = local_evento.getText().toString();
 
-//            if (TextUtils.isEmpty(valorEvento)) {
-//                valor_evento.setError("Insira um valor válido");
-//                return;
-//            }
-//            if (TextUtils.isEmpty(localEvento)) {
-//                local_evento.setError("Insira uma localização válida");
-//                return;
-//            }
 
             /*
              * Valor do evento é opcional, caso
@@ -303,30 +357,22 @@ public class CriarEvento extends AppCompatActivity implements ServiceSelectedAda
                         }
                     });
         } else {
-            Map<String, Object> scheduleItems = new HashMap<>();
-            scheduleItems.put("title", tituloEvento);
-            scheduleItems.put("hourBegin", dataInicio.getTime());
-            scheduleItems.put("hourEnd", dataFim.getTime());
-            scheduleItems.put("type", "blocked time");
-            scheduleItems.put("professionalId", userId);
-            scheduleItems.put("scheduleId", ConfigAgendaBase.getInstance().getScheduleId());
+            Map<String, Object> customLocks = new HashMap<>();
+            customLocks.put("title", tituloEvento);
+            customLocks.put("startDate", dataInicio.getTime());
+            customLocks.put("endDate", dataFim.getTime());
+            String scheduleId = ConfigAgendaBase.getInstance().getScheduleId();
 
             // Add a new document with a generated ID
-            db.collection("scheduleItems")
-                    .add(scheduleItems)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            finish();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                        }
-                    });
+            db.collection("schedules").document(scheduleId)
+                    .update("customLocks", FieldValue.arrayUnion(customLocks)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(context, "Horário bloqueado, adicionado!", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            });
         }
-
     }
 
     private void spinnerControl() {

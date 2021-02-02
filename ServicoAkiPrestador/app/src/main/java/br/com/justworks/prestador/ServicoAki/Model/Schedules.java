@@ -6,14 +6,16 @@ public class Schedules {
     private Boolean active;
     private String professionalId;
     private ArrayList<ServiceDays> serviceDays;
+    private ArrayList<CustomLocks> customLocks;
 
     public Schedules() {
     }
 
-    public Schedules(Boolean active, String professionalId, ArrayList<ServiceDays> serviceDays) {
+    public Schedules(Boolean active, String professionalId, ArrayList<ServiceDays> serviceDays, ArrayList<CustomLocks> customLocks) {
         this.active = active;
         this.professionalId = professionalId;
         this.serviceDays = serviceDays;
+        this.customLocks = customLocks;
     }
 
     public Boolean getActive() {
@@ -38,5 +40,13 @@ public class Schedules {
 
     public void setServiceDays(ArrayList<ServiceDays> serviceDays) {
         this.serviceDays = serviceDays;
+    }
+
+    public ArrayList<CustomLocks> getCustomLocks() {
+        return customLocks;
+    }
+
+    public void setCustomLocks(ArrayList<CustomLocks> customLocks) {
+        this.customLocks = customLocks;
     }
 }

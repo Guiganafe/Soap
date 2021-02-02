@@ -53,7 +53,17 @@ public class AdapterScheduleItem extends RecyclerView.Adapter<AdapterScheduleIte
         int horaFim = schedulesList.get(position).getHourEnd().toDate().getHours();
         int minFim = schedulesList.get(position).getHourEnd().toDate().getMinutes();
 
-        int qtdServico = schedulesList.get(position).getServices().size();
+        if(schedulesList.get(position).getServices() != null){
+            int qtdServico = schedulesList.get(position).getServices().size();
+            if(qtdServico > 1){
+                holder.textView_servico_quantidade.setText(String.format(Locale.getDefault(),"%d serviços", qtdServico));
+            } else {
+                holder.textView_servico_quantidade.setText(String.format(Locale.getDefault(),"%d serviço", qtdServico));
+            }
+        } else {
+            holder.textView_servico_quantidade.setText(String.format(Locale.getDefault(),"Sem serviços"));
+        }
+
 
         holder.textView_servico_titulo.setText(schedulesList.get(position).getTitle());
 
@@ -67,12 +77,6 @@ public class AdapterScheduleItem extends RecyclerView.Adapter<AdapterScheduleIte
             holder.textView_servico_hora.setText(String.format(Locale.getDefault(),"%d:%dh às %d:0%dh", horaInicio, minInicio, horaFim, minFim));
         } else {
             holder.textView_servico_hora.setText(String.format(Locale.getDefault(),"%d:%dh às %d:%dh", horaInicio, minInicio, horaFim, minFim));
-        }
-
-        if(qtdServico > 1){
-            holder.textView_servico_quantidade.setText(String.format(Locale.getDefault(),"%ds serviços", qtdServico));
-        } else {
-            holder.textView_servico_quantidade.setText(String.format(Locale.getDefault(),"%d serviço", qtdServico));
         }
     }
 

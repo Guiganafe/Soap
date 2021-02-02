@@ -36,6 +36,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -252,7 +254,11 @@ public class EditarEvento extends AppCompatActivity implements ServiceSelectedAd
         btn_salvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                salvarEvento();
+                try {
+                    salvarEvento();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -265,7 +271,7 @@ public class EditarEvento extends AppCompatActivity implements ServiceSelectedAd
         });
     }
 
-    private void salvarEvento() {
+    private void salvarEvento() throws ParseException {
         String tituloEvento, inicioEventoHora, fimEventoHora, inicioEventoData, fimEventoData, valorEvento, localEvento;
         tituloEvento = titulo_evento.getText().toString();
         inicioEventoData = inicio_evento_data.getText().toString();
@@ -304,7 +310,9 @@ public class EditarEvento extends AppCompatActivity implements ServiceSelectedAd
 
         if (!TextUtils.isEmpty(valorEvento)) {
             String valorDoEvento = valorEvento.replace(",", ".");
-            scheduleItems.put("price", Double.parseDouble(valorDoEvento));
+            NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
+            double valor = nf.parse (valorDoEvento).doubleValue();
+            scheduleItems.put("price", valor);
         }
 
         if (!TextUtils.isEmpty(localEvento)) {
@@ -444,33 +452,36 @@ public class EditarEvento extends AppCompatActivity implements ServiceSelectedAd
         }
 
         //Caso o valor não seja nulo, é exibido
-        String valor = scheduleItem.getPrice().toString();
-        if(valor != null && !valor.equals("")){
+        if(scheduleItem.getPrice() != null){
+            String valor = scheduleItem.getPrice().toString();
             valor_evento.setText(valor);
         }
 
-        //Caso o local não seja nulo, é exibido
-        String rua = scheduleItem.getAddress().getStreet();
-        String numero = scheduleItem.getAddress().getNumber();
-        String bairro = scheduleItem.getAddress().getNeighborhood();
 
-        if(rua != null){
-            if(numero != null){
-                if(bairro != null){
-                    local_evento.setText(String.format("%s, %s, %s", rua, numero, bairro));
+        //Caso o local não seja nulo, é exibido
+        if(scheduleItem.getAddress() != null){
+            String rua = scheduleItem.getAddress().getStreet();
+            String numero = scheduleItem.getAddress().getNumber();
+            String bairro = scheduleItem.getAddress().getNeighborhood();
+
+            if(rua != null){
+                if(numero != null){
+                    if(bairro != null){
+                        local_evento.setText(String.format("%s, %s, %s", rua, numero, bairro));
+                    } else {
+                        local_evento.setText(String.format("%s, %s", rua, numero));
+                    }
                 } else {
-                    local_evento.setText(String.format("%s, %s", rua, numero));
-                }
-            } else {
-                if(bairro != null){
-                    local_evento.setText(String.format("%s, %s", rua, bairro));
-                } else {
-                    local_evento.setText(String.format("%s", rua));
+                    if(bairro != null){
+                        local_evento.setText(String.format("%s, %s", rua, bairro));
+                    } else {
+                        local_evento.setText(String.format("%s", rua));
+                    }
                 }
             }
         }
 
-        if(!servicoAdd){
+        if(scheduleItem.getServices() != null){
             ArrayList<ServiceUser> servicesEvent = scheduleItem.getServices();
             if(servicesEvent != null && servicesEvent.size() > 0){
                 for(int i = 0; i < servicesEvent.size(); i++)

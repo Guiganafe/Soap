@@ -190,7 +190,10 @@ public class ConfigurarAgenda extends AppCompatActivity {
                 serviceDays.add(sunday);
 
                 dom_valid = true;
+                ConfigAgendaBase.getInstance().setDom(true);
             }
+        } else {
+            ConfigAgendaBase.getInstance().setDom(false);
         }
 
         if(seg_selected){
@@ -208,7 +211,10 @@ public class ConfigurarAgenda extends AppCompatActivity {
                 ServiceDays monday = new ServiceDays("Monday", startTime, endTime, lunchStartTime, lunchEndTime);
                 serviceDays.add(monday);
                 seg_valid = true;
+                ConfigAgendaBase.getInstance().setSeg(true);
             }
+        } else {
+            ConfigAgendaBase.getInstance().setSeg(false);
         }
 
         if(ter_selected){
@@ -226,7 +232,10 @@ public class ConfigurarAgenda extends AppCompatActivity {
                 ServiceDays tuesday = new ServiceDays("Tuesday", startTime, endTime, lunchStartTime, lunchEndTime);
                 serviceDays.add(tuesday);
                 ter_valid = true;
+                ConfigAgendaBase.getInstance().setTer(true);
             }
+        } else {
+            ConfigAgendaBase.getInstance().setTer(false);
         }
 
         if(qua_selected){
@@ -244,7 +253,10 @@ public class ConfigurarAgenda extends AppCompatActivity {
                 ServiceDays wednesday = new ServiceDays("Wednesday", startTime, endTime, lunchStartTime, lunchEndTime);
                 serviceDays.add(wednesday);
                 qua_valid = true;
+                ConfigAgendaBase.getInstance().setQua(true);
             }
+        } else {
+            ConfigAgendaBase.getInstance().setQua(false);
         }
 
         if(qui_selected){
@@ -262,7 +274,10 @@ public class ConfigurarAgenda extends AppCompatActivity {
                 ServiceDays thursday = new ServiceDays("Thursday", startTime, endTime, lunchStartTime, lunchEndTime);
                 serviceDays.add(thursday);
                 qui_valid = true;
+                ConfigAgendaBase.getInstance().setQui(true);
             }
+        } else {
+            ConfigAgendaBase.getInstance().setQui(false);
         }
 
         if(sex_selected){
@@ -280,7 +295,10 @@ public class ConfigurarAgenda extends AppCompatActivity {
                 ServiceDays friday = new ServiceDays("Friday", startTime, endTime, lunchStartTime, lunchEndTime);
                 serviceDays.add(friday);
                 sex_valid = true;
+                ConfigAgendaBase.getInstance().setSex(true);
             }
+        } else {
+            ConfigAgendaBase.getInstance().setSex(false);
         }
 
         if(sab_selected){
@@ -298,7 +316,10 @@ public class ConfigurarAgenda extends AppCompatActivity {
                 ServiceDays saturday = new ServiceDays("Saturday", startTime, endTime, lunchStartTime, lunchEndTime);
                 serviceDays.add(saturday);
                 sab_valid = true;
+                ConfigAgendaBase.getInstance().setSab(true);
             }
+        } else {
+            ConfigAgendaBase.getInstance().setSab(false);
         }
 
         if(dom_valid || seg_valid || ter_valid || qua_valid || qui_valid || sex_valid || sab_valid){
@@ -327,6 +348,7 @@ public class ConfigurarAgenda extends AppCompatActivity {
                 public void onSuccess(Void aVoid) {
                     ConfigAgendaBase.getInstance().setServiceDays(serviceDays);
                     Toast.makeText(ConfigurarAgenda.this, "Agenda atualizada", Toast.LENGTH_SHORT).show();
+                    ConfigAgendaBase.getInstance().setServiceDays(serviceDays);
                     finish();
                 }
             });
