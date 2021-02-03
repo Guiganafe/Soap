@@ -23,7 +23,11 @@ import com.bumptech.glide.RequestBuilder;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import br.com.justworks.prestador.ServicoAki.Adapter.SvgSoftwareLayerSetter;
 import br.com.justworks.prestador.ServicoAki.Base.UserBase;
@@ -82,34 +86,11 @@ public class EditarServico extends AppCompatActivity {
         salvar_Servico_edicao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                serviceUser.setPrice(Double.parseDouble(valor_servico_edicao.getText().toString().replace(",", ".")));
-                if(desloca){
-                    serviceUser.setMovementCost(Double.parseDouble(custo_deslocamento_edicao.getText().toString().replace(",", ".")));
-                } else {
-                    serviceUser.setMovementCost(0.0);
+                try {
+                    salvarServicoEdicao();
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
-
-                String duracao_txt = duracao_servico_edicao.getText().toString();
-                int duracao;
-                duracao = (Integer.parseInt(duracao_txt.substring(0,2)) * 60) + Integer.parseInt(duracao_txt.substring(3,5));
-
-                serviceUser.setAvgExecutionTime(duracao);
-                Description description = new Description();
-                description.setPtbr(descricao_servico_edicao.getText().toString());
-                serviceUser.setDescription(description);
-
-                UserBase.getInstance().removeService(position);
-                UserBase.getInstance().addServiceUser(serviceUser);
-                User user = UserBase.getInstance().getUser();
-
-                db.collection("users").document(userID).update(user.toMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(EditarServico.this, "Serviço alterado com sucesso!", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                });
             }
         });
 
@@ -125,6 +106,47 @@ public class EditarServico extends AppCompatActivity {
                         finish();
                     }
                 });
+            }
+        });
+    }
+
+    private void salvarServicoEdicao() throws ParseException {
+        NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
+        String price_txt = valor_servico_edicao.getText().toString();
+
+        if(!price_txt.equals("")){
+            double price = nf.parse (price_txt).doubleValue();
+            serviceUser.setPrice(price);
+        }
+
+        if(desloca){
+            String desloca_txt = custo_deslocamento_edicao.getText().toString();
+            if(!desloca_txt.equals("")){
+                double desloca_price = nf.parse (desloca_txt).doubleValue();
+                serviceUser.setMovementCost(desloca_price);
+            }
+        } else {
+            serviceUser.setMovementCost(0.0);
+        }
+
+        String duracao_txt = duracao_servico_edicao.getText().toString();
+        int duracao;
+        duracao = (Integer.parseInt(duracao_txt.substring(0,2)) * 60) + Integer.parseInt(duracao_txt.substring(3,5));
+
+        serviceUser.setAvgExecutionTime(duracao);
+        Description description = new Description();
+        description.setPtbr(descricao_servico_edicao.getText().toString());
+        serviceUser.setDescription(description);
+
+        UserBase.getInstance().removeService(position);
+        UserBase.getInstance().addServiceUser(serviceUser);
+        User user = UserBase.getInstance().getUser();
+
+        db.collection("users").document(userID).update(user.toMap()).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(EditarServico.this, "Serviço alterado com sucesso!", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
     }
@@ -235,7 +257,7 @@ public class EditarServico extends AppCompatActivity {
         }
 
         if(valorServico != null){
-            valor_servico_edicao.setText(valorServico.toString());
+            valor_servico_edicao.setText(MoneyTextWatcher.formatTextPrice(valorServico.toString()));
         }
 
         double d = duracaoServico;

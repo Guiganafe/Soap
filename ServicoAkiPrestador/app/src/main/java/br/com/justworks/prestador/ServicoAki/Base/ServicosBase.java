@@ -56,4 +56,8 @@ public class ServicosBase {
         mServicosBase = null;
         ServicosBase.getInstance();
     }
+
+    public void clearServicos_selecionados() {
+        this.servicos_selecionados = new ArrayList<>();
+    }
 }

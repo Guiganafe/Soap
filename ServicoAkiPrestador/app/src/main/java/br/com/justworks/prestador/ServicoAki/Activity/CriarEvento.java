@@ -243,7 +243,7 @@ public class CriarEvento extends AppCompatActivity implements ServiceSelectedAda
                         dialog.dismiss();
                     }
                 });
-                builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton("Não",    new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -295,9 +295,8 @@ public class CriarEvento extends AppCompatActivity implements ServiceSelectedAda
              * seja preenchido, é adicionado ao Map
              */
             if (!TextUtils.isEmpty(valorEvento)) {
-                String valorDoEvento = valorEvento.replace(",", ".");
                 NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
-                double valor = nf.parse (valorDoEvento).doubleValue();
+                double valor = nf.parse (valorEvento).doubleValue();
                 scheduleItems.put("price", valor);
             }
 

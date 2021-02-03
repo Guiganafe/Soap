@@ -7,6 +7,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
+import java.util.List;
+
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Model.ScheduleItems;
 
@@ -92,5 +94,10 @@ public class AgendaBase {
 
     public void updateScheduleItem(ScheduleItems item, int position){
         this.scheduleItemsListByDay.set(position, item);
+    }
+
+    public void removeScheduleItemsListByDay(int position) {
+        this.scheduleItemsListByDay.remove(position);
+        this.scheduleItemsIdByDay.remove(position);
     }
 }

@@ -33,7 +33,10 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import br.com.justworks.prestador.ServicoAki.Activity.MainActivity;
@@ -151,7 +154,11 @@ public class ConfigurarServicos extends Fragment {
             @Override
             public void onClick(View v) {
                 if(validarCampos()){
-                    addServico();
+                    try {
+                        addServico();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -178,14 +185,21 @@ public class ConfigurarServicos extends Fragment {
         }
     }
 
-    private void addServico() {
-        String descricao, valor, custoDeslocamento;
+    private void addServico() throws ParseException {
+        NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
+
+        String descricao, custoDeslocamento;
         String duracao_txt = duracao_servico.getText().toString();
         int duracao;
+
         duracao = (Integer.parseInt(duracao_txt.substring(0,2)) * 60) + Integer.parseInt(duracao_txt.substring(3,5));
 
-        valor = valor_servico.getText().toString().replace(",", ".");
-        custoDeslocamento = custo_deslocamento.getText().toString().replace(",", ".");
+        String valorDoEvento = valor_servico.getText().toString();
+        double valorFinal = nf.parse (valorDoEvento).doubleValue();
+
+        custoDeslocamento = custo_deslocamento.getText().toString();
+        double custoDoDeslocamento = nf.parse (custoDeslocamento).doubleValue();
+
         descricao = descricao_servico.getText().toString();
 
         Description description = new Description(descricao);
@@ -199,10 +213,10 @@ public class ConfigurarServicos extends Fragment {
         serviceUser.setId(servicoViewModel.getServiceId().getValue());
         serviceUser.setMoveToClient(desloca);
         if(desloca){
-            serviceUser.setMovementCost(Double.parseDouble(custoDeslocamento));
+            serviceUser.setMovementCost(custoDoDeslocamento);
         }
         serviceUser.setName(service.getName());
-        serviceUser.setPrice(Double.parseDouble(valor));
+        serviceUser.setPrice(valorFinal);
 
         //servicoViewModel.addService(serviceUser);
 

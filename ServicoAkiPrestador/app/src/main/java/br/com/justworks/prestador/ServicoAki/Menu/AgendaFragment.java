@@ -68,6 +68,7 @@ public class AgendaFragment extends Fragment implements DatePickerListener, Adap
     private ArrayList<String> scheduleItemsIdList;
     private ArrayList<String> scheduleItemsIdListByDay;
     private DateTime dateTimeSelected;
+    private int dia, mes, ano;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -104,6 +105,12 @@ public class AgendaFragment extends Fragment implements DatePickerListener, Adap
     @Override
     public void onStop() {
         super.onStop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        carregarAgendaDoDia(dia, mes, ano);
     }
 
     public void carregarAgendaDoDia(int dia, int mes, int ano){
@@ -168,7 +175,7 @@ public class AgendaFragment extends Fragment implements DatePickerListener, Adap
     private void pickerControl() {
         picker.setListener(this)
                 .setDays(15)
-                .setOffset(4)
+                .setOffset(7)
                 .setDateSelectedColor(Color.DKGRAY)
                 .setDateSelectedTextColor(Color.DKGRAY)
                 .setMonthAndYearTextColor(Color.DKGRAY)
@@ -186,7 +193,10 @@ public class AgendaFragment extends Fragment implements DatePickerListener, Adap
 
     @Override
     public void onDateSelected(DateTime dateSelected) {
-        carregarAgendaDoDia(dateSelected.dayOfMonth().get(), dateSelected.monthOfYear().get(), dateSelected.year().get());
+        dia = dateSelected.dayOfMonth().get();
+        mes = dateSelected.monthOfYear().get();
+        ano = dateSelected.year().get();
+        carregarAgendaDoDia(dia, mes, ano);
         dateTimeSelected = dateSelected;
     }
 

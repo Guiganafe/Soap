@@ -49,18 +49,20 @@ import java.util.Map;
 
 import br.com.justworks.prestador.ServicoAki.Adapter.ServiceSelectedAdapter;
 import br.com.justworks.prestador.ServicoAki.Base.AgendaBase;
+import br.com.justworks.prestador.ServicoAki.Base.EnderecoBase;
 import br.com.justworks.prestador.ServicoAki.Base.ServicosBase;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Model.Address;
 import br.com.justworks.prestador.ServicoAki.Model.ScheduleItems;
 import br.com.justworks.prestador.ServicoAki.Model.ServiceUser;
 import br.com.justworks.prestador.ServicoAki.R;
+import br.com.justworks.prestador.ServicoAki.Util.MoneyTextWatcher;
 import br.com.justworks.prestador.ServicoAki.ViewModel.EndereçoViewModel;
 import br.com.justworks.prestador.ServicoAki.ViewModel.ServiceEventListViewModel;
 
 public class EditarEvento extends AppCompatActivity implements ServiceSelectedAdapter.onServiceSelectedListenner{
 
-    private Button btn_salvar, btn_cancelar;
+    private Button btn_salvar, btn_cancelar, btn_excluir;
     private Calendar calendar;
     private TimePickerDialog timePickerDialog;
     private DatePickerDialog datePickerDialog;
@@ -93,6 +95,7 @@ public class EditarEvento extends AppCompatActivity implements ServiceSelectedAd
         placesAutocompleteControl();
         recyclerViewController();
         timeControl();
+        maskController();
     }
 
     private void recyclerViewController() {
@@ -208,37 +211,68 @@ public class EditarEvento extends AppCompatActivity implements ServiceSelectedAd
             Place place = Autocomplete.getPlaceFromIntent(data);
             local_evento.setText(place.getAddress());
 
-             /*
-                Salva a latitude e longitude do endereço na ViewModel
-             */
-            scheduleItem.getAddress().setLatitude(place.getLatLng().latitude);
-            scheduleItem.getAddress().setLongitude(place.getLatLng().longitude);
+            //Caso o evento já possua um endereço
+            if(scheduleItem.getAddress() != null){
+                scheduleItem.getAddress().setLatitude(place.getLatLng().latitude);
+                scheduleItem.getAddress().setLongitude(place.getLatLng().longitude);
 
-            for (AddressComponent list_components: place.getAddressComponents().asList()) {
+                for (AddressComponent list_components: place.getAddressComponents().asList()) {
 
-                String type = list_components.getTypes().get(0);
+                    String type = list_components.getTypes().get(0);
 
-                if(TextUtils.equals(type, "route")){
-                    scheduleItem.getAddress().setStreet(list_components.getName());
-                } else if(TextUtils.equals(type, "country")){
-                    scheduleItem.getAddress().setCountry(list_components.getName());
-                } else if(TextUtils.equals(type, "street_number")){
-                    scheduleItem.getAddress().setNumber(list_components.getName());
-                } else if(TextUtils.equals(type, "postal_code") || TextUtils.equals(type, "postal_code_prefix")){
-                    scheduleItem.getAddress().setZipCode(list_components.getName());
-                } else if(TextUtils.equals(type, "sublocality") || TextUtils.equals(type, "sublocality_level_1")){
-                    scheduleItem.getAddress().setNeighborhood(list_components.getName());
-                } else if(TextUtils.equals(type, "administrative_area_level_2") || TextUtils.equals(type, "locality")){
-                    scheduleItem.getAddress().setCity(list_components.getName());
-                } else if(TextUtils.equals(type, "administrative_area_level_1")){
-                    scheduleItem.getAddress().setState(list_components.getShortName());
+                    if(TextUtils.equals(type, "route")){
+                        scheduleItem.getAddress().setStreet(list_components.getName());
+                    } else if(TextUtils.equals(type, "country")){
+                        scheduleItem.getAddress().setCountry(list_components.getName());
+                    } else if(TextUtils.equals(type, "street_number")){
+                        scheduleItem.getAddress().setNumber(list_components.getName());
+                    } else if(TextUtils.equals(type, "postal_code") || TextUtils.equals(type, "postal_code_prefix")){
+                        scheduleItem.getAddress().setZipCode(list_components.getName());
+                    } else if(TextUtils.equals(type, "sublocality") || TextUtils.equals(type, "sublocality_level_1")){
+                        scheduleItem.getAddress().setNeighborhood(list_components.getName());
+                    } else if(TextUtils.equals(type, "administrative_area_level_2") || TextUtils.equals(type, "locality")){
+                        scheduleItem.getAddress().setCity(list_components.getName());
+                    } else if(TextUtils.equals(type, "administrative_area_level_1")){
+                        scheduleItem.getAddress().setState(list_components.getShortName());
+                    }
                 }
-            }
+            } else {
+                //Caso o evento não possua um endereço
+                Address address = new Address();
+                address.setLatitude(place.getLatLng().latitude);
+                address.setLongitude(place.getLatLng().longitude);
 
+                for (AddressComponent list_components: place.getAddressComponents().asList()) {
+
+                    String type = list_components.getTypes().get(0);
+
+                    if(TextUtils.equals(type, "route")){
+                        address.setStreet(list_components.getName());
+                    } else if(TextUtils.equals(type, "country")){
+                        address.setCountry(list_components.getName());
+                    } else if(TextUtils.equals(type, "street_number")){
+                        address.setNumber(list_components.getName());
+                    } else if(TextUtils.equals(type, "postal_code") || TextUtils.equals(type, "postal_code_prefix")){
+                        address.setZipCode(list_components.getName());
+                    } else if(TextUtils.equals(type, "sublocality") || TextUtils.equals(type, "sublocality_level_1")){
+                        address.setNeighborhood(list_components.getName());
+                    } else if(TextUtils.equals(type, "administrative_area_level_2") || TextUtils.equals(type, "locality")){
+                        address.setCity(list_components.getName());
+                    } else if(TextUtils.equals(type, "administrative_area_level_1")){
+                        address.setState(list_components.getShortName());
+                    }
+                }
+                //Adiciona o novo endereço ao evento
+                scheduleItem.setAddress(address);
+            }
         }else if(resultCode == AutocompleteActivity.RESULT_ERROR){
             Status status = Autocomplete.getStatusFromIntent(data);
             Toast.makeText(this, status.getStatusMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void maskController() {
+        valor_evento.addTextChangedListener(new MoneyTextWatcher(valor_evento));
     }
 
     private void onClickController() {
@@ -267,6 +301,24 @@ public class EditarEvento extends AppCompatActivity implements ServiceSelectedAd
             public void onClick(View v) {
                 Intent selecionarEvento = new Intent(EditarEvento.this, SelecionarEvento.class);
                 startActivity(selecionarEvento);
+            }
+        });
+
+        btn_excluir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                excluirServico();
+            }
+        });
+
+    }
+
+    private void excluirServico() {
+        AgendaBase.getInstance().removeScheduleItemsListByDay(position);
+        db.collection("scheduleItems").document(scheduleItemId) .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                finish();
             }
         });
     }
@@ -308,10 +360,9 @@ public class EditarEvento extends AppCompatActivity implements ServiceSelectedAd
         valorEvento = valor_evento.getText().toString();
         localEvento = local_evento.getText().toString();
 
-        if (!TextUtils.isEmpty(valorEvento)) {
-            String valorDoEvento = valorEvento.replace(",", ".");
+        if (!TextUtils.isEmpty(valorEvento) && !valorEvento.equals("")) {
             NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
-            double valor = nf.parse (valorDoEvento).doubleValue();
+            double valor = nf.parse (valorEvento).doubleValue();
             scheduleItems.put("price", valor);
         }
 
@@ -351,14 +402,11 @@ public class EditarEvento extends AppCompatActivity implements ServiceSelectedAd
         scheduleItems.put("professionalId", userId);
         scheduleItems.put("scheduleId", FirebaseService.getFirebaseAuth().getCurrentUser().getUid());
 
-        // Add a new document with a generated ID
-        db.collection("scheduleItems").document(scheduleItemId).update(scheduleItems).addOnSuccessListener(new OnSuccessListener<Void>() {
+        //Atualiza o evento
+        db.collection("scheduleItems").document(scheduleItemId).set(scheduleItems).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(EditarEvento.this, "Evento atualizado", Toast.LENGTH_SHORT).show();
-//                AgendaBase.getInstance().removeScheduleItemByDay(position);
-//                AgendaBase.getInstance().addScheduleItem(scheduleItem);
-//                AgendaBase.getInstance().updateScheduleItem(scheduleItem, position);
+                AgendaBase.getInstance().updateScheduleItem(scheduleItem, position);
                 finish();
             }
         });
@@ -453,8 +501,7 @@ public class EditarEvento extends AppCompatActivity implements ServiceSelectedAd
 
         //Caso o valor não seja nulo, é exibido
         if(scheduleItem.getPrice() != null){
-            String valor = scheduleItem.getPrice().toString();
-            valor_evento.setText(valor);
+            valor_evento.setText(MoneyTextWatcher.formatTextPrice(scheduleItem.getPrice().toString()));
         }
 
 
@@ -481,6 +528,8 @@ public class EditarEvento extends AppCompatActivity implements ServiceSelectedAd
             }
         }
 
+        ServicosBase.getInstance().clearServicos_selecionados();
+
         if(scheduleItem.getServices() != null){
             ArrayList<ServiceUser> servicesEvent = scheduleItem.getServices();
             if(servicesEvent != null && servicesEvent.size() > 0){
@@ -505,6 +554,7 @@ public class EditarEvento extends AppCompatActivity implements ServiceSelectedAd
 
         btn_salvar = (Button) findViewById(R.id.btn_concluir_criar_evento_edicao);
         btn_cancelar = (Button) findViewById(R.id.btn_cancelar_criar_evento_edicao);
+        btn_excluir = (Button) findViewById(R.id.btn_excluir_evento_edicao);
 
         local_evento = (EditText) findViewById(R.id.local_evento_edicao);
         valor_evento = (EditText) findViewById(R.id.valor_evento_edicao);
