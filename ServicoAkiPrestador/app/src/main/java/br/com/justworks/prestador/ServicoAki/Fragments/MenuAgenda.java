@@ -1,4 +1,4 @@
-package br.com.justworks.prestador.ServicoAki.Menu;
+package br.com.justworks.prestador.ServicoAki.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -55,7 +55,7 @@ import br.com.justworks.prestador.ServicoAki.Model.ScheduleItems;
 import br.com.justworks.prestador.ServicoAki.Model.Schedules;
 import br.com.justworks.prestador.ServicoAki.R;
 
-public class AgendaFragment extends Fragment implements DatePickerListener, AdapterScheduleItem.onScheduleItemListenner{
+public class MenuAgenda extends Fragment implements DatePickerListener, AdapterScheduleItem.onScheduleItemListenner{
 
     private ImageView imgAgenda;
     private FloatingActionButton criar_evento;

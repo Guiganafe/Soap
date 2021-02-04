@@ -1,4 +1,4 @@
-package br.com.justworks.prestador.ServicoAki.CompleteAccount;
+package br.com.justworks.prestador.ServicoAki.Fragments;
 
 import android.content.Intent;
 import android.graphics.drawable.PictureDrawable;
@@ -40,7 +40,7 @@ import br.com.justworks.prestador.ServicoAki.Util.Mask;
 import br.com.justworks.prestador.ServicoAki.Util.MaskEditUtil;
 import br.com.justworks.prestador.ServicoAki.ViewModel.ServicoViewModel;
 
-public class Step_9 extends Fragment {
+public class CompletarContaPasso_9 extends Fragment {
 
     private ImageView img_servico;
     private TextView tv_nome_servico;

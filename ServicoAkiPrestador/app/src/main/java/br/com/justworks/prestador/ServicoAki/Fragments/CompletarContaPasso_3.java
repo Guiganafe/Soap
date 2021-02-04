@@ -1,4 +1,4 @@
-package br.com.justworks.prestador.ServicoAki.CompleteAccount;
+package br.com.justworks.prestador.ServicoAki.Fragments;
 
 import android.os.Bundle;
 
@@ -28,7 +28,7 @@ import br.com.justworks.prestador.ServicoAki.ViewModel.ProfissionalViewModel;
 import br.com.justworks.prestador.ServicoAki.R;
 import br.com.justworks.prestador.ServicoAki.Util.MaskEditUtil;
 
-public class Step_3 extends Fragment {
+public class CompletarContaPasso_3 extends Fragment {
 
     private Button btn_voltar_cadastro_step_2,  btn_avancar_cadastro_step_4_1;
     private Spinner spinner_tipo_doc;

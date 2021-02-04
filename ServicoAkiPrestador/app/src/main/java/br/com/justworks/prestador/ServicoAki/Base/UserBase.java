@@ -16,11 +16,15 @@ import br.com.justworks.prestador.ServicoAki.Model.User;
 
 public class UserBase {
 
+    /*
+        Acesso aos dados do firebase
+     */
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private String userID = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
 
     private User user;
 
+    // Instância da classe singleton
     private static UserBase mUserBase;
 
     private UserBase(){
@@ -37,6 +41,9 @@ public class UserBase {
         firebaseListenner();
     }
 
+    /*
+       Escuta por atualizações na base de dados
+    */
     private void firebaseListenner() {
         db.collection("users").document(userID).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -48,6 +55,9 @@ public class UserBase {
         });
     }
 
+    /*
+       Retorna a instância da classe
+    */
     public static UserBase getInstance(){
         if(mUserBase == null){
             mUserBase = new UserBase();
@@ -55,26 +65,44 @@ public class UserBase {
         return mUserBase;
     }
 
+    /*
+        Retorna o usuário
+     */
     public User getUser(){
         return user;
     }
 
+    /*
+        Retorna a lista de serviços do usuário
+     */
     public ArrayList<ServiceUser> getServicesUserList(){
         return user.getServices();
     }
 
+    /*
+        Retorna um serviço do usuário, em determonada posção
+     */
     public ServiceUser getServiceUser(int position){
         return user.getServices().get(position);
     }
 
+    /*
+        Adiciona um serviço ao usuário
+     */
     public void addServiceUser(ServiceUser serviceUser){
         user.getServices().add(serviceUser);
     }
 
+    /*
+        Remove um serviço do usuário
+     */
     public void removeService(int position){
         user.getServices().remove(position);
     }
 
+    /*
+        Limpa o usuário
+     */
     public void limparUser(){
         mUserBase = null;
     }

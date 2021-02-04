@@ -190,10 +190,7 @@ public class ConfigurarAgenda extends AppCompatActivity {
                 serviceDays.add(sunday);
 
                 dom_valid = true;
-                ConfigAgendaBase.getInstance().setDom(true);
             }
-        } else {
-            ConfigAgendaBase.getInstance().setDom(false);
         }
 
         if(seg_selected){
@@ -211,19 +208,16 @@ public class ConfigurarAgenda extends AppCompatActivity {
                 ServiceDays monday = new ServiceDays("Monday", startTime, endTime, lunchStartTime, lunchEndTime);
                 serviceDays.add(monday);
                 seg_valid = true;
-                ConfigAgendaBase.getInstance().setSeg(true);
             }
-        } else {
-            ConfigAgendaBase.getInstance().setSeg(false);
         }
 
-        if(ter_selected){
+        if(ter_selected) {
             startTime_txt = hora_inicio_ter.getText().toString();
             endTime_txt = hora_termino_ter.getText().toString();
             lunchStartTime_txt = inicio_intervalo_ter.getText().toString();
             lunchEndTime_txt = fim_intervalo_ter.getText().toString();
 
-            if(!startTime_txt.equals("") || !endTime_txt.equals("") || !lunchStartTime_txt.equals("") || !lunchEndTime_txt.equals("")) {
+            if (!startTime_txt.equals("") || !endTime_txt.equals("") || !lunchStartTime_txt.equals("") || !lunchEndTime_txt.equals("")) {
                 startTime = (Integer.parseInt(startTime_txt.substring(0, 2)) * 60) + Integer.parseInt(startTime_txt.substring(3, 5));
                 endTime = (Integer.parseInt(endTime_txt.substring(0, 2)) * 60) + Integer.parseInt(endTime_txt.substring(3, 5));
                 lunchStartTime = (Integer.parseInt(lunchStartTime_txt.substring(0, 2)) * 60) + Integer.parseInt(lunchStartTime_txt.substring(3, 5));
@@ -232,10 +226,7 @@ public class ConfigurarAgenda extends AppCompatActivity {
                 ServiceDays tuesday = new ServiceDays("Tuesday", startTime, endTime, lunchStartTime, lunchEndTime);
                 serviceDays.add(tuesday);
                 ter_valid = true;
-                ConfigAgendaBase.getInstance().setTer(true);
             }
-        } else {
-            ConfigAgendaBase.getInstance().setTer(false);
         }
 
         if(qua_selected){
@@ -253,10 +244,7 @@ public class ConfigurarAgenda extends AppCompatActivity {
                 ServiceDays wednesday = new ServiceDays("Wednesday", startTime, endTime, lunchStartTime, lunchEndTime);
                 serviceDays.add(wednesday);
                 qua_valid = true;
-                ConfigAgendaBase.getInstance().setQua(true);
             }
-        } else {
-            ConfigAgendaBase.getInstance().setQua(false);
         }
 
         if(qui_selected){
@@ -274,10 +262,7 @@ public class ConfigurarAgenda extends AppCompatActivity {
                 ServiceDays thursday = new ServiceDays("Thursday", startTime, endTime, lunchStartTime, lunchEndTime);
                 serviceDays.add(thursday);
                 qui_valid = true;
-                ConfigAgendaBase.getInstance().setQui(true);
             }
-        } else {
-            ConfigAgendaBase.getInstance().setQui(false);
         }
 
         if(sex_selected){
@@ -295,10 +280,7 @@ public class ConfigurarAgenda extends AppCompatActivity {
                 ServiceDays friday = new ServiceDays("Friday", startTime, endTime, lunchStartTime, lunchEndTime);
                 serviceDays.add(friday);
                 sex_valid = true;
-                ConfigAgendaBase.getInstance().setSex(true);
             }
-        } else {
-            ConfigAgendaBase.getInstance().setSex(false);
         }
 
         if(sab_selected){
@@ -316,10 +298,7 @@ public class ConfigurarAgenda extends AppCompatActivity {
                 ServiceDays saturday = new ServiceDays("Saturday", startTime, endTime, lunchStartTime, lunchEndTime);
                 serviceDays.add(saturday);
                 sab_valid = true;
-                ConfigAgendaBase.getInstance().setSab(true);
             }
-        } else {
-            ConfigAgendaBase.getInstance().setSab(false);
         }
 
         if(dom_valid || seg_valid || ter_valid || qua_valid || qui_valid || sex_valid || sab_valid){

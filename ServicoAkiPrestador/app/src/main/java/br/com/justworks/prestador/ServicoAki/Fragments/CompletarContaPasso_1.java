@@ -1,4 +1,4 @@
-package br.com.justworks.prestador.ServicoAki.CompleteAccount;
+package br.com.justworks.prestador.ServicoAki.Fragments;
 
 import android.Manifest;
 import android.app.Activity;
@@ -7,21 +7,16 @@ import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -31,7 +26,6 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +44,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -59,23 +52,19 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import br.com.justworks.prestador.ServicoAki.Activity.MainActivity;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.ViewModel.EstadoCivilViewModel;
 import br.com.justworks.prestador.ServicoAki.ViewModel.ProfissionalViewModel;
 import br.com.justworks.prestador.ServicoAki.R;
-import br.com.justworks.prestador.ServicoAki.Enum.userEnum;
+import br.com.justworks.prestador.ServicoAki.Util.userEnum;
 import br.com.justworks.prestador.ServicoAki.Util.MaskEditUtil;
 import br.com.justworks.prestador.ServicoAki.ViewModel.SexoViewModel;
 
-public class Step_1 extends Fragment {
+public class CompletarContaPasso_1 extends Fragment {
 
     public static final int CAMERA_PERM_CODE = 101;
     public static final int CAMERA_REQUEST_CODE = 102;

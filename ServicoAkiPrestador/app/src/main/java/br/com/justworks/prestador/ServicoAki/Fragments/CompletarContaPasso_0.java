@@ -1,4 +1,4 @@
-package br.com.justworks.prestador.ServicoAki.CompleteAccount;
+package br.com.justworks.prestador.ServicoAki.Fragments;
 
 import android.os.Bundle;
 
@@ -14,7 +14,7 @@ import android.widget.Button;
 
 import br.com.justworks.prestador.ServicoAki.R;
 
-public class Step_0 extends Fragment {
+public class CompletarContaPasso_0 extends Fragment {
 
     private Button btn_cancelar_cadastro, btn_avancar_cadastro_step_1;
 

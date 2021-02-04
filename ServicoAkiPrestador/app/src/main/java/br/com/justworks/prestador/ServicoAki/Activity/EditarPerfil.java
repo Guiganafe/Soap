@@ -59,6 +59,8 @@ import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Model.CivilState;
 import br.com.justworks.prestador.ServicoAki.Model.User;
 import br.com.justworks.prestador.ServicoAki.R;
+import br.com.justworks.prestador.ServicoAki.Util.MaskEditUtil;
+import br.com.justworks.prestador.ServicoAki.Util.MoneyTextWatcher;
 
 public class EditarPerfil extends AppCompatActivity {
 
@@ -101,6 +103,13 @@ public class EditarPerfil extends AppCompatActivity {
         
         timeController();
 
+        maskController();
+
+    }
+
+    private void maskController() {
+        telefone.addTextChangedListener(MaskEditUtil.mask(telefone, MaskEditUtil.FORMAT_TELL));
+        cpf.addTextChangedListener(MaskEditUtil.mask(cpf, MaskEditUtil.FORMAT_CPF));
     }
 
     private void textWatcherController() {

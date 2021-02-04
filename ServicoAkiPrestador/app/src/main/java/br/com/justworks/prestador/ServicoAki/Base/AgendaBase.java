@@ -14,21 +14,30 @@ import br.com.justworks.prestador.ServicoAki.Model.ScheduleItems;
 
 public class AgendaBase {
 
+    /*
+        Acesso aos dados do firebase
+     */
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private String userID = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
 
+    /*
+        Estrutura de dados utilizada
+     */
     private ArrayList<ScheduleItems> scheduleItemsList;
     private ArrayList<ScheduleItems> scheduleItemsListByDay;
     private ArrayList<String> scheduleItemsId = new ArrayList<>();
     private ArrayList<String> scheduleItemsIdByDay = new ArrayList<>();
 
-
+    // Instância da classe singleton
     private static AgendaBase mAgendaBase;
 
     private AgendaBase (){
         firebaseListenner();
     }
 
+    /*
+        Escuta por atualizações na base de dados
+     */
     private void firebaseListenner() {
         db.collection("scheduleItems").whereEqualTo("professionalId", userID).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -45,6 +54,9 @@ public class AgendaBase {
         });
     }
 
+    /*
+        Retorna a instância da classe
+     */
     public static AgendaBase getInstance(){
         if(mAgendaBase == null){
             mAgendaBase = new AgendaBase();
@@ -52,49 +64,67 @@ public class AgendaBase {
         return mAgendaBase;
     }
 
+    /*
+        Retorna os eventos da agenda
+     */
     public ArrayList<ScheduleItems> getScheduleItemsList(){
         return scheduleItemsList;
     }
 
+    /*
+        Retorna os eventos da agenda por dia
+     */
     public ArrayList<ScheduleItems> getScheduleItemsListByDay(){
         return scheduleItemsListByDay;
     }
 
+    /*
+        Define os eventos por dia da agenda
+     */
     public void setScheduleItemsListByDay(ArrayList<ScheduleItems> itemsByDay){
         this.scheduleItemsListByDay = itemsByDay;
     }
 
+    /*
+        Reseta os eventos por dia da agenda
+     */
     public void deleteScheduleItemsByDay(){
         this.scheduleItemsListByDay = null;
     }
 
+    /*
+        Retorna os IDs dos eventos da agenda
+     */
     public ArrayList<String> getScheduleItemsId(){
         return this.scheduleItemsId;
     }
 
+    /*
+        Retorna os IDs dos eventos por dia da agenda
+     */
     public ArrayList<String> getScheduleItemsIdByDay(){
         return this.scheduleItemsIdByDay;
     }
 
+    /*
+        Retorna os IDs dos eventos da agenda
+     */
     public void setScheduleItemsIdByDay(ArrayList<String> scheduleItemsIdByDayNew){
         this.scheduleItemsIdByDay = scheduleItemsIdByDayNew;
     }
 
-    public void limparAgenda() {
-        mAgendaBase = null;
-    }
-
-    public void removeScheduleItemByDay(int position) {
-        this.scheduleItemsListByDay.remove(position);
-    }
-
-    public void addScheduleItem(ScheduleItems item) {
-        this.scheduleItemsListByDay.add(item);
-    }
-
-
+    /*
+        Remove um evento do dia de determinada posição
+     */
     public void removeScheduleItemsListByDay(int position) {
         this.scheduleItemsListByDay.remove(position);
         this.scheduleItemsIdByDay.remove(position);
+    }
+
+    /*
+        Limpa a agenda
+     */
+    public void limparAgenda() {
+        mAgendaBase = null;
     }
 }

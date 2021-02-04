@@ -1,4 +1,4 @@
-package br.com.justworks.prestador.ServicoAki.CompleteAccount;
+package br.com.justworks.prestador.ServicoAki.Fragments;
 
 import android.Manifest;
 import android.app.Activity;
@@ -49,20 +49,20 @@ import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.ViewModel.ProfissionalViewModel;
 import br.com.justworks.prestador.ServicoAki.R;
 
-public class Step_5 extends Fragment {
 
-    private Button btn_voltar_cadastro_step_4,  btn_avancar_cadastro_step_5_2;
+public class CompletarContaPasso_4 extends Fragment {
+
+    private Button btn_voltar_cadastro_step_3,  btn_avancar_cadastro_step_5;
     private ProfissionalViewModel profissionalViewModel;
-    private Button tirar_foto_frente, tirar_foto_verso;
-    private ImageView foto_frente, foto_verso;
-    private ProgressBar progressBar;
+    private ImageView foto_id;
+    private Button tirar_foto;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth;
     private String userID = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
     private StorageReference storageRef;
+    private ProgressBar progressBar;
     public static final int CAMERA_PERM_CODE = 101;
-    public static final int CAMERA_REQUEST_CODE_FRENTE = 102;
-    public static final int CAMERA_REQUEST_CODE_VERSO = 103;
+    public static final int CAMERA_REQUEST_CODE = 102;
     private String currentPhotoPath;
 
     @Override
@@ -78,47 +78,40 @@ public class Step_5 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_step_5, container, false);
+        return inflater.inflate(R.layout.fragment_step_4, container, false);
     }
 
-    @Override
+     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         inicializarComponentes(view);
-
+        //btn_avancar_cadastro_step_5.setEnabled(false);
         onClick();
         loadController();
     }
 
     private void onClick() {
-        btn_voltar_cadastro_step_4.setOnClickListener(new View.OnClickListener() {
+        btn_voltar_cadastro_step_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().onBackPressed();
             }
         });
 
-        btn_avancar_cadastro_step_5_2.setOnClickListener(new View.OnClickListener() {
+        btn_avancar_cadastro_step_5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(validarCampos()){
                     enviarDados();
-                    Navigation.findNavController(v).navigate(R.id.action_step_5_to_step_6);
+                    Navigation.findNavController(v).navigate(R.id.action_step_4_to_step_5_1);
                 }
             }
         });
 
-        tirar_foto_frente.setOnClickListener(new View.OnClickListener() {
+        tirar_foto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cameraPermissao(CAMERA_REQUEST_CODE_FRENTE);
-            }
-        });
-
-        tirar_foto_verso.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cameraPermissao(CAMERA_REQUEST_CODE_VERSO);
+               cameraPermissao();
             }
         });
     }
@@ -140,7 +133,7 @@ public class Step_5 extends Fragment {
         return image;
     }
 
-    private void dispatchTakePictureIntentFrente() {
+    private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
@@ -157,29 +150,7 @@ public class Step_5 extends Fragment {
                         "br.com.justworks.android.fileprovider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE_FRENTE);
-            }
-        }
-    }
-
-    private void dispatchTakePictureIntentVerso() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(requireActivity(),
-                        "br.com.justworks.android.fileprovider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE_VERSO);
+                startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
             }
         }
     }
@@ -188,62 +159,54 @@ public class Step_5 extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == CAMERA_REQUEST_CODE_FRENTE) {
+            if (requestCode == CAMERA_REQUEST_CODE) {
                 File fileCam = new File(currentPhotoPath);
-                foto_frente.setImageURI(Uri.fromFile(fileCam));
+                foto_id.setImageURI(Uri.fromFile(fileCam));
+                tirar_foto.setText("Tirar outra");
 
                 Bitmap fotoCamera = BitmapFactory.decodeFile(currentPhotoPath);
-                profissionalViewModel.setFoto_doc_frente(fotoCamera);
+                profissionalViewModel.setFoto_selfie_doc(fotoCamera);
 
                 Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 Uri contentUri = Uri.fromFile(fileCam);
                 mediaScanIntent.setData(contentUri);
                 requireActivity().sendBroadcast(mediaScanIntent);
-                currentPhotoPath = "";
-            }
 
-            if (requestCode == CAMERA_REQUEST_CODE_VERSO) {
-                File fileCam = new File(currentPhotoPath);
-                foto_verso.setImageURI(Uri.fromFile(fileCam));
-
-                Bitmap fotoCamera = BitmapFactory.decodeFile(currentPhotoPath);
-                profissionalViewModel.setFoto_doc_verso(fotoCamera);
-
-                Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                Uri contentUri = Uri.fromFile(fileCam);
-                mediaScanIntent.setData(contentUri);
-                requireActivity().sendBroadcast(mediaScanIntent);
-                currentPhotoPath = "";
             }
         }
     }
 
-    private void cameraPermissao(int REQUEST_CODE) {
+    private void cameraPermissao() {
         if(ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(requireActivity(), new String[] {Manifest.permission.CAMERA}, CAMERA_PERM_CODE);
         } else {
-            if(REQUEST_CODE == 102) {
-                dispatchTakePictureIntentFrente();
-            } else if(REQUEST_CODE == 103) {
-                dispatchTakePictureIntentVerso();
-            }
+            dispatchTakePictureIntent();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode == CAMERA_PERM_CODE){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED);
+            dispatchTakePictureIntent();
+        } else {
+            Toast.makeText(requireActivity(), "A permissão é necessária", Toast.LENGTH_SHORT).show();
         }
     }
 
     private Task<String> enviarDados() {
-        final StorageReference backIdImageRef = storageRef.child("users/" + userID + "_backIdImage.jpg");
-        final StorageReference frontIdImageRef = storageRef.child("users/" + userID + "_frontIdImage.jpg");
-
-        Bitmap fotoFrenteDocBitmap = profissionalViewModel.getFoto_doc_frente().getValue();
-        Bitmap fotoVersoDocBitmap = profissionalViewModel.getFoto_doc_verso().getValue();
+        final StorageReference selfieImageRef = storageRef.child("users/" + userID + "_selfieImage.jpg");
+        Bitmap fotoSelfieBitmap = profissionalViewModel.getFoto_selfie_doc().getValue();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        fotoSelfieBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] dataFotoSelfie = baos.toByteArray();
 
-        fotoFrenteDocBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] dataFotoFrenteDoc = baos.toByteArray();
+        UploadTask uploadTask = selfieImageRef.putBytes(dataFotoSelfie);
 
-        UploadTask uploadTask3 = frontIdImageRef.putBytes(dataFotoFrenteDoc);
-        Task<Uri> urlTask = uploadTask3.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
             public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                 if (!task.isSuccessful()) {
@@ -251,38 +214,14 @@ public class Step_5 extends Fragment {
                 }
 
                 // Continue with the task to get the download URL
-                return frontIdImageRef.getDownloadUrl();
+                return selfieImageRef.getDownloadUrl();
             }
         }).addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
                     Uri downloadUri = task.getResult();
-                    profissionalViewModel.setFoto_doc_frente_url(downloadUri.toString());
-                }
-            }
-        });
-
-        fotoVersoDocBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] dataFotoVersoDoc = baos.toByteArray();
-
-        UploadTask uploadTask4 = backIdImageRef.putBytes(dataFotoVersoDoc);
-        Task<Uri> urlTask2 = uploadTask4.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-            @Override
-            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                if (!task.isSuccessful()) {
-                    throw task.getException();
-                }
-
-                // Continue with the task to get the download URL
-                return backIdImageRef.getDownloadUrl();
-            }
-        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                if (task.isSuccessful()) {
-                    Uri downloadUri = task.getResult();
-                    profissionalViewModel.setFoto_doc_verso_url(downloadUri.toString());
+                    profissionalViewModel.setFoto_selfie_url(downloadUri.toString());
                 }
             }
         });
@@ -290,11 +229,8 @@ public class Step_5 extends Fragment {
     }
 
     private boolean validarCampos() {
-        if(profissionalViewModel.getFoto_doc_frente().getValue() == null){
-            Toast.makeText(requireActivity(), "A foto da frente do documento é obrigatória!", Toast.LENGTH_SHORT).show();
-            return false;
-        } else if(profissionalViewModel.getFoto_doc_verso().getValue() == null){
-            Toast.makeText(requireActivity(), "A foto do verso do documento é obrigatória!", Toast.LENGTH_SHORT).show();
+        if(profissionalViewModel.getFoto_selfie_doc().getValue() == null){
+            Toast.makeText(requireActivity(), "A selfie com documento é obrigatória!", Toast.LENGTH_SHORT).show();
             return false;
         } else {
             return true;
@@ -302,24 +238,18 @@ public class Step_5 extends Fragment {
     }
 
     private void loadController() {
-        if(profissionalViewModel.getFoto_doc_frente().getValue() != null){
-            foto_frente.setImageBitmap(profissionalViewModel.getFoto_doc_frente().getValue());
-        }
-
-        if(profissionalViewModel.getFoto_doc_verso().getValue() != null){
-            foto_verso.setImageBitmap(profissionalViewModel.getFoto_doc_verso().getValue());
+        if(profissionalViewModel.getFoto_selfie_doc().getValue() != null){
+            foto_id.setImageBitmap(profissionalViewModel.getFoto_selfie_doc().getValue());
         }
     }
 
     private void inicializarComponentes(View view) {
-        btn_voltar_cadastro_step_4 = (Button) view.findViewById(R.id.btn_voltar_cadastro_step_4);
-        btn_avancar_cadastro_step_5_2 = (Button) view.findViewById(R.id.btn_avancar_cadastro_step_5_2);
-        foto_frente = (ImageView) view.findViewById(R.id.foto_frente_Cadastro);
-        tirar_foto_frente = (Button) view.findViewById(R.id.btn_tirar_foto_frente);
-        foto_verso = (ImageView) view.findViewById(R.id.foto_verso_Cadastro);
-        tirar_foto_verso = (Button) view.findViewById(R.id.btn_tirar_foto_verso);
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar_step_5);
+        btn_voltar_cadastro_step_3 = (Button) view.findViewById(R.id.btn_voltar_cadastro_step_3);
+        btn_avancar_cadastro_step_5 = (Button) view.findViewById(R.id.btn_avancar_cadastro_step_5);
+        foto_id = (ImageView) view.findViewById(R.id.foto_id_cadastro);
+        tirar_foto = (Button) view.findViewById(R.id.btn_tirar_foto);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar_step_4);
         progressBar.setVisibility(View.VISIBLE);
-        progressBar.setProgress(75);
+        progressBar.setProgress(60);
     }
 }

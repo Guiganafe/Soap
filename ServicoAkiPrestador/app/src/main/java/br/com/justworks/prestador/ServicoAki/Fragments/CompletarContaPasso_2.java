@@ -1,4 +1,4 @@
-package br.com.justworks.prestador.ServicoAki.CompleteAccount;
+package br.com.justworks.prestador.ServicoAki.Fragments;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -44,7 +44,7 @@ import br.com.justworks.prestador.ServicoAki.R;
 import br.com.justworks.prestador.ServicoAki.Util.MaskEditUtil;
 import br.com.justworks.prestador.ServicoAki.ViewModel.SexoViewModel;
 
-public class Step_2 extends Fragment {
+public class CompletarContaPasso_2 extends Fragment {
 
     private Button btn_voltar_cadastro_step_1,  btn_avancar_cadastro_step_3;
     private ImageView imagem_perfil;

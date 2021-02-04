@@ -17,20 +17,28 @@ import br.com.justworks.prestador.ServicoAki.Model.ServiceDays;
 
 public class ConfigAgendaBase {
 
+    /*
+        Acesso aos dados do firebase
+     */
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private String professionalId = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
-    private boolean seg, ter, qua, qui, sex, sab, dom;
 
+    // Instância da agenda
     private Schedules schedule;
 
+    // Id da agenda
     private String scheduleId = "";
 
+    // Instância da classe singleton
     private static ConfigAgendaBase configAgendaBase;
 
     private ConfigAgendaBase (){
         firebaseListenner();
     }
 
+    /*
+        Escuta por atualizações na base de dados
+     */
     private void firebaseListenner() {
         db.collection("schedules").whereEqualTo("professionalId", professionalId).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -46,6 +54,9 @@ public class ConfigAgendaBase {
         });
     }
 
+    /*
+       Retorna a instância da classe
+    */
     public static ConfigAgendaBase getInstance(){
         if(configAgendaBase == null){
             configAgendaBase = new ConfigAgendaBase();
@@ -53,43 +64,31 @@ public class ConfigAgendaBase {
         return configAgendaBase;
     }
 
+    /*
+        Retorna o id da agenda
+     */
     public String getScheduleId(){
         return scheduleId;
     }
 
+    /*
+        Retorna a agenda
+     */
     public Schedules getSchedule(){
         return schedule;
     }
 
+    /*
+        Define os dias úteis de trabalho
+     */
     public void setServiceDays(ArrayList<ServiceDays> sd){
         this.schedule.setServiceDays(sd);
     }
 
-    public void setDom(boolean domSet){
-        this.dom = domSet;
-    }
-
-    public void setSeg(boolean segSet){
-        this.seg = segSet;
-    }
-
-    public void setTer(boolean terSet){
-        this.ter = terSet;
-    }
-
-    public void setQua(boolean quaSet){
-        this.qua = quaSet;
-    }
-
-    public void setQui(boolean quiSet){
-        this.qui = quiSet;
-    }
-
-    public void setSex(boolean sexSet){
-        this.sex = sexSet;
-    }
-
-    public void setSab(boolean sabSet){
-        this.sab = sabSet;
+    /*
+        Limpa a agenda base
+     */
+    public void limparConfigAgendaBase() {
+        configAgendaBase = null;
     }
 }

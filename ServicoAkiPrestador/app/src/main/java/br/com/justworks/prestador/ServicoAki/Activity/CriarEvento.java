@@ -333,12 +333,16 @@ public class CriarEvento extends AppCompatActivity implements ServiceSelectedAda
                 scheduleItems.put("services", servicesEvent);
             }
 
+            final Calendar dataHoje = Calendar.getInstance(Locale.getDefault());
+
             scheduleItems.put("active", true);
             scheduleItems.put("title", tituloEvento);
             scheduleItems.put("hourBegin", dataInicio.getTime());
             scheduleItems.put("hourEnd", dataFim.getTime());
             scheduleItems.put("professionalId", userId);
             scheduleItems.put("scheduleId", FirebaseService.getFirebaseAuth().getCurrentUser().getUid());
+            scheduleItems.put("createdAt", dataHoje.getTime());
+            scheduleItems.put("updatedAt", dataHoje.getTime());
 
             // Add a new document with a generated ID
             db.collection("scheduleItems")

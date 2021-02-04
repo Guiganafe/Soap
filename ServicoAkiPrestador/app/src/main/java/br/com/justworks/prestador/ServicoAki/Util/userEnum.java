@@ -1,4 +1,4 @@
-package br.com.justworks.prestador.ServicoAki.Enum;
+package br.com.justworks.prestador.ServicoAki.Util;
 
 public enum userEnum {
 

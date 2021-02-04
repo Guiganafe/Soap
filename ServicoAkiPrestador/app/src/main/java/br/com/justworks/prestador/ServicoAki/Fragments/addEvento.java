@@ -15,9 +15,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +24,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -43,7 +39,6 @@ import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DateFormat;
@@ -107,17 +102,11 @@ public class addEvento extends Fragment implements ServiceListEventoAdapter.onSe
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         inicializarComponentes(view);
-
         setUpReciclerView();
-
         spinnerControl();
-
         placesAutocompleteControl();
-
         timeControl();
-
         clickControl();
     }
 
@@ -133,35 +122,7 @@ public class addEvento extends Fragment implements ServiceListEventoAdapter.onSe
         setUpReciclerView();
     }
 
-    //    private void filter(String text) {
-//        ArrayList<ServiceUser> serviceUsersFiltered = new ArrayList<>();
-//
-//        for(ServiceUser item: servicesUser){
-//            if(item.getName().getPtbr().toLowerCase().contains(text.toLowerCase())){
-//                serviceUsersFiltered.add(item);
-//            }
-//        }
-//
-//        adapter = new ServiceListEventoAdapter(serviceUsersFiltered, context, serviceListenner);
-//        recyclerView.setHasFixedSize(false);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-//        recyclerView.setAdapter(adapter);
-//    }
-
     private void setUpReciclerView() {
-//        db.collection("users").document(FirebaseService.getFirebaseAuth().getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//            @Override
-//            public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                if(documentSnapshot.exists()){
-//                    servicesUser = documentSnapshot.toObject(ServicesDocument.class).services;
-//                    adapter = new ServiceListEventoAdapter(servicesUser, context, serviceListenner);
-//                    recyclerView.setHasFixedSize(false);
-//                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
-//                    recyclerView.setAdapter(adapter);
-//                }
-//            }
-//        });
-
         servicesUser = serviceEventListViewModel.getServices_selected_list().getValue();
         if(servicesUser != null && servicesUser.size() > 0){
             recyclerView.setVisibility(View.VISIBLE);

@@ -18,18 +18,28 @@ import br.com.justworks.prestador.ServicoAki.Model.Address;
 
 public class EnderecoBase {
 
+    /*
+        Acesso aos dados do firebase
+     */
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private String userID = FirebaseService.getFirebaseAuth().getCurrentUser().getUid();
 
+    /*
+        Estrutura de dados utilizada
+     */
     private ArrayList<Address> addressArrayList;
     private ArrayList<String> addressIds;
 
+    // Instância da classe singleton
     private static EnderecoBase mEnderecoBase;
 
     private EnderecoBase (){
         firebaseListenner();
     }
 
+    /*
+        Escuta por atualizações na base de dados
+     */
     private void firebaseListenner() {
         db.collection("addresses").whereEqualTo("userId", userID).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -65,6 +75,9 @@ public class EnderecoBase {
         });
     }
 
+    /*
+       Retorna a instância da classe
+    */
     public static EnderecoBase getInstance(){
         if(mEnderecoBase == null){
             mEnderecoBase = new EnderecoBase();
@@ -72,23 +85,38 @@ public class EnderecoBase {
         return mEnderecoBase;
     }
 
+    /*
+        Retorna a lista de endereços
+     */
     public ArrayList<Address> getAddressItemsList(){
         return addressArrayList;
     }
 
+    /*
+        Remove um endereço em determinada posição
+     */
     public void removerEndereco(int position){
         this.addressArrayList.remove(position);
         this.addressIds.remove(position);
     }
 
+    /*
+        Adiciona um endereço
+     */
     public void adicionarEndereco(Address address){
         this.addressArrayList.add(address);
     }
 
+    /*
+        Retorna um endereço em determinada posição
+     */
     public String getEnderecoId(int position){
         return this.addressIds.get(position);
     }
 
+    /*
+        Limpa o endereço
+     */
     public void limparEndereco() {
         mEnderecoBase = null;
     }

@@ -1,4 +1,4 @@
-package br.com.justworks.prestador.ServicoAki.CompleteAccount;
+package br.com.justworks.prestador.ServicoAki.Fragments;
 
 import android.os.Bundle;
 
@@ -25,7 +25,7 @@ import br.com.justworks.prestador.ServicoAki.Model.Services;
 import br.com.justworks.prestador.ServicoAki.R;
 import br.com.justworks.prestador.ServicoAki.ViewModel.ServicoViewModel;
 
-public class Step_8 extends Fragment {
+public class CompletarContaPasso_8 extends Fragment {
 
     private ServicesItemAdapter adapter;
     private RecyclerView recyclerView;

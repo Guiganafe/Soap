@@ -1,4 +1,4 @@
-package br.com.justworks.prestador.ServicoAki.CompleteAccount;
+package br.com.justworks.prestador.ServicoAki.Fragments;
 
 import android.Manifest;
 import android.app.Activity;
@@ -47,7 +47,7 @@ import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.ViewModel.ProfissionalViewModel;
 import br.com.justworks.prestador.ServicoAki.R;
 
-public class Step_6 extends Fragment {
+public class CompletarContaPasso_6 extends Fragment {
 
     private static final String TAG = "Step_6";
 

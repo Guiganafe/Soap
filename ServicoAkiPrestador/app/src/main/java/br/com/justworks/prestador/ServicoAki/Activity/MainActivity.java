@@ -1,31 +1,25 @@
 package br.com.justworks.prestador.ServicoAki.Activity;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.AttributeSet;
-import android.view.View;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.StorageReference;
 
 import br.com.justworks.prestador.ServicoAki.Base.AgendaBase;
 import br.com.justworks.prestador.ServicoAki.Base.ConfigAgendaBase;
 import br.com.justworks.prestador.ServicoAki.Base.EnderecoBase;
 import br.com.justworks.prestador.ServicoAki.Base.UserBase;
-import br.com.justworks.prestador.ServicoAki.Enum.userEnum;
+import br.com.justworks.prestador.ServicoAki.Util.userEnum;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Model.User;
 import br.com.justworks.prestador.ServicoAki.R;

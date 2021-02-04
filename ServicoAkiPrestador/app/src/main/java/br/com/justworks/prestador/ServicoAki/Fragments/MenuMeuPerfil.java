@@ -1,4 +1,4 @@
-package br.com.justworks.prestador.ServicoAki.Menu;
+package br.com.justworks.prestador.ServicoAki.Fragments;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -7,17 +7,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import com.bumptech.glide.Glide;
@@ -27,16 +24,17 @@ import br.com.justworks.prestador.ServicoAki.Activity.EditarPerfil;
 import br.com.justworks.prestador.ServicoAki.Activity.MeusEnderecos;
 import br.com.justworks.prestador.ServicoAki.Activity.MeusServicos;
 import br.com.justworks.prestador.ServicoAki.Base.AgendaBase;
+import br.com.justworks.prestador.ServicoAki.Base.ConfigAgendaBase;
 import br.com.justworks.prestador.ServicoAki.Base.EnderecoBase;
+import br.com.justworks.prestador.ServicoAki.Base.ServicosBase;
 import br.com.justworks.prestador.ServicoAki.Base.UserBase;
-import br.com.justworks.prestador.ServicoAki.Enum.userEnum;
 import br.com.justworks.prestador.ServicoAki.Firebase.FirebaseService;
 import br.com.justworks.prestador.ServicoAki.Activity.LoginActivity;
 import br.com.justworks.prestador.ServicoAki.Model.User;
 import br.com.justworks.prestador.ServicoAki.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MeuPerfilFragment extends Fragment {
+public class MenuMeuPerfil extends Fragment {
 
     private TextView tv_logout, tv_config_agenda, tv_name, tv_email, tv_authenticated, tv_phone, tv_meusServicos, tv_meus_dados, tv_meusEnderecos;
     private CircleImageView imageView;
@@ -92,6 +90,8 @@ public class MeuPerfilFragment extends Fragment {
                 UserBase.getInstance().limparUser();
                 AgendaBase.getInstance().limparAgenda();
                 EnderecoBase.getInstance().limparEndereco();
+                ConfigAgendaBase.getInstance().limparConfigAgendaBase();
+                ServicosBase.getInstance().clear();
                 Intent intent = new Intent(getContext(), LoginActivity.class);
                 startActivity(intent);
                 getActivity().finish();
