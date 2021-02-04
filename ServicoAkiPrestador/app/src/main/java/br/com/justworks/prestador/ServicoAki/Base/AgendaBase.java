@@ -92,9 +92,6 @@ public class AgendaBase {
         this.scheduleItemsListByDay.add(item);
     }
 
-    public void updateScheduleItem(ScheduleItems item, int position){
-        this.scheduleItemsListByDay.set(position, item);
-    }
 
     public void removeScheduleItemsListByDay(int position) {
         this.scheduleItemsListByDay.remove(position);

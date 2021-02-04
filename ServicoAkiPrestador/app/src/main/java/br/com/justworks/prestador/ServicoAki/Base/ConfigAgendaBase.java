@@ -36,9 +36,11 @@ public class ConfigAgendaBase {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (value != null) {
-                    DocumentSnapshot documentSnapshot = value.getDocuments().get(0);
-                    schedule = documentSnapshot.toObject(Schedules.class);
-                    scheduleId = documentSnapshot.getId();
+                    if(value.getDocuments().size() > 0){
+                        DocumentSnapshot documentSnapshot = value.getDocuments().get(0);
+                        schedule = documentSnapshot.toObject(Schedules.class);
+                        scheduleId = documentSnapshot.getId();
+                    }
                 }
             }
         });

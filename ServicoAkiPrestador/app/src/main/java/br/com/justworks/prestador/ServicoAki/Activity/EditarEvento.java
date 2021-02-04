@@ -406,7 +406,6 @@ public class EditarEvento extends AppCompatActivity implements ServiceSelectedAd
         db.collection("scheduleItems").document(scheduleItemId).set(scheduleItems).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                AgendaBase.getInstance().updateScheduleItem(scheduleItem, position);
                 finish();
             }
         });

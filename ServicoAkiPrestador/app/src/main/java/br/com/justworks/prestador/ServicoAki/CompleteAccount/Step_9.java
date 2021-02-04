@@ -190,10 +190,14 @@ public class Step_9 extends Fragment {
         serviceUser.setDescription(description);
         serviceUser.setId(servicoViewModel.getServiceId().getValue());
         serviceUser.setMoveToClient(desloca);
-        serviceUser.setMovementCost(Double.parseDouble(custoDeslocamento));
+        if(!custoDeslocamento.isEmpty()){
+            serviceUser.setMovementCost(Double.parseDouble(custoDeslocamento));
+        }
         serviceUser.setOffersMeterial(material);
         serviceUser.setName(service.getName());
-        serviceUser.setPrice(Double.parseDouble(valor));
+        if(!valor.isEmpty()){
+            serviceUser.setPrice(Double.parseDouble(valor));
+        }
 
         servicoViewModel.addService(serviceUser);
         Toast.makeText(requireActivity(), "Serviço adicionado com sucesso!", Toast.LENGTH_SHORT).show();
